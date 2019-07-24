@@ -6,10 +6,13 @@ export interface CheckboxWithLabelProps extends CheckboxProps {
     label: string
 }
 
-const CheckboxWithLabel: React.FC<CheckboxWithLabelProps> = ({label, ...rest}) => (
+const CheckboxWithLabel: React.FC<CheckboxWithLabelProps> = ({
+    label,
+    ...checkboxProps
+}) => (
     <FormControlLabel
         label={label}
-        control={<Checkbox {...rest} />}
+        control={<Checkbox {...checkboxProps} />}
     />
 );
 

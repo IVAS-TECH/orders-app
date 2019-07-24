@@ -6,7 +6,10 @@ export interface CheckboxProps {
     onToggle: () => void
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({checked, onToggle}) => (
+const Checkbox: React.FC<CheckboxProps> = ({
+    checked,
+    onToggle
+}) => (
     <MUICheckbox
         checked={checked}
         color="primary"

@@ -33,6 +33,7 @@ function handleOnChangeEvent<Value>(currentValue: Value | '', onValueChange: (_:
 
 export default function Select<Value extends string | number>(props: SelectProps<Value>) {
     const {
+        id,
         label,
         disabled,
         required,
@@ -40,8 +41,7 @@ export default function Select<Value extends string | number>(props: SelectProps
         value,
         onValueChange,
         notSelectedText,
-        options,
-        id
+        options
     } = props;
     return (
         <FormControl

@@ -25,8 +25,8 @@ const Input: React.FC<InputProps> = ({
     disabled,
     required,
     error,
-    onValueChange}
-) => (
+    onValueChange
+}) => (
     <FormControl
         labelFor={id}
         label={label}

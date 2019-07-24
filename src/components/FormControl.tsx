@@ -14,7 +14,14 @@ export interface FormControlProps extends ControlProps {
     labelFor: string
 }
 
-const FormControl: React.FC<FormControlProps> = ({label, disabled, required, error, labelFor, children}) => (
+const FormControl: React.FC<FormControlProps> = ({
+    label,
+    disabled,
+    required,
+    error,
+    labelFor,
+    children
+}) => (
     <MUIFormControl
         required={required}
         disabled={disabled}
