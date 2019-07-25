@@ -2,6 +2,8 @@ import React from 'react';
 import Select, {Option} from './components/Select';
 import Input from './components/Input';
 import CheckboxWithLabel from './components/CheckboxWithLabel';
+import createReducer from './store/form/reducer';
+import {setFormFieldValueWithValidation} from './store/form/actions';
 
 type Value = 'ivo' | 'bobi';
 
@@ -14,12 +16,63 @@ const options: Option<Value>[] = [
     {value: 'bobi', text: 'Bobi'}
 ];
 
+interface Fields {
+    select: Value,
+    input: string,
+    checkbox: boolean
+}
+
+interface InitialValues {
+    select: '',
+    input: '',
+    checkbox: false
+}
+
+interface Validation {
+    select: {
+        required: 'required'
+    },
+    input: {
+        required: 'required'
+    }
+}
+
+function validate(value: string): boolean {
+    return value !== '';
+}
+
+const reducer = createReducer<Fields, InitialValues, Validation>({
+    formName: 'test',
+    fields: {
+        select: {
+            initialValue: '',
+            validation: {
+                required: validate
+            }
+        },
+        input: {
+            initialValue: '',
+            validation: {
+                required: validate
+            }
+        },
+        checkbox: {
+            initialValue: false,
+            validation: undefined
+        }
+    }
+});
+
+const state = reducer(undefined, setFormFieldValueWithValidation('test', 'select', 'ivo'));
+
+console.log(state);
+
 const App: React.FC = () => (
     <div>
-        <Select<Value>
+        <Select
             id="select"
             label='Label'
-            value='ivo'
+            value={state.fields.select.value}
             onValueChange={log}
             notSelectedText='not selected'
             options={options}
@@ -27,12 +80,12 @@ const App: React.FC = () => (
         <Input
             id="input"
             label="Input"
-            value="ivo"
+            value={state.fields.input.value}
             onValueChange={log}
             error='This field is required' />
         <CheckboxWithLabel
             label="Checkbox"
-            checked
+            checked={state.fields.checkbox}
             onToggle={() => console.log("toggle")}
         />
     </div>
