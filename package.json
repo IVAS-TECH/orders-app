@@ -13,6 +13,7 @@
   "author": "NoHomey",
   "license": "MIT",
   "devDependencies": {
+    "@types/react-redux": "^7.1.1",
     "create-react-app": "^3.0.1"
   },
   "dependencies": {

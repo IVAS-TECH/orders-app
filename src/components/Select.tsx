@@ -15,19 +15,24 @@ export interface SelectProps<Value> extends ControlProps {
     id: string
     value: Value | '',
     onValueChange: (value: Value) => void,
+    onClose: () => void,
     notSelectedText: string,
     options: Array<Option<Value>>
 };
 
 type ChangeEvent = React.ChangeEvent<{name?: string; value: unknown}>;
 
-function handleOnChangeEvent<Value>(currentValue: Value | '', onValueChange: (_: Value) => void) {
+function handleOnChangeEvent<Value>(
+    currentValue: Value | '',
+    onValueChange: (_: Value) => void,
+    onClose: () => void
+) {
     return (event: ChangeEvent) => {
         const eventValue = event.target.value as Value | '';
-        event.preventDefault();
         if(eventValue !== '' && currentValue !== eventValue) {
             onValueChange(eventValue);
         }
+        onClose();
     };
 }
 
@@ -40,6 +45,7 @@ export default function Select<Value extends string | number>(props: SelectProps
         error,
         value,
         onValueChange,
+        onClose,
         notSelectedText,
         options
     } = props;
@@ -52,7 +58,7 @@ export default function Select<Value extends string | number>(props: SelectProps
             error={error}>
             <MUISelect
                 value={value}
-                onChange={handleOnChangeEvent(value, onValueChange)}
+                onChange={handleOnChangeEvent(value, onValueChange, onClose)}
                 input={<FilledInput id={id} />}>
                 {value === '' &&
                     <MenuItem value=''>
