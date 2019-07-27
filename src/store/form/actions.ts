@@ -1,14 +1,12 @@
 import {
     SET_FORM_FIELD_VALUE,
-    VALIDATE_FORM_FIELD_VALUE,
-    VALIDATE_FORM_FIELDS_VALUES,
+    VALIDATE_FORM,
     Value,
     SetFormFieldValueAction,
-    ValidateFormFieldValue,
-    ValidateFormFieldsValues
+    ValidateForm
 } from './types';
 
-export function setFormFieldValue(formName: string, formField: string, value: Value): SetFormFieldValueAction {
+export function setFormFieldValue<V = Value>(formName: string, formField: string, value: V): SetFormFieldValueAction<V> {
     return {
         type: SET_FORM_FIELD_VALUE,
         formName,
@@ -18,17 +16,9 @@ export function setFormFieldValue(formName: string, formField: string, value: Va
 };
 ;
 
-export function validateFormFieldValue(formName: string, formField: string): ValidateFormFieldValue {
+export function validateForm(formName: string): ValidateForm {
     return {
-        type: VALIDATE_FORM_FIELD_VALUE,
-        formName,
-        formField
-    };
-};
-
-export function validateFormFieldsValues(formName: string): ValidateFormFieldsValues {
-    return {
-        type: VALIDATE_FORM_FIELDS_VALUES,
+        type: VALIDATE_FORM,
         formName
     };
 };

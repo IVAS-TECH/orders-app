@@ -1,8 +1,6 @@
 export const SET_FORM_FIELD_VALUE = 'ivas-tech/orders-app/form/SET_FORM_FIELD_VALUE';
 
-export const VALIDATE_FORM_FIELD_VALUE = 'ivas-tech/orders-app/form/VALIDATE_FORM_FIELD_VALUE';
-
-export const VALIDATE_FORM_FIELDS_VALUES = 'ivas-tech/orders-app/form/VALIDATE_FORM_FIELDS_VALUES';
+export const VALIDATE_FORM = 'ivas-tech/orders-app/form/VALIDATE_FORM';
 
 export interface Form {
     formName: string
@@ -14,17 +12,13 @@ export interface FormField extends Form {
 
 export type Value = string | number | boolean;
 
-export interface SetFormFieldValueAction extends FormField {
+export interface SetFormFieldValueAction<V = Value> extends FormField {
     type: typeof SET_FORM_FIELD_VALUE,
-    value: Value
+    value: V
 };
 
-export interface ValidateFormFieldValue extends FormField {
-    type: typeof VALIDATE_FORM_FIELD_VALUE
+export interface ValidateForm extends Form {
+    type: typeof VALIDATE_FORM
 };
 
-export interface ValidateFormFieldsValues extends Form {
-    type: typeof VALIDATE_FORM_FIELDS_VALUES
-};
-
-export type FormAction = SetFormFieldValueAction | ValidateFormFieldValue | ValidateFormFieldsValues;
+export type FormAction = SetFormFieldValueAction | ValidateForm;

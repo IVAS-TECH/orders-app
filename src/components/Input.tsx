@@ -5,8 +5,7 @@ import FilledInput from '@material-ui/core/FilledInput';
 export interface InputProps extends ControlProps {
     id: string,
     value: string,
-    onValueChange: (value: string) => void,
-    onBlur: () => void
+    onValueChange: (value: string) => void
 }
 
 function handleOnChangeEvent(currentValue: string, onValueChange: (_: string) => void) {
@@ -25,8 +24,7 @@ const Input: React.FC<InputProps> = ({
     disabled,
     required,
     error,
-    onValueChange,
-    onBlur
+    onValueChange
 }) => (
     <FormControl
         labelFor={id}
@@ -37,8 +35,7 @@ const Input: React.FC<InputProps> = ({
         <FilledInput
             id={id}
             value={value}
-            onChange={handleOnChangeEvent(value, onValueChange)}
-            onBlur={onBlur} />
+            onChange={handleOnChangeEvent(value, onValueChange)} />
     </FormControl>
 );
 

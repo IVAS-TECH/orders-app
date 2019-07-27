@@ -4,8 +4,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl, {ControlProps} from './FormControl';
 import MUISelect from '@material-ui/core/Select';
 
-type EmptyValue = '';
-
 export interface Option<Value>{
     value: Value,
     text: string
@@ -15,24 +13,18 @@ export interface SelectProps<Value> extends ControlProps {
     id: string
     value: Value | '',
     onValueChange: (value: Value) => void,
-    onClose: () => void,
     notSelectedText: string,
     options: Array<Option<Value>>
 };
 
 type ChangeEvent = React.ChangeEvent<{name?: string; value: unknown}>;
 
-function handleOnChangeEvent<Value>(
-    currentValue: Value | '',
-    onValueChange: (_: Value) => void,
-    onClose: () => void
-) {
+function handleOnChangeEvent<Value>(currentValue: Value | '', onValueChange: (_: Value) => void) {
     return (event: ChangeEvent) => {
         const eventValue = event.target.value as Value | '';
         if(eventValue !== '' && currentValue !== eventValue) {
             onValueChange(eventValue);
         }
-        onClose();
     };
 }
 
@@ -45,7 +37,6 @@ export default function Select<Value extends string | number>(props: SelectProps
         error,
         value,
         onValueChange,
-        onClose,
         notSelectedText,
         options
     } = props;
@@ -58,7 +49,7 @@ export default function Select<Value extends string | number>(props: SelectProps
             error={error}>
             <MUISelect
                 value={value}
-                onChange={handleOnChangeEvent(value, onValueChange, onClose)}
+                onChange={handleOnChangeEvent(value, onValueChange)}
                 input={<FilledInput id={id} />}>
                 {value === '' &&
                     <MenuItem value=''>

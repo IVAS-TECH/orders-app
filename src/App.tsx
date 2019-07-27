@@ -11,15 +11,22 @@ type Value = 'ivo' | 'bobi';
 interface Fields {
     select: {
         value: Value,
-        initialValue: ''
+        initialValue: '',
+        validation: {
+            required: typeof validate
+        }
     }
     input: {
         value: string,
-        initialValue: ''
+        initialValue: '',
+        validation: {
+            required: typeof validate
+        }
     },
     checkbox: {
         value: boolean,
-        initialValue: false
+        initialValue: false,
+        validation: undefined
     }
 }
 
@@ -32,11 +39,11 @@ interface Validation {
     }
 }
 
-type State = FormState<Fields, Validation>;
+type State = FormState<Fields>;
 
-type SelectField = FormField<Fields, Validation, 'select'>;
-type InputField = FormField<Fields, Validation, 'input'>;
-type CheckboxField = FormField<Fields, Validation, 'checkbox'>;
+type SelectField = FormField<Fields, 'select'>;
+type InputField = FormField<Fields, 'input'>;
+type CheckboxField = FormField<Fields, 'checkbox'>;
 
 interface AppProps {
     select: {
@@ -51,9 +58,7 @@ interface AppProps {
     setSelectValue: SelectField['setValue'],
     setInputValue: InputField['setValue'],
     setCheckboxValue: CheckboxField['setValue'],
-    validateInput: InputField['validate'],
-    validateSelect: SelectField['validate'],
-    validateAll: () => void
+    validateForm: () => void
 }
 
 const options: Option<Value>[] = [
@@ -65,7 +70,7 @@ function validate(value: string): boolean {
     return value !== '';
 }
 
-export const form = createForm<Fields, Validation>({
+export const form = createForm<Fields>({
     formName: 'test',
     fields: {
         select: {
@@ -87,7 +92,7 @@ export const form = createForm<Fields, Validation>({
     }
 });
 
-const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setInputValue, setCheckboxValue, validateInput, validateSelect, validateAll}: AppProps) => (
+const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setInputValue, setCheckboxValue, validateForm}: AppProps) => (
     <div>
         <Select
             id="select"
@@ -95,7 +100,6 @@ const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setIn
             value={select.value}
             error={select.error}
             onValueChange={setSelectValue}
-            onClose={validateSelect}
             notSelectedText='not selected'
             options={options} />
         <Input
@@ -103,14 +107,13 @@ const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setIn
             label="Input"
             value={input.value}
             error={input.error}
-            onValueChange={setInputValue}
-            onBlur={validateInput} />
+            onValueChange={setInputValue} />
         <CheckboxWithLabel
             label="Checkbox"
             checked={checkbox}
             onToggle={setCheckboxValue}
         />
-        <Button color='primary' onClick={validateAll}>
+        <Button color='primary' onClick={validateForm}>
             submit
         </Button>
     </div>
@@ -119,21 +122,19 @@ const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setIn
 export default connect(
     (state: State) => ({
         select: {
-            value: form.selectors.value.select(state),
-            error: form.selectors.error.select(state) 
+            value: form.selectors.field.select.value(state),
+            error: form.selectors.field.select.error(state) 
         },
         input: {
-            value: form.selectors.value.input(state),
-            error: form.selectors.error.input(state) 
+            value: form.selectors.field.input.value(state),
+            error: form.selectors.field.input.error(state) 
         },
-        checkbox: form.selectors.value.checkbox(state)
+        checkbox: form.selectors.field.checkbox.value(state)
     }),
     {
         setSelectValue: form.actions.setValue.select,
         setInputValue: form.actions.setValue.input,
         setCheckboxValue: form.actions.setValue.checkbox,
-        validateInput: form.actions.validate.input,
-        validateSelect: form.actions.validate.select,
-        validateAll: form.actions.validateAll
+        validateForm: form.actions.validateForm
     }
 )(App);

@@ -1,196 +1,189 @@
 import {Reducer} from 'redux';
 import {
     SET_FORM_FIELD_VALUE,
-    VALIDATE_FORM_FIELD_VALUE,
+    VALIDATE_FORM,
     Form as TypesForm,
-    SetFormFieldValueAction,
-    ValidateFormFieldValue,
-    ValidateFormFieldsValues,
-    FormAction,
     Value,
-    VALIDATE_FORM_FIELDS_VALUES
+    SetFormFieldValueAction,
+    ValidateForm,
+    FormAction
 } from './types';
 
 import {
     setFormFieldValue,
-    validateFormFieldValue,
-    validateFormFieldsValues
+    validateForm
 } from './actions';
 
 export interface FormConfig<
     Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
         }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: Fields[K]['value'] | Fields[K]['initialValue']) => boolean
-        } : undefined
-    }>
+    }
 > extends TypesForm {
     fields: {
-        [K in keyof Fields]: {
-            initialValue: Fields[K]['initialValue'],
-            validation: Validation[K] 
+        [Field in keyof Fields]: {
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] 
         }
     }
 }
 
-export interface FormState<
+export type FormState<
     Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
+        }
+    }
+> = {
+    [Field in keyof Fields]: {
+        value: Fields[Field]['value'] | Fields[Field]['initialValue'],
+        error?: Fields[Field]['validation'] extends {}
+            ? keyof Fields[Field]['validation'] | undefined
+            : undefined
+    }
+};
+
+export type FormField<
+    Fields extends {
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
         }
     },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: Fields[K]['value'] | Fields[K]['initialValue']) => boolean
-        } : undefined
-    }>
-> {
-    value: {
-        [K in keyof Fields]: Fields[K]['value'] | Fields[K]['initialValue']
-    },
-    error: {
-        [K in keyof Validation]: keyof Validation[K] | undefined
-    }
+    Field extends keyof Fields
+> = Fields[Field]['validation'] extends {} ? {
+    value: FormState<Fields>[Field]['value'],
+    error: keyof Fields[Field]['validation'] | undefined,
+    setValue: (value: FormField<Fields, Field>['value']) => void,
+    validate: () => void
+} : {
+    value: FormState<Fields>[Field]['value'],
+    error?: undefined,
+    setValue: (value: FormField<Fields, Field>['value']) => void
 };
 
 export interface Form<
     Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
         }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: FormState<Fields, Validation>['value'][K]) => boolean
-        } : undefined
-    }>
+    }
 > {
-    reducer: Reducer<FormState<Fields, Validation>, FormAction>,
+    reducer: Reducer<FormState<Fields>, FormAction>,
     selectors: {
-        value: {
-            [K in keyof Fields]: (state: FormState<Fields, Validation>) => FormState<Fields, Validation>['value'][K]
+        field: {
+            [Field in keyof Fields]: Fields[Field]['validation'] extends {} ? {
+                value: (state: FormState<Fields>) => FormField<Fields, Field>['value'],
+                error: (state: FormState<Fields>) => FormField<Fields, Field>['error']
+            } : {
+                value: (state: FormState<Fields>) => FormField<Fields, Field>['value']
+            }
         },
-        error: {
-            [K in keyof Validation]: (state: FormState<Fields, Validation>) => keyof Validation[K] | undefined
-        },
-        isValid: (state: FormState<Fields, Validation>) => boolean
+        isValid: (state: FormState<Fields>) => boolean
     },
     actions: {
         setValue: {
-            [K in keyof Fields]: (value: FormState<Fields, Validation>['value'][K]) => SetFormFieldValueAction
+            [Field in keyof Fields]: (value: FormField<Fields, Field>['value']) => SetFormFieldValueAction<FormField<Fields, Field>['value']>
         },
-        validate: {
-            [K in keyof Validation]: () => ValidateFormFieldValue
-        }
-        validateAll: () => ValidateFormFieldsValues
+        validateForm: () => ValidateForm
     }
 }
 
-export type FormField<
-    Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
-        }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: FormState<Fields, Validation>['value'][K]) => boolean
-        } : undefined
-    }>,
-    Field extends keyof Fields
-> = Validation[Field] extends {} ? {
-    value: FormState<Fields, Validation>['value'][Field],
-    error: keyof Validation[Field] | undefined,
-    setValue: (value: FormState<Fields, Validation>['value'][Field]) => void,
-    validate: () => void
-} : {
-    value: FormState<Fields, Validation>['value'][Field],
-    setValue: (value: FormState<Fields, Validation>['value'][Field]) => void
-};
-
 export default function createForm<
     Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
         }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: Fields[K]['value'] | Fields[K]['initialValue']) => boolean
-        } : undefined
-    }>
->(formConfig: FormConfig<Fields, Validation>): Form<Fields, Validation> {
+    }
+>(formConfig: FormConfig<Fields>): Form<Fields> {
     const {formName, fields} = formConfig;
-    let value: Partial<Form<Fields, Validation>['selectors']['value']> = {};
-    let error: Partial<Form<Fields, Validation>['selectors']['error']> = {};
-    let setValue: Partial<Form<Fields, Validation>['actions']['setValue']> = {};
-    let validate: Partial<Form<Fields, Validation>['actions']['validate']> = {};
+    let selectorsField: Partial<Form<Fields>['selectors']['field']> = {};
+    let setValue: Partial<Form<Fields>['actions']['setValue']> = {};
     for(const field in fields) {
-        value[field] = state => state.value[field];
-        if(fields[field].validation) {
-            error[field] = state => state.error[field];
-            validate[field] = () => validateFormFieldValue(formName, field);
-        }
-        setValue[field] = newValue => setFormFieldValue(formName, field, newValue as Value);
+        selectorsField[field] = (fields[field].validation === undefined
+            ? { value: state => state[field].value }
+            : {
+                value: state => state[field].value,
+                error: state => state[field].error
+              }
+        ) as Form<Fields>['selectors']['field'][typeof field];
+        setValue[field] = newValue => setFormFieldValue(formName, field, newValue);
     }
     return {
         reducer: createReducer(formConfig),
         selectors: {
-            value,
-            error,
-            isValid: state => hasNoErrors(state.error)
+            field: selectorsField,
+            isValid: state => hasNoErrors(state)
         },
         actions: {
             setValue,
-            validate,
-            validateAll: () => validateFormFieldsValues(formName)
+            validateForm: () => validateForm(formName)
         }
-    } as Form<Fields, Validation>
+    } as Form<Fields>
 };
 
 function createReducer<
     Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
         }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: Fields[K]['value'] | Fields[K]['initialValue']) => boolean
-        } : undefined
-    }>
->(formConfig: FormConfig<Fields, Validation>): Reducer<FormState<Fields, Validation>, FormAction> {
+    }
+>(formConfig: FormConfig<Fields>): Reducer<FormState<Fields>, FormAction> {
     const initalState = createInitialState(formConfig);
     return (state = initalState, action) => {
         switch(action.type) {
             case SET_FORM_FIELD_VALUE:
-                return handleSetFormFieldValue<Fields, Validation>(
-                    formConfig.formName,
-                    state,
-                    action
-                );
-            case VALIDATE_FORM_FIELD_VALUE:
-                return handleValidateFormFieldValue<Fields, Validation>(
-                    formConfig,
-                    state,
-                    action
-                );
-            case VALIDATE_FORM_FIELDS_VALUES:
-                return handleValidateFormFieldsValues<Fields, Validation>(
-                    formConfig,
-                    state,
-                    action
-                );
+                return handleSetFormFieldValue<Fields>(formConfig, state, action);
+            case VALIDATE_FORM:
+                return handleValidateForm<Fields>(formConfig, state, action);
             default:
                 return state;
         }
@@ -199,162 +192,155 @@ function createReducer<
 
 function createInitialState<
     Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
         }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: Fields[K]['value'] | Fields[K]['initialValue']) => boolean
-        } : undefined
-    }>
->(formConfig: FormConfig<Fields, Validation>): FormState<Fields, Validation> {
-    let value: Partial<FormState<Fields, Validation>['value']> = {};
+    }
+>(formConfig: FormConfig<Fields>): FormState<Fields> {
+    let state: Partial<FormState<Fields>> = {};
     for(const field in formConfig.fields) {
         const {initialValue} = formConfig.fields[field];
-        value[field] = initialValue;
+        state[field] = { value: initialValue }
     }
-    return {
-        value,
-        error: {}
-    } as FormState<Fields, Validation>;
+    return state as FormState<Fields>;
 }
 
 function handleSetFormFieldValue<
     Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
         }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: Fields[K]['value'] | Fields[K]['initialValue']) => boolean
-        } : undefined
-    }>
+    }
 >(
-    handleFormName: string,
-    state: FormState<Fields, Validation>,
+    formConfig: FormConfig<Fields>,
+    state: FormState<Fields>,
     action: SetFormFieldValueAction
-): FormState<Fields, Validation> {
-    const {value: fieldValue} = state;
-    const {formName, formField, value} = action;
-    if(formName !== handleFormName) {
+): FormState<Fields> {
+    const {formName, value} = action;
+    const formField = action.formField as keyof Fields
+    const { error } = state[formField];
+    if(formName !== formConfig.formName) {
         return state;
     } else {
         return {
             ...state,
-            value: {
-                ...fieldValue,
-                [formField as keyof Fields]: value
-            }
-        };
-    }
-}
-
-type AccessValidation<Validation, Value> = {
-    [K in keyof Validation]: (value: Value) => boolean
-}
-
-function handleValidateFormFieldValue<
-    Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
-        }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: Fields[K]['value'] | Fields[K]['initialValue']) => boolean
-        } : undefined
-    }>
->(
-    formConfig: FormConfig<Fields, Validation>,
-    state: FormState<Fields, Validation>,
-    action: ValidateFormFieldValue
-): FormState<Fields, Validation> {
-    const {formName} = action;
-    const formField = action.formField as keyof Fields;
-    const {formName: handleFormName, fields} = formConfig;
-    if(formName !== handleFormName) {
-        return state;
-    } else {
-        const {error: stateError} = state;
-        const {validation} = fields[formField];
-        const value = state.value[formField];
-        const fieldError = validateField(
-            validation as AccessValidation<typeof validation, typeof value>, 
-            value
-        );
-        return stateError[formField as keyof Validation] === fieldError ? state : {
-            ...state,
-            error: removeKeysWithUndefinedValues({
-                ...stateError,
-                [formField as keyof Validation]: fieldError
-            })
-        };
-    }
-}
-
-function handleValidateFormFieldsValues<
-    Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
-        }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: Fields[K]['value'] | Fields[K]['initialValue']) => boolean
-        } : undefined
-    }>
->(
-    formConfig: FormConfig<Fields, Validation>,
-    state: FormState<Fields, Validation>,
-    action: ValidateFormFieldsValues
-): FormState<Fields, Validation> {
-    const {formName} = action;
-    const {formName: handleFormName, fields} = formConfig;
-    if(formName !== handleFormName) {
-        return state;
-    } else {
-        let error: Partial<FormState<Fields, Validation>['error']> = {};
-        let change: boolean = false;
-        for(const formField in fields) {
-            const {validation} = fields[formField];
-            const value = state.value[formField];
-            const {error: stateError} = state;
-            if(validation) {
-                const fieldError = validateField(
-                    validation as AccessValidation<typeof validation, typeof value>, 
-                    value
-                );
-                error[formField] = fieldError;
-                if(fieldError !== stateError[formField]) {
-                    change = true;
-                }
-            }
-        }
-        return change ? {
-            ...state,
-            error: removeKeysWithUndefinedValues(
-                error as FormState<Fields, Validation>['error']
+            [formField]: field<Fields>(
+                formField,
+                { value,  error },
+                formConfig.fields[formField].validation
             )
-        } : state;
+        };
     }
+}
+
+function handleValidateForm<
+    Fields extends {
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
+        }
+    }
+>(
+    formConfig: FormConfig<Fields>,
+    state: FormState<Fields>,
+    action: ValidateForm
+): FormState<Fields> {
+    const { formName } = action;
+    const {formName: handleFormName, fields} = formConfig;
+    if(formName !== handleFormName) {
+        return state;
+    } else {
+        let tempState: Partial<FormState<Fields>> = {};
+        let change: boolean = false;
+        for(const formField in state) {
+            const {validation} = fields[formField];
+            tempState[formField] = field<Fields>(
+                formField,
+                state[formField] as {
+                    value: FormField<Fields, typeof formField>['value'],
+                    error?: any
+                },
+                validation
+            ) as FormState<Fields>[typeof formField];
+            if(tempState[formField]!.error !== state[formField].error) {
+                change = true;
+            }
+        }
+        return change ? tempState as FormState<Fields> : state;
+    }
+}
+
+type ValidationForField<Validation, Value> = {
+    [ValidationError in keyof Validation]: (value: Value) => boolean
+}
+
+function field<
+    Fields extends {
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
+        }
+    }
+>(
+    formField: keyof Fields,
+    field: FormState<Fields>[typeof formField],
+    validation: Fields[typeof formField]['validation']
+): FormState<Fields>[typeof formField] {
+    const { value } = field;
+    const error = validation ? validateField(
+        validation as ValidationForField<typeof validation, typeof value>
+        , value
+    ) : undefined;
+    return (error !== field.error
+        ? error
+            ? {
+                value,
+                error
+            } : { value }
+        : field
+    ) as FormState<Fields>[typeof formField];
 }
 
 function validateField<
     Validation extends {
-        [K in keyof Validation]: (value: Value) => boolean
+        [ValidationError in keyof Validation]: (value: Value) => boolean
     },
     Value
 >(validation: Validation, value: Value): keyof Validation | undefined {
     let fieldError: keyof Validation | undefined = undefined;
-    for(const error in validation) {
-        if(!validation[error](value)) {
-            fieldError = error;
+    for(const validationError in validation) {
+        if(!validation[validationError](value)) {
+            fieldError = validationError;
             break;
         }
     }
@@ -363,30 +349,23 @@ function validateField<
 
 function hasNoErrors<
     Fields extends {
-        [K in keyof Fields]: {
-            value: Fields[K]['value'],
-            initialValue: Fields[K]['initialValue']
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue'],
+            validation: Fields[Field]['validation'] extends {} ? {
+                [ValidationError in keyof Fields[Field]['validation']]:
+                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+            } : undefined
+        } & {
+            value: Value,
+            initialValue: Value
         }
-    },
-    Validation extends Partial<{
-        [K in keyof Fields]: Validation[K] extends {} ? {
-            [V in keyof Validation[K]]: (value: Fields[K]['value'] | Fields[K]['initialValue']) => boolean
-        } : undefined
-    }>
->(errors: FormState<Fields, Validation>['error']): boolean {
-    for(const error in errors) {
-        if(errors[error] !== undefined) {
+    }
+>(state: FormState<Fields>): boolean {
+    for(const field in state) {
+        if(state[field].error !== undefined) {
             return false;
         }
     }
     return true;
 }
-
-function removeKeysWithUndefinedValues<Obj extends {
-    [K in keyof Obj]: Obj[K]
-}>(object: Obj): Obj {
-    (Object.keys(object) as (keyof Obj)[]).forEach(
-        key => object[key] === undefined && delete object[key]
-    );
-    return object;
-} 
