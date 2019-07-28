@@ -208,7 +208,7 @@ function createInitialState<
     let state: Partial<FormState<Fields>> = {};
     for(const field in formConfig.fields) {
         const {initialValue} = formConfig.fields[field];
-        state[field] = { value: initialValue }
+        state[field] = { value: initialValue };
     }
     return state as FormState<Fields>;
 }
@@ -242,7 +242,7 @@ function handleSetFormFieldValue<
             ...state,
             [formField]: field<Fields>(
                 formField,
-                { value,  error },
+                fieldObject(value, error),
                 formConfig.fields[formField].validation
             )
         };
@@ -321,13 +321,7 @@ function field<
         validation as ValidationForField<typeof validation, typeof value>
         , value
     ) : undefined;
-    return (error !== field.error
-        ? error
-            ? {
-                value,
-                error
-            } : { value }
-        : field
+    return (error !== field.error ? fieldObject(value, error) : field
     ) as FormState<Fields>[typeof formField];
 }
 
@@ -345,6 +339,16 @@ function validateField<
         }
     }
     return fieldError;
+}
+
+function fieldObject<
+    Value,
+    Error
+>(value: Value, error: Error): {
+    value: Value,
+    error?: Error
+} {
+    return error ? { value, error } : { value };
 }
 
 function hasNoErrors<
