@@ -5,15 +5,11 @@ export const VALIDATE_FORM = 'ivas-tech/orders-app/form/VALIDATE_FORM';
 export interface Form {
     formName: string
 }
-
-export interface FormField extends Form {
-    formField: string
-};
-
 export type Value = string | number | boolean;
 
-export interface SetFormFieldValueAction<V = Value> extends FormField {
+export interface SetFormFieldValueAction<Field = string, V = Value> extends Form {
     type: typeof SET_FORM_FIELD_VALUE,
+    formField: Field,
     value: V
 };
 

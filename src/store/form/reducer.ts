@@ -115,7 +115,7 @@ export interface Form<
     },
     actions: {
         setValue: {
-            [Field in keyof Fields]: (value: FormField<Fields, Field>['value']) => SetFormFieldValueAction<FormField<Fields, Field>['value']>
+            [Field in keyof Fields]: (value: FormField<Fields, Field>['value']) => SetFormFieldValueAction<Field, FormField<Fields, Field>['value']>
         },
         validateForm: () => ValidateForm
     }
@@ -139,13 +139,13 @@ export default function createForm<
     const {formName, fields} = formConfig;
     let selectorsField: Partial<Form<Fields>['selectors']['field']> = {};
     let setValue: Partial<Form<Fields>['actions']['setValue']> = {};
-    for(const field in fields) {
-        selectorsField[field] = (fields[field].validation === undefined
-            ? { value: state => state[field].value }
-            : {
+    const keys = Object.keys(fields) as Array<keyof Fields>;
+    for(const field of keys) {
+        selectorsField[field] = (fields[field].validation
+            ? {
                 value: state => state[field].value,
                 error: state => state[field].error
-              }
+            } : { value: state => state[field].value }
         ) as Form<Fields>['selectors']['field'][typeof field];
         setValue[field] = newValue => setFormFieldValue(formName, field, newValue);
     }
@@ -204,10 +204,11 @@ function createInitialState<
             initialValue: Value
         }
     }
->(formConfig: FormConfig<Fields>): FormState<Fields> {
+>({ fields }: FormConfig<Fields>): FormState<Fields> {
     let state: Partial<FormState<Fields>> = {};
-    for(const field in formConfig.fields) {
-        const {initialValue} = formConfig.fields[field];
+    const keys = Object.keys(fields) as Array<keyof Fields>;
+    for(const field of keys) {
+        const { initialValue } = fields[field];
         state[field] = { value: initialValue };
     }
     return state as FormState<Fields>;
@@ -233,7 +234,7 @@ function handleSetFormFieldValue<
     action: SetFormFieldValueAction
 ): FormState<Fields> {
     const {formName, value} = action;
-    const formField = action.formField as keyof Fields
+    const formField = action.formField as keyof Fields;
     const { error } = state[formField];
     if(formName !== formConfig.formName) {
         return state;
@@ -275,16 +276,14 @@ function handleValidateForm<
     } else {
         let tempState: Partial<FormState<Fields>> = {};
         let change: boolean = false;
-        for(const formField in state) {
+        const keys = Object.keys(fields) as Array<keyof Fields>;
+        for(const formField of keys) {
             const {validation} = fields[formField];
             tempState[formField] = field<Fields>(
                 formField,
-                state[formField] as {
-                    value: FormField<Fields, typeof formField>['value'],
-                    error?: any
-                },
+                state[formField],
                 validation
-            ) as FormState<Fields>[typeof formField];
+            )
             if(tempState[formField]!.error !== state[formField].error) {
                 change = true;
             }
@@ -321,8 +320,9 @@ function field<
         validation as ValidationForField<typeof validation, typeof value>
         , value
     ) : undefined;
-    return (error !== field.error ? fieldObject(value, error) : field
-    ) as FormState<Fields>[typeof formField];
+    return error !== field.error 
+        ? fieldObject(value, error) as FormState<Fields>[typeof formField]
+        : field;
 }
 
 function validateField<
@@ -332,7 +332,8 @@ function validateField<
     Value
 >(validation: Validation, value: Value): keyof Validation | undefined {
     let fieldError: keyof Validation | undefined = undefined;
-    for(const validationError in validation) {
+    const keys = Object.keys(validation) as Array<keyof Validation>;
+    for(const validationError of keys) {
         if(!validation[validationError](value)) {
             fieldError = validationError;
             break;
@@ -366,7 +367,8 @@ function hasNoErrors<
         }
     }
 >(state: FormState<Fields>): boolean {
-    for(const field in state) {
+    const keys = Object.keys(state) as Array<keyof Fields>;
+    for(const field of keys) {
         if(state[field].error !== undefined) {
             return false;
         }

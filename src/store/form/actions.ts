@@ -6,7 +6,9 @@ import {
     ValidateForm
 } from './types';
 
-export function setFormFieldValue<V = Value>(formName: string, formField: string, value: V): SetFormFieldValueAction<V> {
+export function setFormFieldValue
+<Field = string, V = Value>
+(formName: string, formField: Field, value: V): SetFormFieldValueAction<Field, V> {
     return {
         type: SET_FORM_FIELD_VALUE,
         formName,
