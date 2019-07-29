@@ -17,6 +17,18 @@ import {
 
 import { createSelector } from 'reselect';
 
+export type FieldValidation<Value> = (value: Value) => boolean;
+
+export type FormFieldValue<
+    Fields extends {
+        [Field in keyof Fields]: {
+            value: Fields[Field]['value'],
+            initialValue: Fields[Field]['initialValue']
+        }
+    },
+    Field extends keyof Fields
+> = Fields[Field]['value'] | Fields[Field]['initialValue'];
+
 export interface FormConfig<
     Fields extends {
         [Field in keyof Fields]: {
@@ -24,7 +36,7 @@ export interface FormConfig<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -36,7 +48,7 @@ export interface FormConfig<
         [Field in keyof Fields]: {
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'],
-            condition?: keyof Fields
+            condition?: Exclude<keyof Fields, Field>
         }
     }
 }
@@ -48,7 +60,7 @@ export type FormState<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -57,7 +69,7 @@ export type FormState<
     }
 > = {
     [Field in keyof Fields]: {
-        value: Fields[Field]['value'] | Fields[Field]['initialValue'],
+        value: FormFieldValue<Fields, Field>,
         error?: Fields[Field]['validation'] extends {}
             ? keyof Fields[Field]['validation'] | undefined
             : undefined
@@ -71,7 +83,7 @@ export type FormField<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -80,12 +92,12 @@ export type FormField<
     },
     Field extends keyof Fields
 > = Fields[Field]['validation'] extends {} ? {
-    value: FormState<Fields>[Field]['value'],
+    value: FormFieldValue<Fields, Field>,
     error: keyof Fields[Field]['validation'] | undefined,
     setValue: (value: FormField<Fields, Field>['value']) => void,
     validate: () => void
 } : {
-    value: FormState<Fields>[Field]['value'],
+    value: FormFieldValue<Fields, Field>,
     error?: undefined,
     setValue: (value: FormField<Fields, Field>['value']) => void
 };
@@ -107,7 +119,7 @@ export interface Form<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -153,7 +165,7 @@ export default function createForm<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -207,7 +219,7 @@ function createReducer<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -241,7 +253,7 @@ function createInitialState<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -265,7 +277,7 @@ function createConditionMap<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -294,7 +306,7 @@ function handleSetFormFieldValue<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -336,7 +348,7 @@ function resetDependingConditionalFields<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -368,7 +380,7 @@ function handleValidateForm<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -406,7 +418,7 @@ function handleValidateForm<
 }
 
 type ValidationForField<Validation, Value> = {
-    [ValidationError in keyof Validation]: (value: Value) => boolean
+    [ValidationError in keyof Validation]: FieldValidation<Value>
 }
 
 function field<
@@ -416,7 +428,7 @@ function field<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -440,7 +452,7 @@ function field<
 
 function validateField<
     Validation extends {
-        [ValidationError in keyof Validation]: (value: Value) => boolean
+        [ValidationError in keyof Validation]: FieldValidation<Value>
     },
     Value
 >(validation: Validation, value: Value): keyof Validation | undefined {
@@ -472,7 +484,7 @@ function hasNoErrors<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -506,7 +518,7 @@ function extractFormFieldsValues<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
@@ -540,7 +552,7 @@ function isActiveFormFieldBasedOnCondition<
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'] extends {} ? {
                 [ValidationError in keyof Fields[Field]['validation']]:
-                    (value: Fields[Field]['value'] | Fields[Field]['initialValue']) => boolean
+                    FieldValidation<FormFieldValue<Fields, Field>>
             } : undefined
         } & {
             value: Value,
