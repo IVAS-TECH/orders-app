@@ -183,8 +183,8 @@ export default function createForm<
             form: {
                 isValid: isValid,
                 values: createSelector(
-                    isValid,
                     id,
+                    isValid,
                     extractFormFieldsValues(formConfig)
                 )
             }
@@ -515,10 +515,10 @@ function extractFormFieldsValues<
     }
 >({ fields }: FormConfig<Fields>)
 : (
-    isValid: boolean,
-    state: FormState<Fields>
+    state: FormState<Fields>,
+    isValid: boolean
 ) => FormFieldsValues<Fields> {
-    return (isValid, state) => {
+    return (state, isValid) => {
         let values: FormFieldsValues<Fields> = {};
         if(isValid) {
             const keys = Object.keys(fields) as Array<keyof Fields>;
