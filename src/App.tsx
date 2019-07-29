@@ -3,7 +3,7 @@ import Select, {Option} from './components/Select';
 import Input from './components/Input';
 import CheckboxWithLabel from './components/CheckboxWithLabel';
 import Button from '@material-ui/core/Button';
-import createForm, { FormField, FormState } from './store/form/reducer';
+import createForm, { FormField, FormState, FormFieldsValues } from './store/form/reducer';
 import {connect} from 'react-redux';
 
 type Value = 'ivo' | 'bobi';
@@ -30,15 +30,6 @@ interface Fields {
     }
 }
 
-interface Validation {
-    select: {
-        required: typeof validate
-    },
-    input: {
-        required: typeof validate
-    }
-}
-
 type State = FormState<Fields>;
 
 type SelectField = FormField<Fields, 'select'>;
@@ -58,7 +49,9 @@ interface AppProps {
     setSelectValue: SelectField['setValue'],
     setInputValue: InputField['setValue'],
     setCheckboxValue: CheckboxField['setValue'],
-    validateForm: () => void
+    validateForm: () => void,
+    isValid: boolean,
+    values: FormFieldsValues<Fields>
 }
 
 const options: Option<Value>[] = [
@@ -77,13 +70,15 @@ export const form = createForm<Fields>({
             initialValue: '',
             validation: {
                 required: validate
-            }
+            },
+            condition: 'checkbox'
         },
         input: {
             initialValue: '',
             validation: {
                 required: validate
-            }
+            },
+            condition: 'checkbox'
         },
         checkbox: {
             initialValue: false,
@@ -92,9 +87,9 @@ export const form = createForm<Fields>({
     }
 });
 
-const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setInputValue, setCheckboxValue, validateForm}: AppProps) => (
+const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setInputValue, setCheckboxValue, validateForm, isValid, values}: AppProps) => (
     <div>
-        <Select
+        {checkbox && <Select
             id="select"
             label='Label'
             value={select.value}
@@ -102,18 +97,26 @@ const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setIn
             onValueChange={setSelectValue}
             notSelectedText='not selected'
             options={options} />
+        }
         <Input
             id="input"
             label="Input"
             value={input.value}
             error={input.error}
+            disabled={!checkbox}
             onValueChange={setInputValue} />
         <CheckboxWithLabel
             label="Checkbox"
             checked={checkbox}
             onToggle={setCheckboxValue}
         />
-        <Button color='primary' onClick={validateForm}>
+        <Button color='primary' onClick={() => {
+            if(isValid) {
+                console.log(values)
+            } else {
+                validateForm()
+            }
+        }}>
             submit
         </Button>
     </div>
@@ -129,7 +132,9 @@ export default connect(
             value: form.selectors.field.input.value(state),
             error: form.selectors.field.input.error(state) 
         },
-        checkbox: form.selectors.field.checkbox.value(state)
+        checkbox: form.selectors.field.checkbox.value(state),
+        isValid: form.selectors.form.isValid(state),
+        values: form.selectors.form.values(state)
     }),
     {
         setSelectValue: form.actions.setValue.select,
