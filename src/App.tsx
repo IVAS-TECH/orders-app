@@ -50,7 +50,7 @@ interface AppProps {
     setInputValue: InputField['setValue'],
     setCheckboxValue: CheckboxField['setValue'],
     validateForm: () => void,
-    isValid: boolean,
+    isValid: () => boolean,
     values: FormFieldsValues<Fields>
 }
 
@@ -111,7 +111,7 @@ const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setIn
             onToggle={setCheckboxValue}
         />
         <Button color='primary' onClick={() => {
-            if(isValid) {
+            if(isValid()) {
                 console.log(values)
             } else {
                 validateForm()
@@ -133,7 +133,7 @@ export default connect(
             error: form.selectors.field.input.error(state) 
         },
         checkbox: form.selectors.field.checkbox.value(state),
-        isValid: form.selectors.form.isValid(state),
+        isValid: () => form.selectors.form.isValid(state),
         values: form.selectors.form.values(state)
     }),
     {
