@@ -36,6 +36,8 @@ type SelectField = FormField<Fields, 'select'>;
 type InputField = FormField<Fields, 'input'>;
 type CheckboxField = FormField<Fields, 'checkbox'>;
 
+type Lazy<T> = () => T;
+
 interface AppProps {
     select: {
         value: SelectField['value'],
@@ -50,8 +52,8 @@ interface AppProps {
     setInputValue: InputField['setValue'],
     setCheckboxValue: CheckboxField['setValue'],
     validateForm: () => void,
-    isValid: () => boolean,
-    values: FormFieldsValues<Fields>
+    isValid: Lazy<boolean>,
+    values: Lazy<FormFieldsValues<Fields>>
 }
 
 const options: Option<Value>[] = [
@@ -112,7 +114,7 @@ const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setIn
         />
         <Button color='primary' onClick={() => {
             if(isValid()) {
-                console.log(values)
+                console.log(values())
             } else {
                 validateForm()
             }
@@ -134,7 +136,7 @@ export default connect(
         },
         checkbox: form.selectors.field.checkbox.value(state),
         isValid: () => form.selectors.form.isValid(state),
-        values: form.selectors.form.values(state)
+        values: () => form.selectors.form.values(state)
     }),
     {
         setSelectValue: form.actions.setValue.select,
