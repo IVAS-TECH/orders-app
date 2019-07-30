@@ -17,8 +17,6 @@ import {
 
 import { createSelector } from 'reselect';
 
-export type FieldValidation<Value> = (value: Value) => boolean;
-
 export type FormFieldValue<
     Fields extends {
         [Field in keyof Fields]: {
@@ -29,21 +27,42 @@ export type FormFieldValue<
     Field extends keyof Fields
 > = Fields[Field]['value'] | Fields[Field]['initialValue'];
 
-export interface FormConfig<
+type Union<A, B> = A | B;
+
+type Constraint<
     Fields extends {
         [Field in keyof Fields]: {
             value: Fields[Field]['value'],
             initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
+            validation: Fields[Field]['validation']
         }
     }
-> extends TypesForm {
+> = {
+    [Field in keyof Fields]: {
+        value: Fields[Field]['value'],
+        initialValue: Fields[Field]['initialValue'],
+        validation: Fields[Field]['validation'] extends {} ? {
+            [ValidationError in keyof Fields[Field]['validation']]:
+                (value: FormFieldValue<Fields, Field>) => Union<boolean, (state: {
+                    [Key in keyof Fields]: {
+                        value: FormFieldValue<Fields, Key>,
+                        error?: Fields[Key]['validation'] extends {}
+                            ? keyof Fields[Key]['validation'] | undefined
+                            : undefined
+                    }
+                }) => boolean>
+            } : undefined
+    } & {
+        value: Value,
+        initialValue: Value
+    }
+};
+
+export type FormFieldValueValidation<V extends Value> = (value: V) => boolean;
+
+export type FormFieldStateValidation<V extends Value, State> = (value: V) => (state: State) => boolean;
+
+export interface FormConfig<Fields extends Constraint<Fields>> extends TypesForm {
     fields: {
         [Field in keyof Fields]: {
             initialValue: Fields[Field]['initialValue'],
@@ -53,21 +72,7 @@ export interface FormConfig<
     }
 }
 
-export type FormState<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
-> = {
+export type FormState<Fields extends Constraint<Fields>>= {
     [Field in keyof Fields]: {
         value: FormFieldValue<Fields, Field>,
         error?: Fields[Field]['validation'] extends {}
@@ -77,19 +82,7 @@ export type FormState<
 };
 
 export type FormField<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    },
+    Fields extends Constraint<Fields>,
     Field extends keyof Fields
 > = Fields[Field]['validation'] extends {} ? {
     value: FormFieldValue<Fields, Field>,
@@ -112,21 +105,7 @@ export type FormFieldsValues<
     [Field in keyof Fields]?: Fields[Field]['value']
 };
 
-export interface Form<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
-> {
+export interface Form<Fields extends Constraint<Fields>> {
     reducer: Reducer<FormState<Fields>, FormAction>,
     selectors: {
         field: {
@@ -158,21 +137,7 @@ type CondtionMap<
     [Field in keyof Fields]?: Array<keyof Fields>
 }
 
-export default function createForm<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->(formConfig: FormConfig<Fields>): Form<Fields> {
+export default function createForm<Fields extends Constraint<Fields>>(formConfig: FormConfig<Fields>): Form<Fields> {
     const {formName, fields} = formConfig;
     let selectorsField: Partial<Form<Fields>['selectors']['field']> = {};
     let setValue: Partial<Form<Fields>['actions']['setValue']> = {};
@@ -212,21 +177,7 @@ function id<A>(a: A): A {
     return a;
 }
 
-function createReducer<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->(formConfig: FormConfig<Fields>): Reducer<FormState<Fields>, FormAction> {
+function createReducer<Fields extends Constraint<Fields>>(formConfig: FormConfig<Fields>): Reducer<FormState<Fields>, FormAction> {
     const initalState = createInitialState(formConfig);
     const conditionMap = createConditionMap(formConfig);
     return (state = initalState, action) => {
@@ -246,21 +197,9 @@ function createReducer<
     };
 };
 
-function createInitialState<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->({ fields }: FormConfig<Fields>): FormState<Fields> {
+function createInitialState<Fields extends Constraint<Fields>>(
+    { fields }: FormConfig<Fields>
+): FormState<Fields> {
     let state: Partial<FormState<Fields>> = {};
     const keys = Object.keys(fields) as Array<keyof Fields>;
     for(const field of keys) {
@@ -270,21 +209,9 @@ function createInitialState<
     return state as FormState<Fields>;
 }
 
-function createConditionMap<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->({ fields }: FormConfig<Fields>): CondtionMap<Fields> {
+function createConditionMap<Fields extends Constraint<Fields>>(
+    { fields }: FormConfig<Fields>
+): CondtionMap<Fields> {
     let conditionMap: CondtionMap<Fields> = {};
     const keys = Object.keys(fields) as Array<keyof Fields>;
     for(const formField of keys) {
@@ -299,21 +226,7 @@ function createConditionMap<
     return conditionMap;
 }
 
-function handleSetFormFieldValue<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->(
+function handleSetFormFieldValue<Fields extends Constraint<Fields>>(
     formConfig: FormConfig<Fields>,
     conditionMap: CondtionMap<Fields>,
     state: FormState<Fields>,
@@ -321,7 +234,6 @@ function handleSetFormFieldValue<
 ): FormState<Fields> {
     const {formName, value} = action;
     const formField = action.formField as keyof Fields;
-    const { error } = state[formField];
     if(formName !== formConfig.formName || state[formField].value === value) {
         return state;
     } else {
@@ -330,33 +242,15 @@ function handleSetFormFieldValue<
             conditionMap,
             {
                 ...state,
-                [formField]: field(
-                    formField,
-                    fieldObject(value, error),
-                    formConfig.fields[formField].validation
-                )
+                [formField]: formFieldObject(formConfig, state, formField, value)
             },
             formField
         );
     }
 }
 
-function resetDependingConditionalFields<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->(
-    formConfig: FormConfig<Fields>,
+function resetDependingConditionalFields<Fields extends Constraint<Fields>>(
+    { fields }: FormConfig<Fields>,
     conditionMap: CondtionMap<Fields>,
     newState: FormState<Fields>,
     formField: keyof Fields
@@ -364,7 +258,7 @@ function resetDependingConditionalFields<
     if(conditionMap[formField] && !newState[formField].value) {
         for(const conditionalFormField of conditionMap[formField]!) {
             const { value, error } = newState[conditionalFormField];
-            const { initialValue } = formConfig.fields[conditionalFormField];
+            const { initialValue } = fields[conditionalFormField];
             if(value !== initialValue || error) {
                 newState[conditionalFormField] = { value: initialValue };
             }
@@ -373,21 +267,7 @@ function resetDependingConditionalFields<
     return newState;
 }
 
-function handleValidateForm<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->(
+function handleValidateForm<Fields extends Constraint<Fields>>(
     formConfig: FormConfig<Fields>,
     state: FormState<Fields>,
     action: ValidateForm
@@ -401,12 +281,13 @@ function handleValidateForm<
         let change: boolean = false;
         const keys = Object.keys(fields) as Array<keyof Fields>;
         for(const formField of keys) {
-            const { validation, condition } = fields[formField];
+            const { condition } = fields[formField];
             if(isActiveFormFieldBasedOnCondition(condition, state)) {
-                tempState[formField] = field(
+                tempState[formField] = formFieldObject(
+                    formConfig,
+                    state,
                     formField,
-                    state[formField],
-                    validation
+                    state[formField].value
                 )
                 if(tempState[formField]!.error !== state[formField].error) {
                     change = true;
@@ -417,91 +298,20 @@ function handleValidateForm<
     }
 }
 
-type ValidationForField<Validation, Value> = {
-    [ValidationError in keyof Validation]: FieldValidation<Value>
-}
-
-function field<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->(
-    formField: keyof Fields,
-    field: FormState<Fields>[typeof formField],
-    validation: Fields[typeof formField]['validation']
-): FormState<Fields>[typeof formField] {
-    const { value } = field;
-    const error = validation ? validateField(
-        validation as ValidationForField<typeof validation, typeof value>
-        , value
-    ) : undefined;
-    return error !== field.error 
-        ? fieldObject(value, error) as FormState<Fields>[typeof formField]
-        : field;
-}
-
-function validateField<
-    Validation extends {
-        [ValidationError in keyof Validation]: FieldValidation<Value>
-    },
-    Value
->(validation: Validation, value: Value): keyof Validation | undefined {
-    let fieldError: keyof Validation | undefined = undefined;
-    const keys = Object.keys(validation) as Array<keyof Validation>;
-    for(const validationError of keys) {
-        if(!validation[validationError](value)) {
-            fieldError = validationError;
-            break;
-        }
-    }
-    return fieldError;
-}
-
-function fieldObject<
-    Value,
-    Error
->(value: Value, error: Error): {
-    value: Value,
-    error?: Error
-} {
-    return error ? { value, error } : { value };
-}
-
-function hasNoErrors<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->({ fields }: FormConfig<Fields>): (state: FormState<Fields>) => boolean {
-    return (state) => {
+function hasNoErrors<Fields extends Constraint<Fields>>(
+    formConfig: FormConfig<Fields>
+): (state: FormState<Fields>) => boolean {
+    return state => {
         const keys = Object.keys(state) as Array<keyof Fields>;
         for(const formField of keys) {
-            const { validation, condition } = fields[formField];
+            const { condition } = formConfig.fields[formField];
             if(isActiveFormFieldBasedOnCondition(condition, state)) {
-                const { value } = state[formField];
-                const error = validation ? validateField(
-                    validation as ValidationForField<typeof validation, typeof value>
-                    , value
-                ) : undefined;
+                const { error } = formFieldObject(
+                    formConfig,
+                    state,
+                    formField,
+                    state[formField].value
+                );
                 if(error) {
                     return false;
                 }
@@ -511,22 +321,37 @@ function hasNoErrors<
     }
 }
 
-function extractFormFieldsValues<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
+function formFieldObject<Fields extends Constraint<Fields>>(
+    { fields }: FormConfig<Fields>,
+    state: FormState<Fields>,
+    formField: keyof Fields,
+    value: FormFieldValue<Fields, typeof formField>
+): FormState<Fields>[typeof formField] {
+    const { validation } = fields[formField];
+    let error: FormField<Fields, typeof formField>['error'] = undefined;
+    if(validation) {
+        const keys = Object.keys(validation as object) as Array<keyof typeof validation>;
+        for(const validationError of keys) {
+            const validationFunction = validation[validationError] as (_: typeof value) => Union<boolean, (_: typeof state) => boolean>;
+            const result = validationFunction(value);
+            if(typeof result === 'boolean') {
+                if(!result) {
+                    error = validationError;
+                }
+            } else {
+                const isValid = result(state);
+                if(!isValid) {
+                    error = validationError;
+                }
+            }
         }
     }
->({ fields }: FormConfig<Fields>)
-: (
+    return error ? { value, error } as FormState<Fields>[typeof formField] : { value };
+}
+
+function extractFormFieldsValues<Fields extends Constraint<Fields>>(
+    { fields }: FormConfig<Fields>
+): (
     state: FormState<Fields>,
     isValid: boolean
 ) => FormFieldsValues<Fields> {
@@ -545,20 +370,8 @@ function extractFormFieldsValues<
     }
 }
 
-function isActiveFormFieldBasedOnCondition<
-    Fields extends {
-        [Field in keyof Fields]: {
-            value: Fields[Field]['value'],
-            initialValue: Fields[Field]['initialValue'],
-            validation: Fields[Field]['validation'] extends {} ? {
-                [ValidationError in keyof Fields[Field]['validation']]:
-                    FieldValidation<FormFieldValue<Fields, Field>>
-            } : undefined
-        } & {
-            value: Value,
-            initialValue: Value
-        }
-    }
->(condition: keyof Fields | undefined, state: FormState<Fields>): boolean {
+function isActiveFormFieldBasedOnCondition<Fields extends Constraint<Fields>>(
+    condition: keyof Fields | undefined, state: FormState<Fields>
+): boolean {
     return !condition || (condition && state[condition].value) as boolean;
 }

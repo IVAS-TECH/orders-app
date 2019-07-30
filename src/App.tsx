@@ -20,7 +20,8 @@ interface Fields {
         value: string,
         initialValue: '',
         validation: {
-            required: typeof validate
+            required: typeof validate,
+            match: typeof match
         }
     },
     checkbox: {
@@ -65,6 +66,16 @@ function validate(value: string): boolean {
     return value !== '';
 }
 
+function match(input: string): (values: {
+    select: {
+        value:  Value | ''
+    }
+}) => boolean {
+    return ({ select: { value } }) => {
+        return input === value;
+    }
+}
+
 export const form = createForm<Fields>({
     formName: 'test',
     fields: {
@@ -78,7 +89,8 @@ export const form = createForm<Fields>({
         input: {
             initialValue: '',
             validation: {
-                required: validate
+                required: validate,
+                match
             },
             condition: 'checkbox'
         },

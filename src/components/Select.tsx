@@ -4,12 +4,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl, {ControlProps} from './FormControl';
 import MUISelect from '@material-ui/core/Select';
 
-export interface Option<Value>{
+export interface Option<Value extends string | number>{
     value: Value,
     text: string
 };
 
-export interface SelectProps<Value> extends ControlProps {
+export interface SelectProps<Value extends string | number> extends ControlProps {
     id: string
     value: Value | '',
     onValueChange: (value: Value) => void,
@@ -19,7 +19,7 @@ export interface SelectProps<Value> extends ControlProps {
 
 type ChangeEvent = React.ChangeEvent<{name?: string; value: unknown}>;
 
-function handleOnChangeEvent<Value>(currentValue: Value | '', onValueChange: (_: Value) => void) {
+function handleOnChangeEvent<Value extends string | number>(currentValue: Value | '', onValueChange: (_: Value) => void) {
     return (event: ChangeEvent) => {
         const eventValue = event.target.value as Value | '';
         if(eventValue !== '' && currentValue !== eventValue) {
