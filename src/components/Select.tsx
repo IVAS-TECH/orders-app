@@ -1,7 +1,7 @@
 import React from 'react';
 import FilledInput from '@material-ui/core/FilledInput';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl, {ControlProps} from './FormControl';
+import FormControl, { ControlProps } from './FormControl';
 import MUISelect from '@material-ui/core/Select';
 
 export interface Option<Value extends string | number>{

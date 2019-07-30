@@ -1,5 +1,5 @@
 import React from 'react';
-import FormControl, {ControlProps} from './FormControl';
+import FormControl, { ControlProps } from './FormControl';
 import FilledInput from '@material-ui/core/FilledInput';
 
 export interface InputProps extends ControlProps {

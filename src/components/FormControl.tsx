@@ -11,7 +11,8 @@ export interface ControlProps {
 };
 
 export interface FormControlProps extends ControlProps {
-    labelFor: string
+    labelFor: string,
+    shrinkLabel?: boolean
 }
 
 const FormControl: React.FC<FormControlProps> = ({
@@ -20,6 +21,7 @@ const FormControl: React.FC<FormControlProps> = ({
     required,
     error,
     labelFor,
+    shrinkLabel,
     children
 }) => (
     <MUIFormControl
@@ -28,7 +30,7 @@ const FormControl: React.FC<FormControlProps> = ({
         error={!!error}
         variant="filled"
         fullWidth>
-        <InputLabel htmlFor={labelFor}>
+        <InputLabel htmlFor={labelFor} shrink={shrinkLabel}>
             {label}
         </InputLabel>
         {children}

@@ -1,9 +1,10 @@
 import React from 'react';
 import Select, {Option} from './components/Select';
 import Input from './components/Input';
+import NumberInput from './components/NumberInput';
 import CheckboxWithLabel from './components/CheckboxWithLabel';
 import Button from '@material-ui/core/Button';
-import createForm, { FormField, FormState, FormFieldsValues } from './store/form/reducer';
+import createForm, { FormField, FormState, FormFieldsValues, FormFieldValueValidation } from './store/form/reducer';
 import {connect} from 'react-redux';
 
 type Value = 'ivo' | 'bobi';
@@ -13,14 +14,14 @@ interface Fields {
         value: Value,
         initialValue: '',
         validation: {
-            required: typeof validate
+            required: FormFieldValueValidation<Value | ''>
         }
     }
     input: {
         value: string,
         initialValue: '',
         validation: {
-            required: typeof validate,
+            required: FormFieldValueValidation<string>,
             match: typeof match
         }
     },
@@ -28,6 +29,14 @@ interface Fields {
         value: boolean,
         initialValue: false,
         validation: undefined
+    },
+    number: {
+        value: number | '',
+        initialValue: 1,
+        validation: {
+            required: FormFieldValueValidation<number | ''>,
+            min: FormFieldValueValidation<number | ''>
+        }
     }
 }
 
@@ -36,6 +45,7 @@ type State = FormState<Fields>;
 type SelectField = FormField<Fields, 'select'>;
 type InputField = FormField<Fields, 'input'>;
 type CheckboxField = FormField<Fields, 'checkbox'>;
+type NumberField = FormField<Fields, 'number'>;
 
 type Lazy<T> = () => T;
 
@@ -49,9 +59,14 @@ interface AppProps {
         error: InputField['error']
     }
     checkbox: CheckboxField['value'],
+    number: {
+        value: NumberField['value']
+        error: NumberField['error']
+    },
     setSelectValue: SelectField['setValue'],
     setInputValue: InputField['setValue'],
     setCheckboxValue: CheckboxField['setValue'],
+    setNumberValue: NumberField['setValue'],
     validateForm: () => void,
     isValid: Lazy<boolean>,
     values: Lazy<FormFieldsValues<Fields>>
@@ -62,7 +77,7 @@ const options: Option<Value>[] = [
     {value: 'bobi', text: 'Bobi'}
 ];
 
-function validate(value: string): boolean {
+function requireValue<V>(value: V | ''): boolean {
     return value !== '';
 }
 
@@ -75,20 +90,28 @@ function match(input: string, values: {
     return input === value;
 }
 
+function checkMin(value: number | '') {
+    if(value === '') {
+        return true;
+    } else {
+        return value >= 1;
+    }
+}
+
 export const form = createForm<Fields>({
     formName: 'test',
     fields: {
         select: {
             initialValue: '',
             validation: {
-                required: validate
+                required: requireValue
             },
             condition: 'checkbox'
         },
         input: {
             initialValue: '',
             validation: {
-                required: validate,
+                required: requireValue,
                 match
             },
             validationDependsOn: ['select'],
@@ -97,14 +120,21 @@ export const form = createForm<Fields>({
         checkbox: {
             initialValue: false,
             validation: undefined
+        },
+        number: {
+            initialValue: 1,
+            validation: {
+                required: requireValue,
+                min: checkMin
+            }
         }
     }
 });
 
-const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setInputValue, setCheckboxValue, validateForm, isValid, values}: AppProps) => (
+const App: React.FC<AppProps> = ({select, input, checkbox, number, setSelectValue, setInputValue, setCheckboxValue, setNumberValue, validateForm, isValid, values}: AppProps) => (
     <div>
         {checkbox && <Select
-            id="select"
+            id='select'
             label='Label'
             value={select.value}
             error={select.error}
@@ -113,17 +143,22 @@ const App: React.FC<AppProps> = ({select, input, checkbox, setSelectValue, setIn
             options={options} />
         }
         <Input
-            id="input"
-            label="Input"
+            id='input'
+            label='Input'
             value={input.value}
             error={input.error}
             disabled={!checkbox}
             onValueChange={setInputValue} />
         <CheckboxWithLabel
-            label="Checkbox"
+            label='Checkbox'
             checked={checkbox}
-            onToggle={setCheckboxValue}
-        />
+            onToggle={setCheckboxValue} />
+        <NumberInput
+            id='number'
+            label='Number'
+            value={number.value}
+            error={number.error}
+            onValueChange={setNumberValue} />
         <Button color='primary' onClick={() => {
             if(isValid()) {
                 console.log(values())
@@ -147,6 +182,10 @@ export default connect(
             error: form.selectors.field.input.error(state) 
         },
         checkbox: form.selectors.field.checkbox.value(state),
+        number: {
+            value: form.selectors.field.number.value(state),
+            error: form.selectors.field.number.error(state)
+        },
         isValid: () => form.selectors.form.isValid(state),
         values: () => form.selectors.form.values(state)
     }),
@@ -154,6 +193,7 @@ export default connect(
         setSelectValue: form.actions.setValue.select,
         setInputValue: form.actions.setValue.input,
         setCheckboxValue: form.actions.setValue.checkbox,
+        setNumberValue: form.actions.setValue.number,
         validateForm: form.actions.validateForm
     }
 )(App);
