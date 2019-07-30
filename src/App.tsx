@@ -66,14 +66,13 @@ function validate(value: string): boolean {
     return value !== '';
 }
 
-function match(input: string): (values: {
+function match(input: string, values: {
     select: {
         value:  Value | ''
     }
-}) => boolean {
-    return ({ select: { value } }) => {
-        return input === value;
-    }
+}) : boolean {
+    const { select: { value } } = values;
+    return input === value;
 }
 
 export const form = createForm<Fields>({

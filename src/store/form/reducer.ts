@@ -17,6 +17,8 @@ import {
 
 import { createSelector } from 'reselect';
 
+type Union<A, B> = A | B;
+
 export type FormFieldValue<
     Fields extends {
         [Field in keyof Fields]: {
@@ -25,9 +27,7 @@ export type FormFieldValue<
         }
     },
     Field extends keyof Fields
-> = Fields[Field]['value'] | Fields[Field]['initialValue'];
-
-type Union<A, B> = A | B;
+> = Union<Fields[Field]['value'], Fields[Field]['initialValue']> & Value;
 
 type Constraint<
     Fields extends {
@@ -43,14 +43,17 @@ type Constraint<
         initialValue: Fields[Field]['initialValue'],
         validation: Fields[Field]['validation'] extends {} ? {
             [ValidationError in keyof Fields[Field]['validation']]:
-                (value: FormFieldValue<Fields, Field>) => Union<boolean, (state: {
-                    [Key in keyof Fields]: {
-                        value: FormFieldValue<Fields, Key>,
-                        error?: Fields[Key]['validation'] extends {}
-                            ? keyof Fields[Key]['validation'] | undefined
-                            : undefined
-                    }
-                }) => boolean>
+                Union<
+                    (value: FormFieldValue<Fields, Field>) => boolean,
+                    (value: FormFieldValue<Fields, Field>, state: {
+                        [Key in keyof Fields]: {
+                            value: FormFieldValue<Fields, Key>,
+                            error?: Fields[Key]['validation'] extends {}
+                                ? keyof Fields[Key]['validation'] | undefined
+                                : undefined
+                        }
+                    }) => boolean
+                >
             } : undefined
     } & {
         value: Value,
@@ -60,7 +63,7 @@ type Constraint<
 
 export type FormFieldValueValidation<V extends Value> = (value: V) => boolean;
 
-export type FormFieldStateValidation<V extends Value, State> = (value: V) => (state: State) => boolean;
+export type FormFieldStateValidation<V extends Value, State> = (value: V, state: State) => boolean;
 
 export interface FormConfig<Fields extends Constraint<Fields>> extends TypesForm {
     fields: {
@@ -215,7 +218,9 @@ function createInitialState<Fields extends Constraint<Fields>>(
     const keys = Object.keys(fields) as Array<keyof Fields>;
     for(const field of keys) {
         const { initialValue } = fields[field];
-        state[field] = { value: initialValue };
+        state[field] = {
+            value: initialValue as (typeof initialValue) & Value
+        };
     }
     return state as FormState<Fields>;
 }
@@ -226,7 +231,7 @@ function createConditionMap<Fields extends Constraint<Fields>>(
     let conditionMap: CondtionMap<Fields> = {};
     const keys = Object.keys(fields) as Array<keyof Fields>;
     for(const formField of keys) {
-        const condition = fields[formField].condition as keyof Fields | undefined;
+        const condition = fields[formField].condition;
         if(condition) {
             if(!conditionMap[condition]) {
                 conditionMap[condition] = [];
@@ -243,7 +248,7 @@ function createValidationDependsOnMap<Fields extends Constraint<Fields>>(
     let validationDependsOnMap: ValidationDependsOnMap<Fields> = {};
     const keys = Object.keys(fields) as Array<keyof Fields>;
     for(const formField of keys) {
-        const dependsOn = fields[formField].validationDependsOn as Array<keyof Fields> | undefined;
+        const dependsOn = fields[formField].validationDependsOn;
         if(dependsOn) {
             for(const dependingOnField of dependsOn) {
                 if(!validationDependsOnMap[dependingOnField]) {
@@ -296,7 +301,9 @@ function resetDependingConditionalFields<Fields extends Constraint<Fields>>(
             const { value, error } = newState[conditionalFormField];
             const { initialValue } = fields[conditionalFormField];
             if(value !== initialValue || error) {
-                newState[conditionalFormField] = { value: initialValue };
+                newState[conditionalFormField] = {
+                    value: initialValue as (typeof initialValue) & Value
+                };
             }
         }
     }
@@ -400,17 +407,12 @@ function formFieldObject<Fields extends Constraint<Fields>>(
     if(validation) {
         const keys = Object.keys(validation as object) as Array<keyof typeof validation>;
         for(const validationError of keys) {
-            const validationFunction = validation[validationError] as (_: typeof value) => Union<boolean, (_: typeof state) => boolean>;
-            const result = validationFunction(value);
-            if(typeof result === 'boolean') {
-                if(!result) {
-                    error = validationError;
-                }
-            } else {
-                const isValid = result(state);
-                if(!isValid) {
-                    error = validationError;
-                }
+            const validationFunction = validation[validationError];
+            const isValid = validationFunction.length === 1
+                ? (validationFunction as FormFieldValueValidation<typeof value>)(value)
+                : validationFunction(value, state);
+            if(!isValid) {
+                error = validationError;
             }
         }
     }
@@ -430,7 +432,7 @@ function extractFormFieldsValues<Fields extends Constraint<Fields>>(
             for(const formField of keys) {
                 const { condition } = fields[formField];
                 if(isActiveFormFieldBasedOnCondition(condition, state)) {
-                    values[formField] = state[formField].value as Fields[typeof formField]['value'];
+                    values[formField] = state[formField].value;
                 }
             }
         }
