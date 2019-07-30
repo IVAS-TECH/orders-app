@@ -92,6 +92,7 @@ export const form = createForm<Fields>({
                 required: validate,
                 match
             },
+            validationDependsOn: ['select'],
             condition: 'checkbox'
         },
         checkbox: {

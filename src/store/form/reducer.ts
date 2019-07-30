@@ -67,6 +67,7 @@ export interface FormConfig<Fields extends Constraint<Fields>> extends TypesForm
         [Field in keyof Fields]: {
             initialValue: Fields[Field]['initialValue'],
             validation: Fields[Field]['validation'],
+            validationDependsOn?: Array< Exclude<keyof Fields, Field>>,
             condition?: Exclude<keyof Fields, Field>
         }
     }
@@ -137,6 +138,14 @@ type CondtionMap<
     [Field in keyof Fields]?: Array<keyof Fields>
 }
 
+type ValidationDependsOnMap<
+    Fields extends {
+        [Field in keyof Fields]: Fields[Field]
+    }
+> = {
+    [Field in keyof Fields]?: Array<keyof Fields>
+}
+
 export default function createForm<Fields extends Constraint<Fields>>(formConfig: FormConfig<Fields>): Form<Fields> {
     const {formName, fields} = formConfig;
     let selectorsField: Partial<Form<Fields>['selectors']['field']> = {};
@@ -180,12 +189,14 @@ function id<A>(a: A): A {
 function createReducer<Fields extends Constraint<Fields>>(formConfig: FormConfig<Fields>): Reducer<FormState<Fields>, FormAction> {
     const initalState = createInitialState(formConfig);
     const conditionMap = createConditionMap(formConfig);
+    const validationDependsOnMap = createValidationDependsOnMap(formConfig);
     return (state = initalState, action) => {
         switch(action.type) {
             case SET_FORM_FIELD_VALUE:
                 return handleSetFormFieldValue(
                     formConfig,
                     conditionMap,
+                    validationDependsOnMap,
                     state,
                     action
                 );
@@ -226,9 +237,29 @@ function createConditionMap<Fields extends Constraint<Fields>>(
     return conditionMap;
 }
 
+function createValidationDependsOnMap<Fields extends Constraint<Fields>>(
+    { fields }: FormConfig<Fields>
+): ValidationDependsOnMap<Fields> {
+    let validationDependsOnMap: ValidationDependsOnMap<Fields> = {};
+    const keys = Object.keys(fields) as Array<keyof Fields>;
+    for(const formField of keys) {
+        const dependsOn = fields[formField].validationDependsOn as Array<keyof Fields> | undefined;
+        if(dependsOn) {
+            for(const dependingOnField of dependsOn) {
+                if(!validationDependsOnMap[dependingOnField]) {
+                    validationDependsOnMap[dependingOnField] = [];
+                }
+                validationDependsOnMap[dependingOnField]!.push(formField);
+            }
+        }
+    }
+    return validationDependsOnMap;
+}
+
 function handleSetFormFieldValue<Fields extends Constraint<Fields>>(
     formConfig: FormConfig<Fields>,
     conditionMap: CondtionMap<Fields>,
+    validationDependsOnMap: ValidationDependsOnMap<Fields>,
     state: FormState<Fields>,
     action: SetFormFieldValueAction
 ): FormState<Fields> {
@@ -240,10 +271,15 @@ function handleSetFormFieldValue<Fields extends Constraint<Fields>>(
         return resetDependingConditionalFields(
             formConfig,
             conditionMap,
-            {
-                ...state,
-                [formField]: formFieldObject(formConfig, state, formField, value)
-            },
+            validateDependingOnFields(
+                formConfig,
+                validationDependsOnMap,
+                {
+                    ...state,
+                    [formField]: formFieldObject(formConfig, state, formField, value)
+                },
+                formField,
+            ),
             formField
         );
     }
@@ -261,6 +297,35 @@ function resetDependingConditionalFields<Fields extends Constraint<Fields>>(
             const { initialValue } = fields[conditionalFormField];
             if(value !== initialValue || error) {
                 newState[conditionalFormField] = { value: initialValue };
+            }
+        }
+    }
+    return newState;
+}
+
+function validateDependingOnFields<Fields extends Constraint<Fields>>(
+    formConfig: FormConfig<Fields>,
+    validationDependsOnMap: ValidationDependsOnMap<Fields>,
+    newState: FormState<Fields>,
+    formField: keyof Fields
+): FormState<Fields> {
+    if(validationDependsOnMap[formField]) {
+        for(const dependentField of validationDependsOnMap[formField]!) {
+            const { value, error } = newState[dependentField];
+            const tempFieldObject = formFieldObject(
+                formConfig,
+                newState,
+                dependentField,
+                value
+            );
+            if(tempFieldObject.error !== error) {
+                newState[dependentField] = tempFieldObject;
+                validateDependingOnFields(
+                    formConfig,
+                    validationDependsOnMap,
+                    newState,
+                    dependentField
+                );
             }
         }
     }
