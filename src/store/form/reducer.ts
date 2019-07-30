@@ -311,21 +311,24 @@ function validateDependingOnFields<Fields extends Constraint<Fields>>(
 ): FormState<Fields> {
     if(validationDependsOnMap[formField]) {
         for(const dependentField of validationDependsOnMap[formField]!) {
-            const { value, error } = newState[dependentField];
-            const tempFieldObject = formFieldObject(
-                formConfig,
-                newState,
-                dependentField,
-                value
-            );
-            if(tempFieldObject.error !== error) {
-                newState[dependentField] = tempFieldObject;
-                validateDependingOnFields(
+            const { condition } = formConfig.fields[dependentField];
+            if(isActiveFormFieldBasedOnCondition(condition, newState)) {
+                const { value, error } = newState[dependentField];
+                const tempFieldObject = formFieldObject(
                     formConfig,
-                    validationDependsOnMap,
                     newState,
-                    dependentField
+                    dependentField,
+                    value
                 );
+                if(tempFieldObject.error !== error) {
+                    newState[dependentField] = tempFieldObject;
+                    validateDependingOnFields(
+                        formConfig,
+                        validationDependsOnMap,
+                        newState,
+                        dependentField
+                    );
+                }
             }
         }
     }
