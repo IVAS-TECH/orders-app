@@ -28,7 +28,7 @@ interface Fields {
     checkbox: {
         value: boolean,
         initialValue: false,
-        validation: undefined
+        validation: never
     },
     number: {
         value: number | '',
@@ -118,8 +118,7 @@ export const form = createForm<Fields>({
             condition: 'checkbox'
         },
         checkbox: {
-            initialValue: false,
-            validation: undefined
+            initialValue: false
         },
         number: {
             initialValue: 1,
