@@ -1,4 +1,6 @@
-import {Reducer} from 'redux';
+import { Reducer } from 'redux';
+
+import { createReducer } from '../utils';
 
 import {
     SET_FORM_FIELD_VALUE,
@@ -166,7 +168,7 @@ export default function createForm<Fields extends Constraint<Fields>>(formConfig
     const isValid: Form<Fields>['selectors']['form']['isValid']
         = createSelector(id, hasNoErrors(formConfig));
     return {
-        reducer: createReducer(formConfig),
+        reducer: createFormReducer(formConfig),
         selectors: {
             field: selectorsField,
             form: {
@@ -189,26 +191,26 @@ function id<A>(a: A): A {
     return a;
 }
 
-function createReducer<Fields extends Constraint<Fields>>(formConfig: FormConfig<Fields>): Reducer<FormState<Fields>, FormAction> {
+function createFormReducer<Fields extends Constraint<Fields>>(formConfig: FormConfig<Fields>): Reducer<FormState<Fields>, FormAction> {
     const initalState = createInitialState(formConfig);
     const conditionMap = createConditionMap(formConfig);
     const validationDependsOnMap = createValidationDependsOnMap(formConfig);
-    return (state = initalState, action) => {
-        switch(action.type) {
-            case SET_FORM_FIELD_VALUE:
-                return handleSetFormFieldValue(
-                    formConfig,
-                    conditionMap,
-                    validationDependsOnMap,
-                    state,
-                    action
-                );
-            case VALIDATE_FORM:
-                return handleValidateForm(formConfig, state, action);
-            default:
-                return state;
-        }
-    };
+    return createReducer(initalState, {
+        [SET_FORM_FIELD_VALUE]: (
+            state: FormState<Fields>,
+            action: SetFormFieldValueAction
+        ) => handleSetFormFieldValue(
+            formConfig,
+            conditionMap,
+            validationDependsOnMap,
+            state,
+            action
+        ),
+        [VALIDATE_FORM]: (
+            state: FormState<Fields>,
+            action: ValidateForm
+        ) => handleValidateForm(formConfig, state, action)
+    });
 };
 
 function createInitialState<Fields extends Constraint<Fields>>(
