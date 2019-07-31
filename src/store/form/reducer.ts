@@ -154,7 +154,8 @@ export interface Form<Fields extends Constraint<Fields>> {
             [Field in keyof Fields]: FormFieldRedux<Fields, Field>['setValue']
         },
         validateForm: () => ValidateForm
-    }
+    },
+    id: (field: keyof Fields) => string
 }
 
 type CondtionMap<
@@ -173,7 +174,9 @@ type ValidationDependsOnMap<
     [Field in keyof Fields]?: Array<keyof Fields>
 }
 
-export default function createForm<Fields extends Constraint<Fields>>(formConfig: FormConfig<Fields>): Form<Fields> {
+export default function createForm<Fields extends Constraint<Fields>>(
+    formConfig: FormConfig<Fields>
+): Form<Fields> {
     const {formName, fields} = formConfig;
     let selectorsField: Partial<Form<Fields>['selectors']['field']> = {};
     let setValue: Partial<Form<Fields>['actions']['setValue']> = {};
@@ -205,7 +208,8 @@ export default function createForm<Fields extends Constraint<Fields>>(formConfig
         actions: {
             setValue,
             validateForm: () => validateForm(formName)
-        }
+        },
+        id: field => `${formConfig.formName}-${field}`
     } as Form<Fields>
 };
 

@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App, {form} from './App';
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import form from './store/stencilForm';
+import Form from './components/forms/stencilForm/Form';
 
 const store = createStore(form.reducer);
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <Form />
     </Provider>
 , document.getElementById('root'));
 
