@@ -209,21 +209,21 @@ export default function createForm<Fields extends Constraint<Fields>>(formConfig
     } as Form<Fields>
 };
 
-/*export function formField<
+export function formField<
     Fields extends Constraint<Fields>,
     Field extends keyof Fields
->(form: Form<Fields>, field: Field): FormField<Fields, Field> {
+>(form: Form<Fields>, field: Field): FormFieldRedux<Fields, Field> {
     const { value, error } = form.selectors.field[field];
     const setValue = form.actions.setValue[field];
-    return error ? {
+    return (error ? {
         value,
         error,
         setValue
     } : {
         value,
         setValue
-    };
-}*/
+    }) as FormFieldRedux<Fields, Field>;
+}
 
 function id<A>(a: A): A {
     return a;
