@@ -5,7 +5,8 @@ import FilledInput from '@material-ui/core/FilledInput';
 export interface InputProps extends ControlProps {
     id: string,
     value: number | '',
-    onValueChange: (value: number | '') => void
+    onValueChange: (value: number | '') => void,
+    integer?: boolean
 }
 
 function handleOnChangeEvent(
@@ -21,11 +22,18 @@ function handleOnChangeEvent(
         } else {
             const eventNumberValue = Number(eventValue);
             if(!Number.isNaN(eventNumberValue)) {
-                if((currentValue === '') || (eventNumberValue !== currentValue)) {
+                if(eventNumberValue !== currentValue) {
                     onValueChange(eventNumberValue);
                 }
             }
         }
+    }
+}
+
+function handleOnKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if(event.key === '.') {
+        event.stopPropagation();
+        event.preventDefault();
     }
 }
 
@@ -36,7 +44,8 @@ const NumberInput: React.FC<InputProps> = ({
     disabled,
     required,
     error,
-    onValueChange
+    onValueChange,
+    integer
 }) => (
     <FormControl
         shrinkLabel={value !== ''}
@@ -49,7 +58,8 @@ const NumberInput: React.FC<InputProps> = ({
             id={id}
             type='number'
             value={value}
-            onChange={handleOnChangeEvent(value, onValueChange)} />
+            onChange={handleOnChangeEvent(value, onValueChange)}
+            onKeyDown={integer ? handleOnKeyDown : undefined} />
     </FormControl>
 );
 

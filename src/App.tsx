@@ -156,6 +156,7 @@ const App: React.FC<AppProps> = ({select, input, checkbox, number, setSelectValu
         <NumberInput
             id='number'
             label='Number'
+            integer
             value={number.value}
             error={number.error}
             onValueChange={setNumberValue} />
