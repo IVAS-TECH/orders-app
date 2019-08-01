@@ -2,6 +2,7 @@ import NumberInput from './../../NumberInput';
 import { connect } from 'react-redux';
 import form, { State } from './../../../store/stencilForm';
 import { formField } from './../../../store/form/reducer';
+import { configure } from './../utils';
 
 const {
     value,
@@ -9,17 +10,18 @@ const {
     setValue
 } = formField(form, 'count');
 
-const id = form.id('count');
+const Field = configure(NumberInput, {
+    id: form.id('count'),
+    integer: true
+});
 
 export default connect(
     (state: State) => ({
         value: value(state),
         error: error(state),
-        label: 'Брой*',
-        integer: true,
-        id
+        label: 'Брой*'
     }),
     {
         onValueChange: setValue
     }
-)(NumberInput);
+)(Field);
