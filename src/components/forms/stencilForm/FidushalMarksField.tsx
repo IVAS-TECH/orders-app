@@ -1,4 +1,4 @@
-import Input from './../../Input'; 
+import CheckboxWithLabel from './../../CheckboxWithLabel'; 
 import { connect } from 'react-redux';
 import form, { State } from './../../../store/stencilForm';
 import { formField } from './../../../store/form/reducer';
@@ -6,22 +6,19 @@ import { configure } from './../utils';
 
 const {
     value,
-    error,
     setValue
-} = formField(form, 'file');
+} = formField(form, 'fidushalMarks');
 
-const Field = configure(Input, {
-    id: form.id('file'),
-    required: true
+const Field = configure(CheckboxWithLabel, {
+    labelPlacement: 'start'
 });
 
 export default connect(
     (state: State) => ({
-        value: value(state),
-        error: error(state),
-        label: 'Файлов архив'
+        checked: value(state),
+        label: 'Добави Фидюшал марки?'
     }),
     {
-        onValueChange: setValue
+        onToggle: setValue
     }
 )(Field);

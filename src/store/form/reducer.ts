@@ -177,7 +177,7 @@ type ValidationDependsOnMap<
 export default function createForm<Fields extends Constraint<Fields>>(
     formConfig: FormConfig<Fields>
 ): Form<Fields> {
-    const {formName, fields} = formConfig;
+    const { formName, fields } = formConfig;
     let selectorsField: Partial<Form<Fields>['selectors']['field']> = {};
     let setValue: Partial<Form<Fields>['actions']['setValue']> = {};
     const keys = Object.keys(fields) as Array<keyof Fields>;
@@ -209,7 +209,7 @@ export default function createForm<Fields extends Constraint<Fields>>(
             setValue,
             validateForm: () => validateForm(formName)
         },
-        id: field => `${formConfig.formName}-${field}`
+        id: field => `field:${field}@form:${formName}`
     } as Form<Fields>
 };
 

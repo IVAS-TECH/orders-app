@@ -1,4 +1,4 @@
-import Input from './../../Input'; 
+import NumberInput from './../../NumberInput'; 
 import { connect } from 'react-redux';
 import form, { State } from './../../../store/stencilForm';
 import { formField } from './../../../store/form/reducer';
@@ -8,10 +8,11 @@ const {
     value,
     error,
     setValue
-} = formField(form, 'file');
+} = formField(form, 'panelsCountX');
 
-const Field = configure(Input, {
-    id: form.id('file'),
+const Field = configure(NumberInput, {
+    id: form.id('panelsCountX'),
+    integer: true,
     required: true
 });
 
@@ -19,7 +20,7 @@ export default connect(
     (state: State) => ({
         value: value(state),
         error: error(state),
-        label: 'Файлов архив'
+        label: 'Брой панели по X'
     }),
     {
         onValueChange: setValue

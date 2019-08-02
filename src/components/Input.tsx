@@ -8,7 +8,7 @@ export interface InputProps extends ControlProps {
     onValueChange: (value: string) => void
 }
 
-function handleOnChangeEvent(currentValue: string, onValueChange: (_: string) => void) {
+export function handleOnChangeEvent(currentValue: string, onValueChange: (_: string) => void) {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
         const eventValue = event.target.value;
         if(eventValue !== currentValue) {
