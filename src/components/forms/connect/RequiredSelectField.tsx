@@ -1,13 +1,12 @@
 import Select, { SelectProps } from '../../formControls/Select'; 
 import { connect } from 'react-redux';
-import { Constraint, Form, FormState, formField } from '../../../store/form/reducer';
+import { Form, FormState, formField } from '../../../store/form/reducer';
 import { configure } from '../../utils';
 import { State, selectLanguage } from '../../../store/reducer';
 import Language from '../../../store/language/Language';
 import { ComponentType, FunctionComponent } from 'react';
 import { createSelector } from 'reselect';
-
-type Intersection<A, B> = A & B;
+import ConstraintFormField from './ConstraintFormField';
 
 type Union<A, B> = A | B;
 
@@ -20,9 +19,7 @@ type FieldConstraint<Value extends string | number> = {
 
 export default function field<
     Value extends string | number,
-    Fields extends Intersection<Constraint<Fields>, {
-        [key in FieldKey]: FieldConstraint<Value>
-    }>,
+    Fields extends ConstraintFormField<Fields, FieldKey, FieldConstraint<Value>>,
     FieldKey extends keyof Fields
 >(
 { form, fieldKey, extractFormState, label, notSelectedText, options }: {

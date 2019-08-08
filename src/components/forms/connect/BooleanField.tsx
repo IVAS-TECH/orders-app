@@ -1,19 +1,16 @@
 import CheckboxWithLabel, { CheckboxWithLabelProps } from '../../formControls/CheckboxWithLabel'; 
 import { connect } from 'react-redux';
-import { Constraint, Form, FormState, formField } from '../../../store/form/reducer';
+import { Form, FormState, formField } from '../../../store/form/reducer';
 import { configure } from '../../utils';
 import { State, selectLanguage } from '../../../store/reducer';
 import Language from '../../../store/language/Language';
 import { ComponentType } from 'react';
-
-type Intersection<A, B> = A & B;
+import ConstraintFormField from './ConstraintFormField';
 
 export default function field<
-    Fields extends Intersection<Constraint<Fields>, {
-        [key in FieldKey]: {
-            value: boolean,
-            validation: never
-        }
+    Fields extends ConstraintFormField<Fields, FieldKey, {
+        value: boolean,
+        validation: never
     }>,
     FieldKey extends keyof Fields
 >({ form, fieldKey, extractFormState, label, placeLableAtStart }: {
