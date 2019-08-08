@@ -1,8 +1,9 @@
-import TextArea from './../../TextArea'; 
+import TextArea from '../../formControls/TextArea'; 
 import { connect } from 'react-redux';
-import form, { State } from './../../../store/stencilForm';
+import form from './../../../store/stencilForm';
 import { formField } from './../../../store/form/reducer';
-import { configure } from './../utils';
+import { configure } from '../../utils';
+import { selectStencilForm, selectLanguage, State } from './../../../store/reducer';
 
 const {
     value,
@@ -15,12 +16,13 @@ const Field = configure(TextArea, {
 });
 
 export default connect(
-    (state: State) => ({
-        value: value(state),
-        label: 'Изисквания',
-        helperText: 'Моля, опишете всички изисквания за модификации на апертурите и позиционирането на образа'
-    }),
-    {
-        onValueChange: setValue
-    }
+    (state: State) => {
+        const language = selectLanguage(state);
+        const { modificationsRequirements, modificationsRequirementsHelperText } = language.forms.stencilForm;
+        return {
+            value: value(selectStencilForm(state)),
+            label: modificationsRequirements,
+            helperText: modificationsRequirementsHelperText
+        }
+    }, { onValueChange: setValue }
 )(Field);

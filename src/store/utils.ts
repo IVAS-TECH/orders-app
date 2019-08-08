@@ -33,9 +33,7 @@ export function createReducer<
         if(state) {
             const { type } = action as { type: keyof ReducerMap };
             const reducer = reducerMap[type];
-            if(reducer) {
-                return reducer(state, action);
-            }
+            return reducer ? reducer(state, action) : state;
         }
         return initialState;
     };

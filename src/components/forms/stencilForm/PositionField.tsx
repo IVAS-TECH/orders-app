@@ -1,38 +1,17 @@
-import Select, { SelectProps }  from '../../Select'; 
-import { connect } from 'react-redux';
-import form, { Position, State } from '../../../store/stencilForm';
-import { formField } from '../../../store/form/reducer';
-import { configure } from '../utils';
+import form from './../../../store/stencilForm';
+import field from  './../connect/RequiredSelectField';
+import { selectStencilForm } from './../../../store/reducer';
 
-const {
-    value,
-    error,
-    setValue
-} = formField(form, 'position');
-
-const PositionSelect: React.FC<SelectProps<Position>> = Select;
-
-const Field = configure(PositionSelect, {
-    id: form.id('position'),
-    required: true
+const Field = field({
+    form,
+    fieldKey: 'position',
+    extractFormState: selectStencilForm,
+    label: language => language.forms.stencilForm.position,
+    notSelectedText: language => language.forms.notSelected('it'),
+    options: language => ({
+        'layout-centered': language.forms.stencilForm.options.layoutCentered,
+        'pcb-centered': language.forms.stencilForm.options.pcbCentered
+    })
 });
 
-export default connect(
-    (state: State) => ({
-        value: value(state),
-        error: error(state),
-        label: 'Позициониране',
-        notSelectedText: 'Не избрано',
-        options: [{
-                value: 'layout-centered' as 'layout-centered',
-                text: 'Layout Centered'
-            }, {
-                value: 'pcb-centered' as 'pcb-centered',
-                text: 'PCB Centered'
-            }]
-
-    }),
-    {
-        onValueChange: setValue
-    }
-)(Field);
+export default Field;

@@ -10,10 +10,10 @@ export interface Option<Value extends string | number>{
 };
 
 export interface SelectProps<Value extends string | number> extends ControlProps {
-    id: string
+    id: string,
     value: Value | '',
     onValueChange: (value: Value) => void,
-    notSelectedText: string,
+    notSelectedText?: string,
     options: Array<Option<Value>>
 };
 
@@ -51,7 +51,7 @@ export default function Select<Value extends string | number>(props: SelectProps
                 value={value}
                 onChange={handleOnChangeEvent(value, onValueChange)}
                 input={<FilledInput id={id} />}>
-                {value === '' &&
+                {(notSelectedText && value === '') &&
                     <MenuItem value=''>
                         {notSelectedText}
                     </MenuItem>}

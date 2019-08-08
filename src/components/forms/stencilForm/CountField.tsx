@@ -1,28 +1,13 @@
-import NumberInput from './../../NumberInput'; 
-import { connect } from 'react-redux';
-import form, { State } from './../../../store/stencilForm';
-import { formField } from './../../../store/form/reducer';
-import { configure } from './../utils';
+import field from  './../connect/NumberFieldWithMinValue';
+import form from './../../../store/stencilForm';
+import { selectStencilForm } from './../../../store/reducer';
 
-const {
-    value,
-    error,
-    setValue
-} = formField(form, 'count');
-
-const Field = configure(NumberInput, {
-    id: form.id('count'),
-    integer: true,
-    required: true
+const Field = field({
+    form,
+    fieldKey: 'count',
+    extractFormState: selectStencilForm,
+    minValue: 1,
+    label: language => language.forms.stencilForm.count
 });
 
-export default connect(
-    (state: State) => ({
-        value: value(state),
-        error: error(state),
-        label: 'Брой'
-    }),
-    {
-        onValueChange: setValue
-    }
-)(Field);
+export default Field;

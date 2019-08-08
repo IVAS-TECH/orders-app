@@ -1,16 +1,8 @@
 import createForm, { FormState } from './form/reducer';
-
-import {
-    StringField,
-    RequiredStringField,
-    BooleanField,
-    NumberFieldWithMinValue,
-    RequiredSelectField,
-    stringField,
-    requiredField,
-    booleanField,
-    numberFieldWithMinValue
-} from './form/formFields';
+import { RequiredStringField, RequiredSelectField, requiredField } from './form/formField/formFieldWithValueValidation/RequiredField';
+import { BooleanField, booleanField } from './form/formField/formFieldWithoutValidation/BooleanField';
+import { NumberFieldWithMinValue, numberFieldWithMinValue } from './form/formField/formFieldWithValueValidation/NumberFieldWithMinValue';
+import { StringField, stringField } from './form/formField/formFieldWithoutValidation/StringField';
 
 export type SheetThickness = 30 | 40 | 50 | 80 | 90 | 100 | 110 | 120 | 130 | 150 | 180 | 200 | 250 | 300;
 

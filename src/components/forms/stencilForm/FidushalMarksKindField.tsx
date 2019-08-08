@@ -1,38 +1,17 @@
-import Select, { SelectProps }  from './../../Select'; 
-import { connect } from 'react-redux';
-import form, { FidushalMarksKind, State } from './../../../store/stencilForm';
-import { formField } from './../../../store/form/reducer';
-import { configure } from './../utils';
+import form from './../../../store/stencilForm';
+import field from  './../connect/RequiredSelectField';
+import { selectStencilForm } from './../../../store/reducer';
 
-const {
-    value,
-    error,
-    setValue
-} = formField(form, 'fidushalMarksKind');
-
-const FidushalMarksKindSelect: React.FC<SelectProps<FidushalMarksKind>> = Select;
-
-const Field = configure(FidushalMarksKindSelect, {
-    id: form.id('fidushalMarksKind'),
-    required: true
+const Field = field({
+    form,
+    fieldKey: 'fidushalMarksKind',
+    extractFormState: selectStencilForm,
+    label: language => language.forms.stencilForm.fidushalMarksKind,
+    notSelectedText: language => language.forms.notSelected('he'),
+    options: language => ({
+        graved: language.forms.stencilForm.options.graved,
+        cut: language.forms.stencilForm.options.cut
+    })
 });
 
-export default connect(
-    (state: State) => ({
-        value: value(state),
-        error: error(state),
-        label: 'Вид на марките',
-        notSelectedText: 'Без марки',
-        options: [{
-                value: 'graved' as 'graved',
-                text: 'Гравирани'
-            }, {
-                value: 'cut' as 'cut',
-                text: 'Прорязани'
-            }]
-
-    }),
-    {
-        onValueChange: setValue
-    }
-)(Field);
+export default Field;

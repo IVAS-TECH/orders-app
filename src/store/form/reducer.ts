@@ -32,9 +32,9 @@ export type FormFieldValue<
         }
     },
     Field extends keyof Fields
-> = Union<Fields[Field]['value'] & Value, Fields[Field]['initialValue'] & Value>
+> = Union<Fields[Field]['value'], Fields[Field]['initialValue']> & Value
 
-type Constraint<
+export type Constraint<
     Fields extends {
         [Field in keyof Fields]: {
             value: Fields[Field]['value']

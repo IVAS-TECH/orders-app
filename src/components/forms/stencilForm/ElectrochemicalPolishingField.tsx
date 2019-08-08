@@ -1,24 +1,13 @@
-import CheckboxWithLabel from '../../CheckboxWithLabel'; 
-import { connect } from 'react-redux';
-import form, { State } from '../../../store/stencilForm';
-import { formField } from '../../../store/form/reducer';
-import { configure } from './../utils';
+import field from  './../connect/BooleanField';
+import form from './../../../store/stencilForm';
+import { selectStencilForm } from './../../../store/reducer';
 
-const {
-    value,
-    setValue
-} = formField(form, 'electrochemicalPolishing');
+const Field = field({
+    form,
+    fieldKey: 'electrochemicalPolishing',
+    extractFormState: selectStencilForm,
+    label: language => language.forms.stencilForm.electrochemicalPolishing,
+    placeLableAtStart: true
+});
 
-const Field = configure(CheckboxWithLabel, {
-    labelPlacement: 'start'
-})
-
-export default connect(
-    (state: State) => ({
-        checked: value(state),
-        label: 'Електрохимично полиране:'
-    }),
-    {
-        onToggle: setValue
-    }
-)(Field);
+export default Field;

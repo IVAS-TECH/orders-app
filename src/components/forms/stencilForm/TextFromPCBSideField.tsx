@@ -1,30 +1,13 @@
-import Input from '../../Input'; 
-import { connect } from 'react-redux';
-import form, { State } from '../../../store/stencilForm';
-import { formField } from '../../../store/form/reducer';
-import { configure } from '../utils';
+import field from  './../connect/RequiredInputField';
+import form from './../../../store/stencilForm';
+import { selectStencilForm } from './../../../store/reducer';
 
-const {
-    value,
-    error,
-    setValue
-} = formField(form, 'textFromPCBSide');
-
-const { value: include } = formField(form, 'includeTextFromPCBSide');
-
-const Field = configure(Input, {
-    id: form.id('textFromPCBSide'),
-    required: true
+const Field = field({
+    form,
+    fieldKey: 'textFromPCBSide',
+    extractFormState: selectStencilForm,
+    label: language => language.forms.stencilForm.textFromPCBSide,
+    disableWhenFieldHasNoValueKey: 'includeTextFromPCBSide'
 });
 
-export default connect(
-    (state: State) => ({
-        value: value(state),
-        error: error(state),
-        disabled: !include(state),
-        label: 'Текст страна платка (pcb)'
-    }),
-    {
-        onValueChange: setValue
-    }
-)(Field);
+export default Field;

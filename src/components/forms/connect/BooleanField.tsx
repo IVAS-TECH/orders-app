@@ -1,0 +1,43 @@
+import CheckboxWithLabel, { CheckboxWithLabelProps } from '../../formControls/CheckboxWithLabel'; 
+import { connect } from 'react-redux';
+import { Constraint, Form, FormState, formField } from '../../../store/form/reducer';
+import { configure } from '../../utils';
+import { State, selectLanguage } from '../../../store/reducer';
+import Language from '../../../store/language/Language';
+import { ComponentType } from 'react';
+
+type Intersection<A, B> = A & B;
+
+export default function field<
+    Fields extends Intersection<Constraint<Fields>, {
+        [key in FieldKey]: {
+            value: boolean,
+            validation: never
+        }
+    }>,
+    FieldKey extends keyof Fields
+>({ form, fieldKey, extractFormState, label, placeLableAtStart }: {
+    form: Form<Fields>,
+    fieldKey: FieldKey,
+    extractFormState: (state: State) => FormState<Fields>,
+    label: (language: Language) => string,
+    placeLableAtStart?: boolean
+}):  ComponentType<{}> {
+    const {
+        value: fieldValue,
+        setValue
+    } = formField(form, fieldKey);
+    
+    const Field = (placeLableAtStart
+        ? configure(CheckboxWithLabel, { labelPlacement: 'start' })
+        : CheckboxWithLabel
+    ) as ComponentType<Pick<CheckboxWithLabelProps, 'checked' | 'label' | 'onToggle'>>;
+    
+    return connect(
+        (state: State) => ({
+            checked: fieldValue(extractFormState(state)) as boolean,
+            label: label(selectLanguage(state))
+        }),
+        { onToggle: setValue as (checked: boolean) => { type: string } }
+    )(Field);
+}

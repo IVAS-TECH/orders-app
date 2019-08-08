@@ -1,41 +1,18 @@
-import Select, { SelectProps }  from './../../Select'; 
-import { connect } from 'react-redux';
-import form, { FidushalMarksSide, State } from './../../../store/stencilForm';
-import { formField } from './../../../store/form/reducer';
-import { configure } from './../utils';
+import form from './../../../store/stencilForm';
+import field from  './../connect/RequiredSelectField';
+import { selectStencilForm } from './../../../store/reducer';
 
-const {
-    value,
-    error,
-    setValue
-} = formField(form, 'fidushalMarksSide');
-
-const FidushalMarksSideSelect: React.FC<SelectProps<FidushalMarksSide>> = Select;
-
-const Field = configure(FidushalMarksSideSelect, {
-    id: form.id('fidushalMarksSide'),
-    required: true
+const Field = field({
+    form,
+    fieldKey: 'fidushalMarksSide',
+    extractFormState: selectStencilForm,
+    label: language => language.forms.stencilForm.fidushalMarksSide,
+    notSelectedText: language => language.forms.notSelected('she'),
+    options: language => ({
+        'pcb': language.forms.stencilForm.options.pcbSide,
+        'rackel': language.forms.stencilForm.options.rackelSide,
+        'two-sided': language.forms.stencilForm.options.twoSided
+    })
 });
 
-export default connect(
-    (state: State) => ({
-        value: value(state),
-        error: error(state),
-        label: 'Страна на марките',
-        notSelectedText: 'Не избрана',
-        options: [{
-                value: 'pcb' as 'pcb',
-                text: 'Страна платка (pcb)'
-            }, {
-                value: 'rackel' as 'rackel',
-                text: 'Страна ракел (rackel)'
-            }, {
-                value: 'two-sided' as 'two-sided',
-                text: 'Двустранно'
-            }]
-
-    }),
-    {
-        onValueChange: setValue
-    }
-)(Field);
+export default Field;

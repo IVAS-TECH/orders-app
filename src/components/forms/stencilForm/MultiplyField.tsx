@@ -1,24 +1,13 @@
-import CheckboxWithLabel from '../../CheckboxWithLabel'; 
-import { connect } from 'react-redux';
-import form, { State } from '../../../store/stencilForm';
-import { formField } from '../../../store/form/reducer';
-import { configure } from './../utils';
+import field from  './../connect/BooleanField';
+import form from './../../../store/stencilForm';
+import { selectStencilForm } from './../../../store/reducer';
 
-const {
-    value,
-    setValue
-} = formField(form, 'multiply');
+const Field = field({
+    form,
+    fieldKey: 'multiply',
+    extractFormState: selectStencilForm,
+    label: language => language.forms.stencilForm.multiply,
+    placeLableAtStart: true
+});
 
-const Field = configure(CheckboxWithLabel, {
-    labelPlacement: 'start'
-})
-
-export default connect(
-    (state: State) => ({
-        checked: value(state),
-        label: 'Добави мултиплициране'
-    }),
-    {
-        onToggle: setValue
-    }
-)(Field);
+export default Field;

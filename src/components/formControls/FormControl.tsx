@@ -28,7 +28,7 @@ const FormControl: React.FC<FormControlProps> = ({
         required={required}
         disabled={disabled}
         error={!!error}
-        variant="filled"
+        variant='filled'
         fullWidth>
         <InputLabel htmlFor={labelFor} shrink={shrinkLabel}>
             {label}
