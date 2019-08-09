@@ -33,6 +33,16 @@ export default interface Language {
                 twoSided: string,
                 pcbCentered: string,
                 layoutCentered: string
+            },
+            title: string,
+            panelTitle: {
+                template: string,
+                fidushalMarks: string,
+                modificationsRequirements: string,
+                text: string,
+                multiply: string,
+                position: string,
+                additionalProcessing: string
             }
         },
         notSelected: (subjec: 'he' | 'she' | 'it') => string,

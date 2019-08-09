@@ -1,46 +1,29 @@
 import React from 'react';
-import FileField from './FileField';
-import FileIsFromRackelSideField from './FileIsFromRackelSideField';
-import CountField from './CountField';
-import SheetThicknessField from './SheetThicknessField';
-import FidushalMarksField from './FidushalMarksField';
-import FidushalMarksKindField from './FidushalMarksKindField';
-import FidushalMarksSideField from './FidushalMarksSideField';
-import ModificationsRequirementsField from './ModificationsRequirementsField';
-import IncludeTextFromRackelSideField from './IncludeTextFromRackelSideField';
-import TextFromRackelSideField from './TextFromRackelSideField';
-import IncludeTextFromPCBSideField from './IncludeTextFromPCBSideField';
-import TextFromPCBSideField from './TextFromPCBSideField';
-import MultiplyField from './MultiplyField';
-import { PanelsCountXField, PanelsCountYField } from './PanelsCountAxisField';
-import { StepXField, StepYField } from './StepAxisField';
-import PositionField from './PositionField';
-import NanoCoatingField from './NanoCoatingField';
-import ElectrochemicalPolishingField from './ElectrochemicalPolishingField';
+import PanelDivider from './../layout/PanelDivider';
+import TemplatePanel from './panels/template/Panel';
+import FidushalMarksPanel from './panels/fidushalMarks/Panel';
+import ModificationsRequirementsPanel from './panels/modificationsRequirements/Panel';
+import TextPanel from './panels/text/Panel';
+import MultiplyPanel from './panels/multiply/Panel';
+import PositionPanel from './panels/position/Panel';
+import AdditionalProcessingPanel from './panels/additionalProcessing/Panel';
 
 const Form: React.FC = () => (
-    <div>
-        <FileField />
-        <FileIsFromRackelSideField />
-        <CountField />
-        <SheetThicknessField />
-        <FidushalMarksField />
-        <FidushalMarksKindField />
-        <FidushalMarksSideField />
-        <ModificationsRequirementsField />
-        <IncludeTextFromRackelSideField />
-        <TextFromRackelSideField />
-        <IncludeTextFromPCBSideField />
-        <TextFromPCBSideField />
-        <MultiplyField />
-        <PanelsCountXField />
-        <StepXField />
-        <PanelsCountYField />
-        <StepYField />
-        <PositionField />
-        <NanoCoatingField />
-        <ElectrochemicalPolishingField />
-    </div>
+    <form>
+        <TemplatePanel />
+        <PanelDivider />
+        <FidushalMarksPanel />
+        <PanelDivider />
+        <ModificationsRequirementsPanel />
+        <PanelDivider />
+        <TextPanel />
+        <PanelDivider />
+        <MultiplyPanel />
+        <PanelDivider />
+        <PositionPanel />
+        <PanelDivider />
+        <AdditionalProcessingPanel />
+    </form>
 );
 
 export default Form;

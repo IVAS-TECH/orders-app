@@ -12,7 +12,7 @@ const bg: Language = {
             isFromRackelSide: 'Файлът е изглед от страна ракел?',
             count: 'Брой',
             sheetThickness: 'Дебелина на листа (μm)',
-            fidushalMarks: 'Добави Фидюшал марки?',
+            fidushalMarks: 'Добави Фидюшал марки',
             fidushalMarksKind: 'Вид на марките',
             fidushalMarksSide: 'Страна на марките',
             modificationsRequirements: 'Изисквания',
@@ -35,6 +35,16 @@ const bg: Language = {
                 twoSided: 'Двустранно',
                 pcbCentered: 'PCB Centered',
                 layoutCentered: 'Layout Centered'
+            },
+            title: 'Форма за поръчка на SMT стенсили',
+            panelTitle: {
+                template: 'Шаблон',
+                fidushalMarks: 'Фидюшъл марки',
+                modificationsRequirements: 'Изисквания за модификации на апертурите и позиционирането на образа',
+                text: 'Текст',
+                multiply: 'Мултиплициране',
+                position: 'Позициониране',
+                additionalProcessing: 'Допълнителна обработка'
             }
         },
         notSelected: subject => {
