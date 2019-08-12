@@ -10,12 +10,12 @@ import {
     SetFormFieldValueAction,
     ValidateForm,
     FormAction
-} from './types';
+} from './type';
 
 import {
     setFormFieldValue,
     validateForm
-} from './actions';
+} from './action';
 
 import { createSelector } from 'reselect';
 

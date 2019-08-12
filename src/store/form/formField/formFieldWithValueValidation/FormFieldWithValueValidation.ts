@@ -1,4 +1,4 @@
-import { Value as FieldValue } from './../../types';
+import { Value as FieldValue } from '../../type';
 import { FormFieldValueValidation } from './../../reducer';
 
 type FormFieldWithValueValidation<
