@@ -1,4 +1,4 @@
-import createForm, { FormState } from './form/reducer';
+import createForm, { FormState, FormFieldsValues } from './form/reducer';
 import { RequiredStringField, RequiredSelectField, requiredField } from './form/formField/formFieldWithValueValidation/RequiredField';
 import { BooleanField, booleanField } from './form/formField/formFieldWithoutValidation/BooleanField';
 import { NumberFieldWithMinValue, numberFieldWithMinValue } from './form/formField/formFieldWithValueValidation/NumberFieldWithMinValue';
@@ -40,12 +40,18 @@ export interface Fields {
 
 export type State = FormState<Fields>;
 
+export type FormValues = FormFieldsValues<Fields>;
+
+const countMin = 1;
+
+const stepMin = 0;
+
 const form = createForm<Fields>({
     formName: 'stencilForm',
     fields: {
         file: requiredField(),
         fileIsFromRackelSide: booleanField(),
-        count: numberFieldWithMinValue(1),
+        count: numberFieldWithMinValue(countMin),
         sheetThickness: requiredField(),
         fidushalMarks: booleanField(),
         fidushalMarksKind: requiredField('fidushalMarks'),
@@ -56,10 +62,10 @@ const form = createForm<Fields>({
         includeTextFromPCBSide: booleanField(),
         textFromPCBSide: requiredField('includeTextFromPCBSide'),
         multiply: booleanField(),
-        panelsCountX: numberFieldWithMinValue(1, 'multiply'),
-        stepX: numberFieldWithMinValue(0, 'multiply'),
-        panelsCountY: numberFieldWithMinValue(1, 'multiply'),
-        stepY: numberFieldWithMinValue(0, 'multiply'),
+        panelsCountX: numberFieldWithMinValue(countMin, 'multiply'),
+        stepX: numberFieldWithMinValue(stepMin, 'multiply'),
+        panelsCountY: numberFieldWithMinValue(countMin, 'multiply'),
+        stepY: numberFieldWithMinValue(stepMin, 'multiply'),
         position: requiredField(),
         imagePosition: requiredField(),
         nanoCoating: booleanField(),
@@ -68,3 +74,5 @@ const form = createForm<Fields>({
 });
 
 export default form;
+
+export { countMin, stepMin };

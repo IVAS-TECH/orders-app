@@ -23,6 +23,7 @@ export default interface Language {
             panelsCountAxis: (axis: 'X' | 'Y') => string,
             stepAxis: (axis: 'X' | 'Y') => string,
             position: string,
+            imagePosition: string,
             nanoCoating: string,
             electrochemicalPolishing: string,
             options: {
@@ -43,7 +44,8 @@ export default interface Language {
                 multiply: string,
                 position: string,
                 additionalProcessing: string
-            }
+            },
+            previewOrder: string
         },
         notSelected: (subjec: 'he' | 'she' | 'it') => string,
         fieldError: {

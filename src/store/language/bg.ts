@@ -25,6 +25,7 @@ const bg: Language = {
             panelsCountAxis: axis => `Брой панели по ${axis}`,
             stepAxis: axis => `Стъпка по ${axis} (mm)`,
             position: 'Позициониране',
+            imagePosition: 'Позициониране на образа върху шаблона',
             nanoCoating: 'Нанопокритие',
             electrochemicalPolishing: 'Електрохимично полиране',
             options: {
@@ -45,7 +46,8 @@ const bg: Language = {
                 multiply: 'Мултиплициране',
                 position: 'Позициониране',
                 additionalProcessing: 'Допълнителна обработка'
-            }
+            },
+            previewOrder: 'Преглед на поръчката'
         },
         notSelected: subject => {
             switch(subject) {

@@ -402,7 +402,7 @@ function handleValidateForm<Fields extends Constraint<Fields>>(
     if(formName !== handleFormName) {
         return state;
     } else {
-        let tempState: Partial<FormState<Fields>> = {};
+        let tempState = {...state};
         let change: boolean = false;
         const keys = Object.keys(fields) as Array<keyof Fields>;
         for(const formField of keys) {
@@ -419,7 +419,7 @@ function handleValidateForm<Fields extends Constraint<Fields>>(
                 }
             }
         }
-        return change ? tempState as FormState<Fields> : state;
+        return change ? tempState : state;
     }
 }
 

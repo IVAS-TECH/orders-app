@@ -1,5 +1,5 @@
 import numberFieldWithMinValue from  '../../../../connect/formField/numberFieldWithMinValue';
-import form from '../../../../../../store/stencilForm';
+import form, { countMin } from '../../../../../../store/stencilForm';
 import { selectStencilForm } from '../../../../../../store/reducer';
 import { ComponentType } from 'react';
 
@@ -18,7 +18,7 @@ function panelsCountAxisField({ formField, axis }: InfoX | InfoY): ComponentType
         form,
         fieldKey: formField,
         extractFormState: selectStencilForm,
-        minValue: 1,
+        minValue: countMin,
         label: language => language.forms.stencilForm.panelsCountAxis(axis)
     });
 }

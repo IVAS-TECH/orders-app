@@ -7,6 +7,15 @@ import TextPanel from './panel/text/Panel';
 import MultiplyPanel from './panel/multiply/Panel';
 import PositionPanel from './panel/position/Panel';
 import AdditionalProcessingPanel from './panel/additionalProcessing/Panel';
+import styled from '@material-ui/styles/styled';
+import DivWithClassName from './../../DivWithClassName';
+import PreviewOrderButton from './PreviewOrderButton';
+
+const PreviewOrderButtonOuter = styled(DivWithClassName)({
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginTop: 42
+});
 
 const Form: React.FC = () => (
     <form>
@@ -23,6 +32,10 @@ const Form: React.FC = () => (
         <PositionPanel />
         <PanelDivider />
         <AdditionalProcessingPanel />
+        <PanelDivider />
+        <PreviewOrderButtonOuter>
+            <PreviewOrderButton />
+        </PreviewOrderButtonOuter>
     </form>
 );
 

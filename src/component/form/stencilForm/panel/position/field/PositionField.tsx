@@ -1,6 +1,6 @@
-import form from '../../../../../store/stencilForm';
-import requiredSelectField from  '../../../connect/formField/requiredSelectField';
-import { selectStencilForm } from '../../../../../store/reducer';
+import form from '../../../../../../store/stencilForm';
+import requiredSelectField from  '../../../../connect/formField/requiredSelectField';
+import { selectStencilForm } from '../../../../../../store/reducer';
 
 const Field = requiredSelectField({
     form,
