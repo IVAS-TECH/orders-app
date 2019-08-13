@@ -7,7 +7,7 @@ import Language from '../../../../store/language/Language';
 import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
 
-export default function field<
+export default function booleanField<
     Fields extends ConstraintFormField<Fields, FieldKey, {
         value: boolean,
         validation: never

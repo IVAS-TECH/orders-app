@@ -1,8 +1,8 @@
-import field from  '../../../../connect/formField/BooleanField';
+import booleanField from  '../../../../connect/formField/booleanField';
 import form from '../../../../../../store/stencilForm';
 import { selectStencilForm } from '../../../../../../store/reducer';
 
-const Field = field({
+const Field = booleanField({
     form,
     fieldKey: 'includeTextFromPCBSide',
     extractFormState: selectStencilForm,

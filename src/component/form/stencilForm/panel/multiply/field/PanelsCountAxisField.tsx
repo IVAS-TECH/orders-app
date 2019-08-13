@@ -1,4 +1,4 @@
-import field from  '../../../../connect/formField/NumberFieldWithMinValue';
+import numberFieldWithMinValue from  '../../../../connect/formField/numberFieldWithMinValue';
 import form from '../../../../../../store/stencilForm';
 import { selectStencilForm } from '../../../../../../store/reducer';
 import { ComponentType } from 'react';
@@ -13,8 +13,8 @@ type InfoY = {
     axis: 'Y'
 };
 
-function PanelsCountAxisField({ formField, axis }: InfoX | InfoY): ComponentType<{}> {
-    return field({
+function panelsCountAxisField({ formField, axis }: InfoX | InfoY): ComponentType<{}> {
+    return numberFieldWithMinValue({
         form,
         fieldKey: formField,
         extractFormState: selectStencilForm,
@@ -23,12 +23,12 @@ function PanelsCountAxisField({ formField, axis }: InfoX | InfoY): ComponentType
     });
 }
 
-const PanelsCountXField = PanelsCountAxisField({
+const PanelsCountXField = panelsCountAxisField({
     formField: 'panelsCountX',
     axis: 'X'
 });
 
-const PanelsCountYField = PanelsCountAxisField({
+const PanelsCountYField = panelsCountAxisField({
     formField: 'panelsCountY',
     axis: 'Y'
 });

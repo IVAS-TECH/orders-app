@@ -6,6 +6,7 @@ import { State, selectLanguage } from '../../../../store/reducer';
 import Language from '../../../../store/language/Language';
 import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
+import requiredErrorMessage from './requiredErrorMessage';
 
 type FieldConstraint = {
     value: string,
@@ -14,7 +15,7 @@ type FieldConstraint = {
     }
 }
 
-export default function field<
+export default function requiredTextInputField<
     Fields extends ConstraintFormField<Fields, FieldKey, FieldConstraint>,
     FieldKey extends keyof Fields,
     DisableWhenFieldHasNoValueKey extends keyof Fields
@@ -48,7 +49,7 @@ export default function field<
             const error = fieldError!(formState);
             return {
                 value: fieldValue(formState) as string,
-                error: errorMessage(error as undefined | 'required', language),
+                error: requiredErrorMessage(error as undefined | 'required', language),
                 label: label(language),
                 disabled: disableWhenFieldHasNoValueKey
                     ? !disableWhenFieldHasNoValue!(formState)
@@ -57,10 +58,4 @@ export default function field<
         },
         { onValueChange: setValue as (value: string) => { type: string } }
     )(Field);
-}
-
-function errorMessage(error: undefined | 'required', language: Language): string | undefined {
-    return error === 'required'
-        ? language.forms.fieldError.required
-        : undefined;
-}
+};

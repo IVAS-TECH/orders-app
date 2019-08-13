@@ -1,14 +1,8 @@
-import React, { ComponentType, ReactNode, Fragment } from 'react';
+import { ComponentType, ReactNode } from 'react';
 import { connect } from 'react-redux';
 import { Constraint, Form, FormState, formField } from '../../../../store/form/reducer';
 import { State } from '../../../../store/reducer';
-
-const ShowContent: React.FC<{
-    show: boolean,
-    children: ReactNode
-}> = ({ show, children }) => (<Fragment>
-    {show && children}
-</Fragment>);
+import ShowContent from '../../../layout/ShowContent';
 
 export default function showContent<
     Fields extends Constraint<Fields>,

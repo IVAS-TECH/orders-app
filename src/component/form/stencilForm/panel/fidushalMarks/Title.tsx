@@ -1,4 +1,4 @@
-import panelTitle from '../../layout/PanelTitle';
+import panelTitle from '../../layout/panelTitle';
 
 const PanelTitle = panelTitle('fidushalMarks');
 

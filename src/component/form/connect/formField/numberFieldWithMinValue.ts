@@ -15,7 +15,7 @@ type FieldConstraint = {
     }
 }
 
-export default function field<
+export default function numberFieldWithMinValue<
     Fields extends ConstraintFormField<Fields, FieldKey, FieldConstraint>,
     FieldKey extends keyof Fields
 >(
@@ -51,7 +51,7 @@ export default function field<
         },
         { onValueChange: setValue as (value: number | '') => { type: string } }
     )(Field);
-}
+};
 
 function errorMessage(error: undefined | 'required' | 'min', minValue: number, language: Language): string | undefined {
     switch(error) {

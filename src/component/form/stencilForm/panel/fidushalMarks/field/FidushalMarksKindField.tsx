@@ -1,8 +1,8 @@
 import form from '../../../../../../store/stencilForm';
-import field from  '../../../../connect/formField/RequiredSelectField';
+import requiredSelectField from  '../../../../connect/formField/requiredSelectField';
 import { selectStencilForm } from '../../../../../../store/reducer';
 
-const Field = field({
+const Field = requiredSelectField({
     form,
     fieldKey: 'fidushalMarksKind',
     extractFormState: selectStencilForm,

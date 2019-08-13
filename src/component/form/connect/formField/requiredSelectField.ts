@@ -7,6 +7,7 @@ import Language from '../../../../store/language/Language';
 import { ComponentType, FunctionComponent } from 'react';
 import { createSelector } from 'reselect';
 import ConstraintFormField from './ConstraintFormField';
+import requiredErrorMessage from './requiredErrorMessage';
 
 type Union<A, B> = A | B;
 
@@ -17,7 +18,7 @@ type FieldConstraint<Value extends string | number> = {
     }
 }
 
-export default function field<
+export default function requiredSelectField<
     Value extends string | number,
     Fields extends ConstraintFormField<Fields, FieldKey, FieldConstraint<Value>>,
     FieldKey extends keyof Fields
@@ -60,7 +61,7 @@ export default function field<
                 const error = fieldError!(formState);
                 return {
                     value: fieldValue(formState) as Value | '',
-                    error: errorMessage(error as undefined | 'required', language),
+                    error: requiredErrorMessage(error as undefined | 'required', language),
                     label: label(language),
                     notSelectedText: notSelectedText ? notSelectedText(language) : undefined
                 };
@@ -89,7 +90,7 @@ export default function field<
             const error = fieldError!(formState);
             return {
                 value: fieldValue(formState) as Value | '',
-                error: errorMessage(error as undefined | 'required', language),
+                error: requiredErrorMessage(error as undefined | 'required', language),
                 label: label(language),
                 notSelectedText: notSelectedText ? notSelectedText(language) : undefined,
                 options: optionsSelector(state)
@@ -97,10 +98,4 @@ export default function field<
         },
         { onValueChange: setValue as (value: Value) => { type: string } }
     )(Field as FunctionComponent<Pick<SelectProps<Value>, 'error' | 'label' | 'notSelectedText' | 'options' | 'onValueChange'>>);
-}
-
-function errorMessage(error: undefined | 'required', language: Language): string | undefined {
-    return error === 'required'
-        ? language.forms.fieldError.required
-        : undefined;
-}
+};

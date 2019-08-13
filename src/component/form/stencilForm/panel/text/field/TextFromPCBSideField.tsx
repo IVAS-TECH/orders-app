@@ -1,8 +1,8 @@
-import field from  '../../../../connect/formField/RequiredTextInputField';
+import requiredTextInputField from  '../../../../connect/formField/requiredTextInputField';
 import form from '../../../../../../store/stencilForm';
 import { selectStencilForm } from '../../../../../../store/reducer';
 
-const Field = field({
+const Field = requiredTextInputField({
     form,
     fieldKey: 'textFromPCBSide',
     extractFormState: selectStencilForm,

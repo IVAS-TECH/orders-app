@@ -1,4 +1,4 @@
-import field from  '../../../../connect/formField/NumberFieldWithMinValue';
+import numberFieldWithMinValue from  '../../../../connect/formField/numberFieldWithMinValue';
 import form from '../../../../../../store/stencilForm';
 import { selectStencilForm } from '../../../../../../store/reducer';
 import { ComponentType } from 'react';
@@ -13,8 +13,8 @@ type InfoY = {
     axis: 'Y'
 };
 
-function StepAxisField({ formField, axis }: InfoX | InfoY): ComponentType<{}> {
-    return field({
+function stepAxisField({ formField, axis }: InfoX | InfoY): ComponentType<{}> {
+    return numberFieldWithMinValue({
         form,
         fieldKey: formField,
         extractFormState: selectStencilForm,
@@ -23,12 +23,12 @@ function StepAxisField({ formField, axis }: InfoX | InfoY): ComponentType<{}> {
     });
 }
 
-const StepXField = StepAxisField({
+const StepXField = stepAxisField({
     formField: 'stepX',
     axis: 'X'
 });
 
-const StepYField = StepAxisField({
+const StepYField = stepAxisField({
     formField: 'stepY',
     axis: 'Y'
 });
