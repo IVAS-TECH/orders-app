@@ -4,7 +4,7 @@ import form from './../../../../../../store/stencilForm';
 import { formField } from './../../../../../../store/form/reducer';
 import { configure } from './../../../../../utils';
 import { selectStencilForm, selectLanguage, State } from './../../../../../../store/reducer';
-import requiredErrorMessage from './../../../../connect/formField/requiredErrorMessage';
+import requiredErrorMessage from '../../../../../../connect/form/formField/requiredErrorMessage';
 
 const {
     value,

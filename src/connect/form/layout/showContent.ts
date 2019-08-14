@@ -1,8 +1,8 @@
 import { ComponentType, ReactNode } from 'react';
 import { connect } from 'react-redux';
-import { Constraint, Form, FormState, formField } from '../../../../store/form/reducer';
-import { State } from '../../../../store/reducer';
-import ShowContent from '../../../layout/ShowContent';
+import { Constraint, Form, FormState, formField } from '../../../store/form/reducer';
+import { State } from '../../../store/reducer';
+import ShowContent from '../../../component/layout/ShowContent';
 
 export default function showContent<
     Fields extends Constraint<Fields>,

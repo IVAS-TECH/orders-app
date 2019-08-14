@@ -1,4 +1,4 @@
-import panelTitle from '../../connect/layout/panelTitle';
+import panelTitle from '../../../../connect/form/layout/panelTitle';
 import Language from '../../../../store/language/Language';
 import { ComponentType } from 'react';
 

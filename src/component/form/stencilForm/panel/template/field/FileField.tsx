@@ -1,4 +1,4 @@
-import requiredTextInputField from  '../../../../connect/formField/requiredTextInputField';
+import requiredTextInputField from  '../../../../../../connect/form/formField/requiredTextInputField';
 import form from '../../../../../../store/stencilForm';
 import { selectStencilForm } from '../../../../../../store/reducer';
 

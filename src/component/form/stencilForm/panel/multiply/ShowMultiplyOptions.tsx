@@ -1,4 +1,4 @@
-import showContent from  '../../../connect/layout/showContent';
+import showContent from  '../../../../../connect/form/layout/showContent';
 import form from '../../../../../store/stencilForm';
 import { selectStencilForm } from '../../../../../store/reducer';
 

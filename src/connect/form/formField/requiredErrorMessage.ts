@@ -1,4 +1,4 @@
-import Language from '../../../../store/language/Language';
+import Language from '../../../store/language/Language';
 
 export default function errorMessage(
     error: undefined | 'required',

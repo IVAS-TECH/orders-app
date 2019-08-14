@@ -1,4 +1,4 @@
-import numberFieldWithMinValue from  '../../../../connect/formField/numberFieldWithMinValue';
+import numberFieldWithMinValue from  '../../../../../../connect/form/formField/numberFieldWithMinValue';
 import form, { countMin } from '../../../../../../store/stencilForm';
 import { selectStencilForm } from '../../../../../../store/reducer';
 import { ComponentType } from 'react';

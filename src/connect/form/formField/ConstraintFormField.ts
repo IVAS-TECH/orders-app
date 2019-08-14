@@ -1,4 +1,4 @@
-import { Constraint } from '../../../../store/form/reducer';
+import { Constraint } from '../../../store/form/reducer';
 
 type Intersection<A, B> = A & B;
 

@@ -1,9 +1,9 @@
-import NumberInput from '../../../formControl/NumberInput'; 
+import NumberInput from '../../../component/formControl/NumberInput'; 
 import { connect } from 'react-redux';
-import { Form, FormState, formField } from '../../../../store/form/reducer';
-import { configure } from '../../../utils';
-import { State, selectLanguage } from '../../../../store/reducer';
-import Language from '../../../../store/language/Language';
+import { Form, FormState, formField } from '../../../store/form/reducer';
+import { configure } from '../../../component/utils';
+import { State, selectLanguage } from '../../../store/reducer';
+import Language from '../../../store/language/Language';
 import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
 

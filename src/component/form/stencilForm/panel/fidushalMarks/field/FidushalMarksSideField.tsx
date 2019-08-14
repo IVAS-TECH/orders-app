@@ -1,5 +1,5 @@
 import form from '../../../../../../store/stencilForm';
-import requiredSelectField from  '../../../../connect/formField/requiredSelectField';
+import requiredSelectField from  '../../../../../../connect/form/formField/requiredSelectField';
 import { selectStencilForm } from '../../../../../../store/reducer';
 
 const Field = requiredSelectField({

@@ -1,4 +1,4 @@
-import booleanField from  '../../../../connect/formField/booleanField';
+import booleanField from  '../../../../../../connect/form/formField/booleanField';
 import form from '../../../../../../store/stencilForm';
 import { selectStencilForm } from '../../../../../../store/reducer';
 
