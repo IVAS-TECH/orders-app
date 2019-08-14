@@ -4,17 +4,17 @@ import { createReducer } from '../utils';
 
 import {
     SET_FORM_FIELD_VALUE,
-    VALIDATE_FORM,
+    SHOW_ERRORS,
     Form as TypesForm,
     Value,
     SetFormFieldValueAction,
-    ValidateForm,
+    ShowErrors,
     FormAction
 } from './type';
 
 import {
     setFormFieldValue,
-    validateForm
+    showErrors
 } from './action';
 
 import { createSelector } from 'reselect';
@@ -153,8 +153,9 @@ export interface Form<Fields extends Constraint<Fields>> {
         setValue: {
             [Field in keyof Fields]: FormFieldRedux<Fields, Field>['setValue']
         },
-        validateForm: () => ValidateForm
+        showErrors: () => ShowErrors
     },
+    shouldTakeAction: (formAction: TypesForm) => boolean,
     id: (field: keyof Fields) => string
 }
 
@@ -207,8 +208,9 @@ export default function createForm<Fields extends Constraint<Fields>>(
         },
         actions: {
             setValue,
-            validateForm: () => validateForm(formName)
+            showErrors: () => showErrors(formName)
         },
+        shouldTakeAction: formAction => formAction.formName === formName,
         id: field => `field:${field}@form:${formName}`
     } as Form<Fields>
 };
@@ -248,10 +250,10 @@ function createFormReducer<Fields extends Constraint<Fields>>(formConfig: FormCo
             state,
             action
         ),
-        [VALIDATE_FORM]: (
+        [SHOW_ERRORS]: (
             state: FormState<Fields>,
-            action: ValidateForm
-        ) => handleValidateForm(formConfig, state, action)
+            action: ShowErrors
+        ) => handleShowErrors(formConfig, state, action)
     });
 };
 
@@ -392,10 +394,10 @@ function validateDependingOnFields<
     return newState;
 }
 
-function handleValidateForm<Fields extends Constraint<Fields>>(
+function handleShowErrors<Fields extends Constraint<Fields>>(
     formConfig: FormConfig<Fields>,
     state: FormState<Fields>,
-    action: ValidateForm
+    action: ShowErrors
 ): FormState<Fields> {
     const { formName } = action;
     const {formName: handleFormName, fields} = formConfig;

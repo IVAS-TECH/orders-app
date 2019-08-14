@@ -1,9 +1,9 @@
 import {
     SET_FORM_FIELD_VALUE,
-    VALIDATE_FORM,
+    SHOW_ERRORS,
     Value,
     SetFormFieldValueAction,
-    ValidateForm
+    ShowErrors
 } from './type';
 
 export function setFormFieldValue
@@ -18,9 +18,9 @@ export function setFormFieldValue
 };
 ;
 
-export function validateForm(formName: string): ValidateForm {
+export function showErrors(formName: string): ShowErrors {
     return {
-        type: VALIDATE_FORM,
+        type: SHOW_ERRORS,
         formName
     };
 };

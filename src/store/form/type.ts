@@ -1,6 +1,6 @@
 export const SET_FORM_FIELD_VALUE = 'ivas-tech/orders-app/form/SET_FORM_FIELD_VALUE';
 
-export const VALIDATE_FORM = 'ivas-tech/orders-app/form/VALIDATE_FORM';
+export const SHOW_ERRORS = 'ivas-tech/orders-app/form/SHOW_ERRORS';
 
 export interface Form {
     formName: string
@@ -13,8 +13,8 @@ export interface SetFormFieldValueAction<Field = string, V = Value> extends Form
     value: V
 };
 
-export interface ValidateForm extends Form {
-    type: typeof VALIDATE_FORM
+export interface ShowErrors extends Form {
+    type: typeof SHOW_ERRORS
 };
 
-export type FormAction = SetFormFieldValueAction | ValidateForm;
+export type FormAction = SetFormFieldValueAction | ShowErrors;

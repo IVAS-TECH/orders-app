@@ -30,7 +30,7 @@ export function createReducer<
     Actions<State, ReducerMap>
 > {
     return (state, action) => {
-        if(state) {
+        if(state !== undefined) {
             const { type } = action as { type: keyof ReducerMap };
             const reducer = reducerMap[type];
             return reducer ? reducer(state, action) : state;

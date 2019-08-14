@@ -59,9 +59,15 @@ const bg: Language = {
         fieldError: {
             required: 'Полето е задължително',
             min: min => `Минималната стойност на полето е ${min}`
+        },
+        warning: {
+            formIsInvalid: 'Формата е невалидна',
+            fieldValueIsInvalid: 'Има поле с невалидна стойност'
         }
+    },
+    action: {
+        ok: 'Добре'
     }
-
 };
 
 export default bg;

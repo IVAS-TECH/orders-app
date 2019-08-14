@@ -13,7 +13,14 @@ const en: Language = {
         fieldError: {
             required: 'Field is required',
             min: min => `Minimal value for the field is ${min}`
+        },
+        warning: {
+            formIsInvalid: 'Form is invalid',
+            fieldValueIsInvalid: 'There is field with invalid value'
         }
+    },
+    action: {
+        ok: 'OK'
     }
 }
 

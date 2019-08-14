@@ -4,12 +4,13 @@ import {
 } from './language/reducer';
 import Language from './language/Language';
 import stencilForm  from './stencilForm';
+import stencilFormIsInvalidWarningReducer from './stencilFormIsInvalidWarning';
 import { combineReducers } from 'redux';
-
 
 const reducerMap = {
     language: languageReducer,
-    stencilForm: stencilForm.reducer
+    stencilForm: stencilForm.reducer,
+    warnForStencilFormIsInvalid: stencilFormIsInvalidWarningReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -34,4 +35,8 @@ export function selectLanguage(state: State): Language {
 
 export function selectStencilForm(state: State): State['stencilForm'] {
     return extractState(state, 'stencilForm');
+}
+
+export function selectWarnForStencilFormIsInvalid(state: State): State['warnForStencilFormIsInvalid'] {
+    return extractState(state, 'warnForStencilFormIsInvalid');
 }

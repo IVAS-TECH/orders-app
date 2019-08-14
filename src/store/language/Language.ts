@@ -51,6 +51,13 @@ export default interface Language {
         fieldError: {
             required: string,
             min: (min: number) => string
+        },
+        warning: {
+            formIsInvalid: string,
+            fieldValueIsInvalid: string
         }
+    },
+    action: {
+        ok: string
     }
 }

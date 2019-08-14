@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PanelDivider from '../layout/PanelDivider';
 import TemplatePanel from './panel/template/Panel';
 import FidushalMarksPanel from './panel/fidushalMarks/Panel';
@@ -10,6 +10,7 @@ import AdditionalProcessingPanel from './panel/additionalProcessing/Panel';
 import styled from '@material-ui/styles/styled';
 import DivWithClassName from './../../DivWithClassName';
 import PreviewOrderButton from './PreviewOrderButton';
+import FormIsInvalidWarning from './FormIsInvalidWarning';
 
 const PreviewOrderButtonOuter = styled(DivWithClassName)({
     display: 'flex',
@@ -18,25 +19,28 @@ const PreviewOrderButtonOuter = styled(DivWithClassName)({
 });
 
 const Form: React.FC = () => (
-    <form>
-        <TemplatePanel />
-        <PanelDivider />
-        <FidushalMarksPanel />
-        <PanelDivider />
-        <ModificationsRequirementsPanel />
-        <PanelDivider />
-        <TextPanel />
-        <PanelDivider />
-        <MultiplyPanel />
-        <PanelDivider />
-        <PositionPanel />
-        <PanelDivider />
-        <AdditionalProcessingPanel />
-        <PanelDivider />
-        <PreviewOrderButtonOuter>
-            <PreviewOrderButton />
-        </PreviewOrderButtonOuter>
-    </form>
+    <Fragment>
+        <form>
+            <TemplatePanel />
+            <PanelDivider />
+            <FidushalMarksPanel />
+            <PanelDivider />
+            <ModificationsRequirementsPanel />
+            <PanelDivider />
+            <TextPanel />
+            <PanelDivider />
+            <MultiplyPanel />
+            <PanelDivider />
+            <PositionPanel />
+            <PanelDivider />
+            <AdditionalProcessingPanel />
+            <PanelDivider />
+            <PreviewOrderButtonOuter>
+                <PreviewOrderButton />
+            </PreviewOrderButtonOuter>
+        </form>
+        <FormIsInvalidWarning />
+    </Fragment>
 );
 
 export default Form;
