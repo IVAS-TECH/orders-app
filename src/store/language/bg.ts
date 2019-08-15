@@ -9,9 +9,9 @@ const bg: Language = {
     forms: {
         stencilForm: {
             filesArchive: 'Файлов архив',
-            isFromRackelSide: 'Файлът е изглед от страна ракел?',
+            isFromRackelSide: 'Файлът е изглед от страна ракел',
             count: 'Брой',
-            sheetThickness: 'Дебелина на листа (μm)',
+            sheetThickness: 'Дебелина на листа',
             fidushalMarks: 'Добави Фидюшал марки',
             fidushalMarksKind: 'Вид на марките',
             fidushalMarksSide: 'Страна на марките',
@@ -66,8 +66,10 @@ const bg: Language = {
         }
     },
     action: {
-        ok: 'Добре'
-    }
+        ok: 'Добре',
+        makeOrder: 'Направи поръчка'
+    },
+    bool: b => b ? 'Да' : 'Не'
 };
 
 export default bg;

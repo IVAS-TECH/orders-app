@@ -4,20 +4,34 @@ import { handleOnChangeEvent } from './Input';
 import TextField from '@material-ui/core/TextField';
 
 export interface TextAreaProps extends ControlProps {
-    initialRows: number,
+    initialRows?: number,
     expectedSymbolsPerRow: number,
-    helperText: string,
+    helperText?: string,
     value: string,
-    onValueChange: (value: string) => void
+    onValueChange?: (value: string) => void
 }
 
-function computeRows(value: string, initialRows: number, expectedSymbolsPerRow: number): number {
-    if(initialRows < 2) {
-        return 2;
+function computeRows(value: string, expectedSymbolsPerRow: number, initialRows?: number): number {
+    let rows = 0;
+    let afterNewLine = 0;
+    const inital = !initialRows || (initialRows && (initialRows < 2)) ? 3 : Math.round(initialRows);
+    for(let i = 0; i < value.length; ++i) {
+        if(value[i] === '\n') {
+            ++rows;
+            afterNewLine = 0;
+        } else {
+            ++afterNewLine;
+            if(afterNewLine > expectedSymbolsPerRow) {
+                ++rows;
+                afterNewLine = 0;
+            }
+        }
     }
-    const { length } = value;
-    const rows = Math.floor(length / expectedSymbolsPerRow);
-    return rows < (initialRows + 1) ? initialRows : (rows + 2);
+    if(rows < inital) {
+        return inital;
+    }
+    const additionalRows = Math.floor(afterNewLine / expectedSymbolsPerRow);
+    return rows + additionalRows + 2;
 }
 
 const TextArea: React.FC<TextAreaProps> = ({
@@ -42,7 +56,7 @@ const TextArea: React.FC<TextAreaProps> = ({
     error={!!error}
     onChange={handleOnChangeEvent(value, onValueChange)}
     helperText={error || helperText}
-    rows={computeRows(value, initialRows, expectedSymbolsPerRow)}
+    rows={computeRows(value, expectedSymbolsPerRow, initialRows)}
 />);
 
 export default TextArea;

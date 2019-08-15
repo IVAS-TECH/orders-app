@@ -11,6 +11,7 @@ import styled from '@material-ui/styles/styled';
 import DivWithClassName from './../../DivWithClassName';
 import PreviewOrderButton from './PreviewOrderButton';
 import FormIsInvalidWarning from './FormIsInvalidWarning';
+import PreviewOrder from './PreviewOrder';
 
 const PreviewOrderButtonOuter = styled(DivWithClassName)({
     display: 'flex',
@@ -40,6 +41,7 @@ const Form: React.FC = () => (
             </PreviewOrderButtonOuter>
         </form>
         <FormIsInvalidWarning />
+        <PreviewOrder />
     </Fragment>
 );
 

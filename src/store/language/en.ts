@@ -20,8 +20,10 @@ const en: Language = {
         }
     },
     action: {
-        ok: 'OK'
-    }
+        ok: 'OK',
+        makeOrder: 'Make Order'
+    },
+    bool: b => b ? 'Yes' : 'No'
 }
 
 export default en;

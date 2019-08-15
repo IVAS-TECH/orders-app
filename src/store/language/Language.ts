@@ -58,6 +58,8 @@ export default interface Language {
         }
     },
     action: {
-        ok: string
-    }
+        ok: string,
+        makeOrder: string
+    },
+    bool: (b: boolean) => string
 }

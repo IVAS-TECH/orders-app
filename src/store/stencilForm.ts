@@ -3,16 +3,17 @@ import { RequiredStringField, RequiredSelectField, requiredField } from './form/
 import { BooleanField, booleanField } from './form/formField/formFieldWithoutValidation/BooleanField';
 import { NumberFieldWithMinValue, numberFieldWithMinValue } from './form/formField/formFieldWithValueValidation/NumberFieldWithMinValue';
 import { StringField, stringField } from './form/formField/formFieldWithoutValidation/StringField';
+import * as StencilData from './../type/StencilData';
 
-export type SheetThickness = 30 | 40 | 50 | 80 | 90 | 100 | 110 | 120 | 130 | 150 | 180 | 200 | 250 | 300;
+export type SheetThickness = StencilData.SheetThickness;
 
-export type FidushalMarksKind = 'graved' | 'cut';
+export type FidushalMarksKind = StencilData.FidushalMarksKind;
 
-export type FidushalMarksSide = 'pcb' | 'rackel' | 'two-sided';
+export type FidushalMarksSide = StencilData.FidushalMarksSide;
 
-export type Position = 'pcb-centered' | 'layout-centered';
+export type Position = StencilData.Position;
 
-export type ImagePosition = 'horizontal' | 'vertical';
+export type ImagePosition = StencilData.ImagePosition;
 
 export interface Fields {
     file: RequiredStringField,
@@ -41,6 +42,30 @@ export interface Fields {
 export type State = FormState<Fields>;
 
 export type FormValues = FormFieldsValues<Fields>;
+
+export type FormData = {
+    file: string,
+    fileIsFromRackelSide: boolean,
+    count: number,
+    sheetThickness: SheetThickness,
+    fidushalMarks:  boolean,
+    fidushalMarksKind?: FidushalMarksKind,
+    fidushalMarksSide?: FidushalMarksSide,
+    modificationsRequirements: string,
+    includeTextFromRackelSide: boolean,
+    textFromRackelSide?: string,
+    includeTextFromPCBSide: boolean,
+    textFromPCBSide?: string,
+    multiply: boolean,
+    panelsCountX?: number,
+    stepX?: number,
+    panelsCountY?: number,
+    stepY?: number,
+    position: Position,
+    imagePosition: ImagePosition,
+    nanoCoating: boolean,
+    electrochemicalPolishing: boolean
+};
 
 const countMin = 1;
 
@@ -72,6 +97,12 @@ const form = createForm<Fields>({
         electrochemicalPolishing: booleanField()
     }
 });
+
+export function formData(formState: State): null | FormData {
+    const formValues = form.selectors.form.values(formState);
+    const isEmpty = Object.keys(formValues).length === 0;
+    return isEmpty ? null : formValues as FormData;
+};
 
 export default form;
 

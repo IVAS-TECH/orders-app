@@ -6,7 +6,7 @@ const Field = booleanField({
     form,
     fieldKey: 'fileIsFromRackelSide',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.isFromRackelSide,
+    label: language => language.forms.stencilForm.isFromRackelSide + '?',
     placeLableAtStart: true
 });
 

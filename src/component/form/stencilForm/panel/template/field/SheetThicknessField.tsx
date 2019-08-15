@@ -6,7 +6,7 @@ const Field = requiredSelectField({
     form,
     fieldKey: 'sheetThickness',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.sheetThickness,
+    label: language => language.forms.stencilForm.sheetThickness + ' (μm)',
     notSelectedText: language => language.forms.notSelected('she'),
     options: {
         values: [

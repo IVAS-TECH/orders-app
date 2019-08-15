@@ -6,14 +6,13 @@ import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import HorizontalImagePosition from './../imagePosition/HorizontalImagePosition';
 import VerticalImagePosition from './../imagePosition/VerticalImagePosition'; 
+import { ImagePosition } from './../../type/StencilData'; 
 
-export type Position = 'horizontal' | 'vertical';
-
-export type Value = '' | Position;
+export type Value = '' | ImagePosition;
 
 export interface ImagePositionSelectProps extends ControlProps {
     value: Value,
-    onValueChange: (value: Position) => void
+    onValueChange: (value: ImagePosition) => void
 };
 
 const ImagePositionSelect: React.FC<ImagePositionSelectProps> = ({
