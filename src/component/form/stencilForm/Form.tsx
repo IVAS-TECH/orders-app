@@ -7,7 +7,7 @@ import TextPanel from './panel/text/Panel';
 import MultiplyPanel from './panel/multiply/Panel';
 import PositionPanel from './panel/position/Panel';
 import AdditionalProcessingPanel from './panel/additionalProcessing/Panel';
-import styled from '@material-ui/styles/styled';
+import { styled } from '@material-ui/styles';
 import DivWithClassName from './../../DivWithClassName';
 import PreviewOrderButton from './PreviewOrderButton';
 import FormIsInvalidWarning from './FormIsInvalidWarning';

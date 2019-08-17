@@ -1,4 +1,4 @@
-import styled from '@material-ui/styles/styled';
+import { styled } from '@material-ui/styles';
 import DivWithClassName from '../DivWithClassName';
 
 const OuterBorder = styled(DivWithClassName)({
