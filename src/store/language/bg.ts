@@ -8,7 +8,12 @@ const bg: Language = {
     },
     forms: {
         stencilForm: {
-            filesArchive: 'Файлов архив',
+            file: {
+                noFileIsSelected: 'Не е избран файл',
+                fileArchive: 'Файлов архив',
+                selectFile: 'Избери файл',
+                changeFile: 'Промени избрания файл'
+            },
             isFromRackelSide: 'Файлът е изглед от страна ракел',
             count: 'Брой',
             sheetThickness: 'Дебелина на листа',

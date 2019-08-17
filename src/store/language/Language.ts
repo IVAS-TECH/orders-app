@@ -6,7 +6,12 @@ export default interface Language {
     },
     forms: {
         stencilForm: {
-            filesArchive: string,
+            file: {
+                noFileIsSelected: string,
+                fileArchive: string,
+                selectFile: string,
+                changeFile: string
+            }
             isFromRackelSide: string,
             count: string,
             sheetThickness: string,

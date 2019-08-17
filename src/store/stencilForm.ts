@@ -3,6 +3,7 @@ import { RequiredStringField, RequiredSelectField, requiredField } from './form/
 import { BooleanField, booleanField } from './form/formField/formFieldWithoutValidation/BooleanField';
 import { NumberFieldWithMinValue, numberFieldWithMinValue } from './form/formField/formFieldWithValueValidation/NumberFieldWithMinValue';
 import { StringField, stringField } from './form/formField/formFieldWithoutValidation/StringField';
+import FormFieldWithValueValidation from './form/formField/formFieldWithValueValidation/FormFieldWithValueValidation';
 import * as StencilData from './../type/StencilData';
 
 export type SheetThickness = StencilData.SheetThickness;
@@ -15,8 +16,10 @@ export type Position = StencilData.Position;
 
 export type ImagePosition = StencilData.ImagePosition;
 
+type RequiredFileField = FormFieldWithValueValidation<File, null , 'required'>;
+
 export interface Fields {
-    file: RequiredStringField,
+    file: RequiredFileField,
     fileIsFromRackelSide: BooleanField,
     count: NumberFieldWithMinValue<1>,
     sheetThickness: RequiredSelectField<SheetThickness>,
@@ -44,7 +47,8 @@ export type State = FormState<Fields>;
 export type FormValues = FormFieldsValues<Fields>;
 
 export type FormData = {
-    file: string,
+    file: File | { url: string },
+    fileName: string,
     fileIsFromRackelSide: boolean,
     count: number,
     sheetThickness: SheetThickness,
@@ -74,7 +78,12 @@ const stepMin = 0;
 const form = createForm<Fields>({
     formName: 'stencilForm',
     fields: {
-        file: requiredField(),
+        file: {
+            initialValue: null,
+            validation: {
+                required: value => value !== null
+            }
+        },
         fileIsFromRackelSide: booleanField(),
         count: numberFieldWithMinValue(countMin),
         sheetThickness: requiredField(),
@@ -101,7 +110,30 @@ const form = createForm<Fields>({
 export function formData(formState: State): null | FormData {
     const formValues = form.selectors.form.values(formState);
     const isEmpty = Object.keys(formValues).length === 0;
-    return isEmpty ? null : formValues as FormData;
+    return isEmpty ? null : {
+        file: formValues.file!,
+        fileName: formValues.file!.name,
+        fileIsFromRackelSide: formValues.fileIsFromRackelSide!,
+        count: formValues.count! as number,
+        sheetThickness: formValues.sheetThickness!,
+        fidushalMarks:  formValues.fidushalMarks!,
+        fidushalMarksKind: formValues.fidushalMarksKind,
+        fidushalMarksSide: formValues.fidushalMarksSide,
+        modificationsRequirements: formValues.modificationsRequirements!,
+        includeTextFromRackelSide: formValues.includeTextFromRackelSide!,
+        textFromRackelSide: formValues.textFromRackelSide,
+        includeTextFromPCBSide: formValues.includeTextFromPCBSide!,
+        textFromPCBSide: formValues.textFromPCBSide,
+        multiply: formValues.multiply!,
+        panelsCountX: formValues.panelsCountX as number | undefined,
+        stepX: formValues.stepX as number | undefined,
+        panelsCountY: formValues.panelsCountY as number | undefined,
+        stepY: formValues.stepY as number | undefined,
+        position: formValues.position!,
+        imagePosition: formValues.imagePosition!,
+        nanoCoating: formValues.nanoCoating!,
+        electrochemicalPolishing: formValues.electrochemicalPolishing!
+    };
 };
 
 export default form;

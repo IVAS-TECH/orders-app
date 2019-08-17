@@ -31,7 +31,7 @@ const StencilData: React.FC<StencilDataProps> = ({
     return (
         <div>
             <DataItem
-                description={stencilFormLanguage.filesArchive}
+                description={stencilFormLanguage.file.fileArchive}
                 value={stencilData.fileName} />
             <Divider />
             <DataItem
