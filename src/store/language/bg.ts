@@ -74,7 +74,12 @@ const bg: Language = {
         ok: 'Добре',
         makeOrder: 'Направи поръчка'
     },
-    bool: b => b ? 'Да' : 'Не'
+    bool: b => b ? 'Да' : 'Не',
+    tab: {
+        order: 'Поръчай',
+        activeOrders: 'Активни поръчки',
+        orderHistory: 'История на поръчките'
+    }
 };
 
 export default bg;

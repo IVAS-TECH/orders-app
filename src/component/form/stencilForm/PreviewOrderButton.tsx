@@ -1,8 +1,9 @@
 import React from 'react';
-import MUIButton from '@material-ui/core/Button';
+import MuiButton from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import stencilForm from './../../../store/stencilForm';
 import { openOrderPreview } from './../../../store/orderPreview';
+import { openStencilFormIsInvalidWarning } from './../../../store/stencilFormIsInvalidWarning';
 import { selectStencilForm, selectLanguage, State } from './../../../store/reducer';
 
 interface PreviewOrderButtonProps {
@@ -18,12 +19,12 @@ const Button: React.FC<PreviewOrderButtonProps> = ({
     showFormErrors,
     previewOrder
 }) => (
-    <MUIButton
+    <MuiButton
         variant='contained'
         color='primary'
         onClick={isFormValid ? previewOrder : showFormErrors}>
         {text}
-    </MUIButton>
+    </MuiButton>
 );
 
 const PreviewOrderButton = connect(
@@ -35,10 +36,14 @@ const PreviewOrderButton = connect(
             text: language.forms.stencilForm.previewOrder,
             isFormValid: isValid(formState)
         }
-    }, {
-        showFormErrors: stencilForm.actions.showErrors,
-        previewOrder: openOrderPreview
-    }
+    },
+    dispatch => ({
+        showFormErrors: () => {
+            dispatch(stencilForm.actions.showErrors());
+            dispatch(openStencilFormIsInvalidWarning());
+        },
+        previewOrder: () => dispatch(openOrderPreview())
+    })
 )(Button);
 
 export default PreviewOrderButton;

@@ -1,7 +1,7 @@
-import MUIDivider from '@material-ui/core/Divider';
+import MuiDivider from '@material-ui/core/Divider';
 import { styled } from '@material-ui/styles';
 
-const PanelDivider = styled(MUIDivider)({
+const PanelDivider = styled(MuiDivider)({
     marginTop: 16,
     marginBottom: 4
 });

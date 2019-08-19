@@ -1,6 +1,6 @@
 import React from 'react';
 import DataItem from './DataItem';
-import MUIDivider from '@material-ui/core/Divider';
+import MuiDivider from '@material-ui/core/Divider';
 import TextArea from './../formControl/TextArea';
 import { styled } from '@material-ui/styles';
 import Language from './../../store/language/Language';
@@ -18,7 +18,7 @@ export interface StencilDataProps {
     stencilData: StencilDataType
 };
 
-const Divider = styled(MUIDivider)({
+const Divider = styled(MuiDivider)({
     marginTop: 8,
     marginBottom: 8
 });

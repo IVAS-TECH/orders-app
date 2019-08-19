@@ -1,7 +1,7 @@
 import React from 'react';
 import FileSelect from './FileSelect';
 import SelectedFile from './SelectedFile';
-import { styled } from '@material-ui/core';
+import { styled } from '@material-ui/styles';
 
 export interface FileUploadProps {
     id: string,
@@ -13,9 +13,7 @@ export interface FileUploadProps {
     fileNotSelectedText: string
 };
 
-const FileSelectWithMarginRight = styled(FileSelect)(
-    ({ theme }) => ({ marginRight: theme.spacing(2) })
-);
+const FileSelectWithMarginRight = styled(FileSelect)({ marginRight: 16 });
 
 const FileUpload: React.FC<FileUploadProps> = ({
     id,

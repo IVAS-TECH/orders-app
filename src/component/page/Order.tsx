@@ -1,8 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import StencilForm from './../form/stencilForm/Form';
 
-const width = 900;
+const width = 1000;
 
 const useStyles = makeStyles(theme => ({
     layout: {
@@ -27,15 +28,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Main: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const classes = useStyles();
+const Order: React.FC<{}> = (props) => {
+    const classes = useStyles(props);
     return (
         <main className={classes.layout}>
             <Paper className={classes.paper}>
-                {children}
+                <StencilForm />
             </Paper>
         </main>
     );
 };
 
-export default Main;
+export default Order;

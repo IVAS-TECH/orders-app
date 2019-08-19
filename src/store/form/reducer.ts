@@ -155,7 +155,6 @@ export interface Form<Fields extends Constraint<Fields>> {
         },
         showErrors: () => ShowErrors
     },
-    shouldTakeAction: (formAction: TypesForm) => boolean,
     id: (field: keyof Fields) => string
 }
 
@@ -210,7 +209,6 @@ export default function createForm<Fields extends Constraint<Fields>>(
             setValue,
             showErrors: () => showErrors(formName)
         },
-        shouldTakeAction: formAction => formAction.formName === formName,
         id: field => `field:${field}@form:${formName}`
     } as Form<Fields>
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import MUIFormControl from '@material-ui/core/FormControl';
+import MuiFormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
@@ -24,7 +24,7 @@ const FormControl: React.FC<FormControlProps> = ({
     shrinkLabel,
     children
 }) => (
-    <MUIFormControl
+    <MuiFormControl
         required={required}
         disabled={disabled}
         error={!!error}
@@ -38,7 +38,7 @@ const FormControl: React.FC<FormControlProps> = ({
             <FormHelperText>
                 {error}
             </FormHelperText>}
-    </MUIFormControl>
+    </MuiFormControl>
 );
 
 export default FormControl;

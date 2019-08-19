@@ -11,7 +11,11 @@ export interface SetLanguageAction {
     language: Lang
 };
 
-const language = {
+export type LangMap<T> = {
+    [L in Lang]: T
+};
+
+const language: LangMap<Language> = {
     bg,
     en
 };
@@ -21,7 +25,7 @@ export function setLanguage(lang: Lang): SetLanguageAction {
         type: SET_LANGUAGE,
         language: lang
     }
-}
+};
 
 export function reducer(state: Lang = 'bg', action: SetLanguageAction | { type: string }): Lang {
     if(action.type === SET_LANGUAGE) {
@@ -29,8 +33,8 @@ export function reducer(state: Lang = 'bg', action: SetLanguageAction | { type: 
     } else {
         return state;
     }
-}
+};
 
 export function selector(lang: Lang): Language {
     return language[lang];
-}
+};

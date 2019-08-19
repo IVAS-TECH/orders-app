@@ -1,11 +1,19 @@
-import stencilForm from './stencilForm';
-import { SHOW_ERRORS, ShowErrors } from './form/type';
 import { createReducer } from './utils';
+
+export const OPEN_STENCIL_FORM_IS_INVALID_WARNING = 'ivas-tech/orders-app/stencilFormIsInvalidWarning/OPEN_STENCIL_FORM_IS_INVALID_WARNING';
 
 export const CLOSE_STENCIL_FORM_IS_INVALID_WARNING = 'ivas-tech/orders-app/stencilFormIsInvalidWarning/CLOSE_STENCIL_FORM_IS_INVALID_WARNING';
 
+export interface OpenStencilFormIsInvalidWarning {
+    type: typeof OPEN_STENCIL_FORM_IS_INVALID_WARNING
+};
+
 export interface CloseStencilFormIsInvalidWarning {
     type: typeof CLOSE_STENCIL_FORM_IS_INVALID_WARNING
+};
+
+export function openStencilFormIsInvalidWarning(): OpenStencilFormIsInvalidWarning {
+    return { type: OPEN_STENCIL_FORM_IS_INVALID_WARNING };
 };
 
 export function closeStencilFormIsInvalidWarning(): CloseStencilFormIsInvalidWarning {
@@ -13,10 +21,10 @@ export function closeStencilFormIsInvalidWarning(): CloseStencilFormIsInvalidWar
 };
 
 const reducer = createReducer(false, {
-    [SHOW_ERRORS]: (
-        state: boolean,
-        action: ShowErrors
-    ) => stencilForm.shouldTakeAction(action) ? true : state,
+    [OPEN_STENCIL_FORM_IS_INVALID_WARNING]: (
+        _state: boolean,
+        _action: OpenStencilFormIsInvalidWarning
+    ) => true,
     [CLOSE_STENCIL_FORM_IS_INVALID_WARNING]: (
         _state: boolean,
         _action: CloseStencilFormIsInvalidWarning

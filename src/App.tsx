@@ -1,16 +1,13 @@
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from './component/layout/appBar/AppBar';
-import Main from './component/layout/Main';
-import Form from './component/form/stencilForm/Form';
+import Tabs from './component/layout/Tabs';
 
 const App: React.FC<{}> = () => (
     <React.Fragment>
         <CssBaseline />
         <AppBar />
-        <Main>
-            <Form />
-        </Main>
+        <Tabs />
     </React.Fragment>
 );
 

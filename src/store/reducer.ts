@@ -6,13 +6,20 @@ import Language from './language/Language';
 import stencilForm  from './stencilForm';
 import stencilFormIsInvalidWarningReducer from './stencilFormIsInvalidWarning';
 import orderPreviewReducer from './orderPreview';
+import tabReducer from './tab';
+import orderFilterReducer, {
+    selectCurrentOrderFilter as _selectCurrentOrderFilter,
+    selectSetOrderFilter as _selectSetOrderFilter
+} from './orderFilter/orderFilter';
 import { combineReducers } from 'redux';
 
 const reducerMap = {
     language: languageReducer,
     stencilForm: stencilForm.reducer,
     warnForStencilFormIsInvalid: stencilFormIsInvalidWarningReducer,
-    orderPreview: orderPreviewReducer
+    orderPreview: orderPreviewReducer,
+    tab: tabReducer,
+    orderFilter: orderFilterReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -21,28 +28,34 @@ export default reducer;
 
 export type State = ReturnType<typeof reducer>;
 
-type StateKey = keyof State;
-
-export function extractState<Extract extends StateKey>(state: State, extract: Extract): State[Extract] {
-    return state[extract];
-}
-
 export function selectLanguageValue(state: State): State['language'] {
-    return extractState(state, 'language');
-}
+    return state.language;
+};
 
 export function selectLanguage(state: State): Language {
-    return languageSelector(extractState(state, 'language'));
-}
+    return languageSelector(state.language);
+};
 
 export function selectStencilForm(state: State): State['stencilForm'] {
-    return extractState(state, 'stencilForm');
-}
+    return state.stencilForm;
+};
 
 export function selectWarnForStencilFormIsInvalid(state: State): State['warnForStencilFormIsInvalid'] {
-    return extractState(state, 'warnForStencilFormIsInvalid');
-}
+    return state.warnForStencilFormIsInvalid;
+};
 
 export function selectPreviewOrder(state: State): State['orderPreview'] {
-    return extractState(state, 'orderPreview');
-}
+    return state.orderPreview;
+};
+
+export function selectTab(state: State): State['tab'] {
+    return state.tab;
+};
+
+export function selectSetOrderFilter(state: State): ReturnType<typeof _selectSetOrderFilter> {
+    return _selectSetOrderFilter(state.orderFilter);
+};
+
+export function selectCurrentOrderFilter(state: State): ReturnType<typeof _selectCurrentOrderFilter> {
+    return _selectCurrentOrderFilter(state.orderFilter);
+};

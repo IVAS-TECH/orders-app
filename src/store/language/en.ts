@@ -23,7 +23,12 @@ const en: Language = {
         ok: 'OK',
         makeOrder: 'Make Order'
     },
-    bool: b => b ? 'Yes' : 'No'
+    bool: b => b ? 'Yes' : 'No',
+    tab: {
+        order: 'Order',
+        activeOrders: 'Active orders',
+        orderHistory: 'Order history'
+    }
 }
 
 export default en;

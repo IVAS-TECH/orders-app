@@ -66,5 +66,10 @@ export default interface Language {
         ok: string,
         makeOrder: string
     },
-    bool: (b: boolean) => string
+    bool: (b: boolean) => string,
+    tab: {
+        order: string,
+        activeOrders: string,
+        orderHistory: string
+    }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import FilledInput from '@material-ui/core/FilledInput';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl, { ControlProps } from './FormControl';
-import MUISelect from '@material-ui/core/Select';
+import MuiSelect from '@material-ui/core/Select';
 
 export interface Option<Value extends string | number>{
     value: Value,
@@ -47,7 +47,7 @@ export default function Select<Value extends string | number>(props: SelectProps
             required={required}
             disabled={disabled}
             error={error}>
-            <MUISelect
+            <MuiSelect
                 value={value}
                 onChange={handleOnChangeEvent(value, onValueChange)}
                 input={<FilledInput id={id} />}>
@@ -59,7 +59,7 @@ export default function Select<Value extends string | number>(props: SelectProps
                     <MenuItem value={value} key={value}>
                         {text}
                     </MenuItem>)}
-            </MUISelect>
+            </MuiSelect>
         </FormControl>
     );
 };

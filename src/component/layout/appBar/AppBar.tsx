@@ -1,12 +1,12 @@
 import React from "react";
-import MUIAppBar from "@material-ui/core/AppBar";
+import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Grid from '@material-ui/core/Grid';
 import { styled } from '@material-ui/styles';
 import Name from './Name';
 import LanguageSelect from './LanguageSelect';
 
-const AppBarComponent = styled(MUIAppBar)({
+const AppBarComponent = styled(MuiAppBar)({
     position: 'relative'
 });
 

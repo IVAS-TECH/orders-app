@@ -1,19 +1,23 @@
 import React from 'react';
-import MUICheckbox from '@material-ui/core/Checkbox';
+import MuiCheckbox, { CheckboxProps as MuiCheckboxProps } from '@material-ui/core/Checkbox';
 
 export interface CheckboxProps {
     checked: boolean,
-    onToggle: (checked: boolean) => void
+    onToggle: (checked: boolean) => void,
+    edge?: MuiCheckboxProps['edge']
 }
 
 const Checkbox: React.FC<CheckboxProps> = ({
     checked,
-    onToggle
+    onToggle,
+    edge
 }) => (
-    <MUICheckbox
+    <MuiCheckbox
         checked={checked}
         color="primary"
+        size='medium'
         onChange={_ => onToggle(!checked)}
+        edge={edge}
     />
 );
 
