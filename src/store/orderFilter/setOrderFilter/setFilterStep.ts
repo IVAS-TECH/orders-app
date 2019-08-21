@@ -4,6 +4,8 @@ export const PREVIOUS_FILTER_STEP = 'ivas-tech/orders-app/orderFilter/setFilterS
 
 export const NEXT_FILTER_STEP = 'ivas-tech/orders-app/orderFilter/setFilterStep/NEXT_FILTER_STEP';
 
+export const RESET_FILTER_STEP = 'ivas-tech/orders-app/orderFilter/setFilterStep/RESET_FILTER_STEP';
+
 export type FilterStep
 = 'start-date'
 | 'end-date'
@@ -24,12 +26,20 @@ export interface NextFilterStep {
     type: typeof NEXT_FILTER_STEP
 };
 
+export interface ResetFilterStep {
+    type: typeof RESET_FILTER_STEP
+};
+
 export function previousFilterStep(): PreviousFilterStep {
     return { type: PREVIOUS_FILTER_STEP };
 };
 
 export function nextFilterStep(): NextFilterStep {
     return { type: NEXT_FILTER_STEP };
+};
+
+export function resetFilterStep(): ResetFilterStep {
+    return { type: RESET_FILTER_STEP };
 };
 
 const filterStepIndex: FilterStepMap<number> = {
@@ -58,6 +68,12 @@ const reducer = createReducer('start-date' as FilterStep, {
     ) => {
         const index = filterStepIndex[state];
         return index === (filterSteps.length - 1) ? state : filterSteps[index + 1];
+    },
+    [RESET_FILTER_STEP]: (
+        _state: FilterStep,
+        _action: ResetFilterStep
+    ) => {
+        return filterSteps[0]; 
     }
 });
 

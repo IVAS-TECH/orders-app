@@ -5,7 +5,7 @@ import statusReducer, { toggleKey as toggleStatus, order as statusOrder } from '
 import orderedByReducer, { toggleKey as toggleOrderedBy } from './orderedBy';
 import fileExtentionReducer, { toggleKey as toggleFileExtention, order as fileExtentionOrder } from './fileExtention';
 import fileNameReducer, { setFileName } from './fileName';
-import setFilterStepReducer, { previousFilterStep, nextFilterStep } from './setFilterStep';
+import setFilterStepReducer, { previousFilterStep, nextFilterStep, resetFilterStep } from './setFilterStep';
 import OrderFilter from '../../../type/OrderFilter';
 
 export {
@@ -20,7 +20,8 @@ export {
     fileExtentionOrder,
     setFileName,
     previousFilterStep,
-    nextFilterStep
+    nextFilterStep,
+    resetFilterStep
 };
 
 const reducerMap = {

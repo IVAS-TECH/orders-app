@@ -4,22 +4,24 @@ import {
 } from './language/reducer';
 import Language from './language/Language';
 import stencilForm  from './stencilForm';
-import stencilFormIsInvalidWarningReducer from './stencilFormIsInvalidWarning';
+import invalidFormWarningReducer from './invalidFormWarning';
 import orderPreviewReducer from './orderPreview';
 import tabReducer from './tab';
 import orderFilterReducer, {
     selectCurrentOrderFilter as _selectCurrentOrderFilter,
     selectSetOrderFilter as _selectSetOrderFilter
 } from './orderFilter/orderFilter';
+import changeOrderFilterReducer from './changeOrderFilter';
 import { combineReducers } from 'redux';
 
 const reducerMap = {
     language: languageReducer,
     stencilForm: stencilForm.reducer,
-    warnForStencilFormIsInvalid: stencilFormIsInvalidWarningReducer,
+    invalidFormWarning: invalidFormWarningReducer,
     orderPreview: orderPreviewReducer,
     tab: tabReducer,
-    orderFilter: orderFilterReducer
+    orderFilter: orderFilterReducer,
+    changeOrderFilter: changeOrderFilterReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -40,8 +42,8 @@ export function selectStencilForm(state: State): State['stencilForm'] {
     return state.stencilForm;
 };
 
-export function selectWarnForStencilFormIsInvalid(state: State): State['warnForStencilFormIsInvalid'] {
-    return state.warnForStencilFormIsInvalid;
+export function selectInvalidFormWarning(state: State): State['invalidFormWarning'] {
+    return state.invalidFormWarning;
 };
 
 export function selectPreviewOrder(state: State): State['orderPreview'] {
@@ -58,4 +60,8 @@ export function selectSetOrderFilter(state: State): ReturnType<typeof _selectSet
 
 export function selectCurrentOrderFilter(state: State): ReturnType<typeof _selectCurrentOrderFilter> {
     return _selectCurrentOrderFilter(state.orderFilter);
+};
+
+export function selectChangeOrderFilter(state: State): State['changeOrderFilter'] {
+    return state.changeOrderFilter;
 };

@@ -5,6 +5,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { connect } from 'react-redux';
+import { State, selectLanguage, selectInvalidFormWarning } from '../../../store/reducer';
+import { closeInvalidFormWarning } from '../../../store/invalidFormWarning';
 
 export interface WarningForInvalidFormProps {
     open: boolean,
@@ -38,4 +41,17 @@ const WarningForInvalidForm: React.FC<WarningForInvalidFormProps> = ({
     </Dialog>
 );
 
-export default WarningForInvalidForm;
+const Connnected = connect(
+    (state: State) => {
+        const language = selectLanguage(state);
+        const { formIsInvalid, fieldValueIsInvalid } = language.forms.warning;
+        return {
+            open: selectInvalidFormWarning(state),
+            title: formIsInvalid,
+            warning: fieldValueIsInvalid,
+            okAction: language.action.ok
+        };
+    }, { onClose: closeInvalidFormWarning }
+)(WarningForInvalidForm);
+
+export default Connnected;

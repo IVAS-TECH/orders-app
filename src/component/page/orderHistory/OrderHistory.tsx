@@ -3,11 +3,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import CurrentFilters from './filters/currentFilters/CurrentFilters';
 import SetFilters from './filters/setFilters/SetFilters';
+import ChangeFilters from './filters/ChangeFilters';
 import { connect } from 'react-redux';
-import { State, selectCurrentOrderFilter } from './../../../store/reducer';
+import { State, selectCurrentOrderFilter, selectChangeOrderFilter } from './../../../store/reducer';
 
 interface OrderHistoryProps {
-    isOderFilterSet: boolean
+    isOderFilterSet: boolean,
+    changeOrderFilters: boolean
 }
 
 const filtersWidth = 1000;
@@ -33,7 +35,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const OrderHistory: React.FC<OrderHistoryProps> = ({
-    isOderFilterSet
+    isOderFilterSet,
+    changeOrderFilters
 }) => {
     const classes = useStyles();
     return (
@@ -41,12 +44,16 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({
             <Paper className={classes.filters}>
                 {isOderFilterSet ? <CurrentFilters /> : <SetFilters />}
             </Paper>
+            <ChangeFilters changeFilters={changeOrderFilters} />
         </main>
     );
 };
 
 const OrderHistoryPage = connect(
-    (state: State) => ({ isOderFilterSet: selectCurrentOrderFilter(state) !== null })
+    (state: State) => ({
+        isOderFilterSet: selectCurrentOrderFilter(state) !== null,
+        changeOrderFilters: selectChangeOrderFilter(state)
+    })
 )(OrderHistory)
 
 export default OrderHistoryPage;

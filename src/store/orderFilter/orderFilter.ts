@@ -14,7 +14,7 @@ export type State = {
     setOrderFilter: SetOrderFilterState
 };
 
-const SET_CURRENT_ORDER_FILTER = 'ivas-tech/orders-app/orderFilter/SET_CURRENT_FILTER';
+export const SET_CURRENT_ORDER_FILTER = 'ivas-tech/orders-app/orderFilter/SET_CURRENT_FILTER';
 
 export interface SetCurrentOrderFilter {
     type: typeof SET_CURRENT_ORDER_FILTER

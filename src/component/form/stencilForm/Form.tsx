@@ -10,7 +10,7 @@ import AdditionalProcessingPanel from './panel/additionalProcessing/Panel';
 import { styled } from '@material-ui/styles';
 import DivWithClassName from './../../DivWithClassName';
 import PreviewOrderButton from './PreviewOrderButton';
-import FormIsInvalidWarning from './FormIsInvalidWarning';
+import WarningForInvalidForm from './../dialog/WarningForInvalidForm';
 import PreviewOrder from './PreviewOrder';
 
 const PreviewOrderButtonOuter = styled(DivWithClassName)({
@@ -40,7 +40,7 @@ const Form: React.FC = () => (
                 <PreviewOrderButton />
             </PreviewOrderButtonOuter>
         </form>
-        <FormIsInvalidWarning />
+        <WarningForInvalidForm />
         <PreviewOrder />
     </Fragment>
 );

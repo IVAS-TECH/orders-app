@@ -3,7 +3,6 @@ import MuiButton from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import stencilForm from './../../../store/stencilForm';
 import { openOrderPreview } from './../../../store/orderPreview';
-import { openStencilFormIsInvalidWarning } from './../../../store/stencilFormIsInvalidWarning';
 import { selectStencilForm, selectLanguage, State } from './../../../store/reducer';
 
 interface PreviewOrderButtonProps {
@@ -37,13 +36,10 @@ const PreviewOrderButton = connect(
             isFormValid: isValid(formState)
         }
     },
-    dispatch => ({
-        showFormErrors: () => {
-            dispatch(stencilForm.actions.showErrors());
-            dispatch(openStencilFormIsInvalidWarning());
-        },
-        previewOrder: () => dispatch(openOrderPreview())
-    })
+    {
+        showFormErrors: stencilForm.actions.showErrors,
+        previewOrder: openOrderPreview
+    }
 )(Button);
 
 export default PreviewOrderButton;

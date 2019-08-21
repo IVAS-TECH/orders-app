@@ -13,14 +13,16 @@ import {
     selectPickedFromOrderedBy,
     selectPickedFromFileExtention,
     selectFileName
-} from '../../../../../store/orderFilter/orderFilter';
+} from './../../../../../store/orderFilter/orderFilter';
+import { resetFilterStep } from '../../../../../store/orderFilter/setOrderFilter/orderFilter';
 
 interface CurrentOrderFilterProps {
     dateRange: string,
     status: string[],
     orderedBy: string[],
     fileExtention: string[],
-    fileName: string
+    fileName: string,
+    onRequestChangeFilters: () => void
 }
 
 const CurrentOrderFilters: React.FC<CurrentOrderFilterProps> = ({
@@ -28,7 +30,8 @@ const CurrentOrderFilters: React.FC<CurrentOrderFilterProps> = ({
     status,
     orderedBy,
     fileExtention,
-    fileName
+    fileName,
+    onRequestChangeFilters
 }) => (
     <Grid container direction='column' spacing={4}>
         <Grid item>
@@ -62,7 +65,7 @@ const CurrentOrderFilters: React.FC<CurrentOrderFilterProps> = ({
         </Grid>
         <Divider />
         <Grid container justify='flex-end' item>
-            <Button variant='contained' color='primary' size='large'>
+            <Button variant='contained' color='primary' size='large' onClick={onRequestChangeFilters}>
                 Change filters
                 <FilterListIconWithLeftMargin />
             </Button>
@@ -80,6 +83,8 @@ const CurrentFilters = connect(
             fileExtention: selectPickedFromFileExtention(currentOrderFilter) as string[],
             fileName: selectFileName(currentOrderFilter)
         };
+    }, {
+        onRequestChangeFilters: resetFilterStep
     }
 )(CurrentOrderFilters);
 

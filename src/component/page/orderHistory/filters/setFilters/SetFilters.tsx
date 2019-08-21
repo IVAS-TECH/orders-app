@@ -118,9 +118,7 @@ const ConfiguredSetFilterStep = configure(SetFilterStep, {
 const SetFilter = connect(
     (state: State) => {
         const currentFilterStep = selectSetFilterStep(selectSetOrderFilter(state));
-        return {
-            currentFilterStep
-        };
+        return { currentFilterStep };
     }, {
         onBack: previousFilterStep,
         onNext: nextFilterStep,
