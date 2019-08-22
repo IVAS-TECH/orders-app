@@ -6,7 +6,7 @@ const Field = requiredTextInputField({
     form,
     fieldKey: 'textFromPCBSide',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.textFromPCBSide,
+    label: text => text.stencilForm.textFromPCBSide,
     disableWhenFieldHasNoValueKey: 'includeTextFromPCBSide'
 });
 

@@ -6,7 +6,7 @@ const Field = booleanField({
     form,
     fieldKey: 'fidushalMarks',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.fidushalMarks,
+    label: text => text.stencilForm.fidushalMarks,
     placeLableAtStart: true
 });
 

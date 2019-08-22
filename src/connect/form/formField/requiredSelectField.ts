@@ -1,15 +1,12 @@
-import Select, { SelectProps } from '../../../component/formControl/Select'; 
+import Select, { SelectProps } from '../../../component/formControlWithText/Select'; 
 import { connect } from 'react-redux';
 import { Form, FormState, formField } from '../../../store/form/reducer';
 import { configure } from '../../../component/utils';
-import { State, selectLanguage } from '../../../store/reducer';
-import Language from '../../../store/language/Language';
+import { State } from '../../../store/reducer';
+import Text from '../../../text/language/Text';
 import { ComponentType, FunctionComponent } from 'react';
-import { createSelector } from 'reselect';
 import ConstraintFormField from './ConstraintFormField';
-import requiredErrorMessage from './requiredErrorMessage';
-
-type Union<A, B> = A | B;
+import requiredErrorMessage from './../../../fieldError/requiredErrorMessage';
 
 type FieldConstraint<Value extends string | number> = {
     value: Value,
@@ -23,18 +20,14 @@ export default function requiredSelectField<
     Fields extends ConstraintFormField<Fields, FieldKey, FieldConstraint<Value>>,
     FieldKey extends keyof Fields
 >(
-{ form, fieldKey, extractFormState, label, notSelectedText, options }: {
+{ form, fieldKey, extractFormState, label, notSelectedText, options, optionText }: {
     form: Form<Fields>,
     fieldKey: FieldKey,
     extractFormState: (state: State) => FormState<Fields>,
-    label: (language: Language) => string,
-    notSelectedText: (language: Language) => string,
-    options: Union<(language: Language) => {
-        [Key in Value]: string
-    }, {
-        values: Array<Value>,
-        text: (value: Value) => string
-    }>
+    label: (text: Text) => string,
+    notSelectedText: (text: Text) => string,
+    options: Array<Value>,
+    optionText: (text: Text) => { [V in Value]: string }
 }):  ComponentType<{}> {
     const {
         value: fieldValue,
@@ -43,59 +36,25 @@ export default function requiredSelectField<
     } = formField(form, fieldKey);
 
     const ValueSelect: React.FC<SelectProps<Value>> = Select;
-
-    if(typeof options !== 'function') {
-        const Field = configure(ValueSelect, {
-            id: form.id(fieldKey),
-            required: true,
-            options: options.values.map(value => ({
-                value,
-                text: options.text(value)
-            }))
-        });
-
-        return connect(
-            (state: State) => {
-                const formState = extractFormState(state);
-                const language = selectLanguage(state);
-                const error = fieldError!(formState);
-                return {
-                    value: fieldValue(formState) as Value | '',
-                    error: requiredErrorMessage(error as undefined | 'required', language),
-                    label: label(language),
-                    notSelectedText: notSelectedText ? notSelectedText(language) : undefined
-                };
-            },
-            { onValueChange: setValue as (value: Value) => { type: string } }
-        )(Field as FunctionComponent<Pick<SelectProps<Value>, 'error' | 'label' | 'notSelectedText' | 'onValueChange'>>);
-    }
     
     const Field = configure(ValueSelect, {
         id: form.id(fieldKey),
-        required: true
+        required: true,
+        label,
+        notSelectedText,
+        options,
+        optionText
     });
-
-    const optionsSelector = createSelector(
-        selectLanguage,
-        language => (Object.entries(options(language)) as Array<[Value, string]>).map(entry => ({
-            value: entry[0],
-            text: entry[1]
-        }))
-    );
     
     return connect(
         (state: State) => {
             const formState = extractFormState(state);
-            const language = selectLanguage(state);
             const error = fieldError!(formState);
             return {
                 value: fieldValue(formState) as Value | '',
-                error: requiredErrorMessage(error as undefined | 'required', language),
-                label: label(language),
-                notSelectedText: notSelectedText ? notSelectedText(language) : undefined,
-                options: optionsSelector(state)
+                error: requiredErrorMessage(error as undefined | 'required')
             };
         },
-        { onValueChange: setValue as (value: Value) => { type: string } }
-    )(Field as FunctionComponent<Pick<SelectProps<Value>, 'error' | 'label' | 'notSelectedText' | 'options' | 'onValueChange'>>);
+        { onValueChange: setValue }
+    )(Field as FunctionComponent<{ error: undefined | ((text: Text) => string) }>);
 };

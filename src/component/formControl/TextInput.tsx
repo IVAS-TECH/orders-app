@@ -2,7 +2,7 @@ import React from 'react';
 import FormControl, { ControlProps } from './FormControl';
 import FilledInput from '@material-ui/core/FilledInput';
 
-export interface InputProps extends ControlProps {
+export interface TextInputProps extends ControlProps {
     id: string,
     value: string,
     onValueChange: (value: string) => void
@@ -17,7 +17,7 @@ export function handleOnChangeEvent(currentValue: string, onValueChange?: (_: st
     }
 }
 
-const Input: React.FC<InputProps> = ({
+const Input: React.FC<TextInputProps> = ({
     id,
     value,
     label,

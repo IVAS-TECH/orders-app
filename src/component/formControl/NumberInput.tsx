@@ -2,7 +2,7 @@ import React from 'react';
 import FormControl, { ControlProps } from './FormControl';
 import FilledInput from '@material-ui/core/FilledInput';
 
-export interface InputProps extends ControlProps {
+export interface NumberInputProps extends ControlProps {
     id: string,
     value: number | '',
     onValueChange: (value: number | '') => void,
@@ -37,7 +37,7 @@ function handleOnKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     }
 }
 
-const NumberInput: React.FC<InputProps> = ({
+const NumberInput: React.FC<NumberInputProps> = ({
     id,
     value,
     label,

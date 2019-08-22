@@ -6,12 +6,10 @@ const Field = requiredSelectField({
     form,
     fieldKey: 'position',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.position,
-    notSelectedText: language => language.forms.notSelected('it'),
-    options: language => ({
-        'layout-centered': language.forms.stencilForm.options.layoutCentered,
-        'pcb-centered': language.forms.stencilForm.options.pcbCentered
-    })
+    label: text => text.stencilForm.position,
+    notSelectedText: text => text.form.notSelected('it'),
+    options: ['layout-centered', 'pcb-centered'],
+    optionText: text => text.stencilForm.optionsFor.position
 });
 
 export default Field;

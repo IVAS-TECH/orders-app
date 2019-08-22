@@ -1,12 +1,7 @@
+import Tab, { TabMap } from './../type/Tab';
 import { createReducer } from './utils';
 
 export const CHANGE_TAB = 'ivas-tech/orders-app/tab/CHANGE_TAB';
-
-export type Tab = 'active-orders' | 'order' | 'order-history';
-
-export type TabMap<Value> = {
-    [T in Tab]: Value;
-};
 
 export interface ChangeTab {
     type: typeof CHANGE_TAB,

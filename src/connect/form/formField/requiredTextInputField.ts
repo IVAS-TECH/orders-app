@@ -1,19 +1,19 @@
-import Input from '../../../component/formControl/Input'; 
+import TextInput from '../../../component/formControlWithText/TextInput'; 
 import { connect } from 'react-redux';
 import { Form, FormState, formField } from '../../../store/form/reducer';
 import { configure } from '../../../component/utils';
-import { State, selectLanguage } from '../../../store/reducer';
-import Language from '../../../store/language/Language';
+import { State } from '../../../store/reducer';
+import Text from '../../../text/language/Text';
 import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
-import requiredErrorMessage from './requiredErrorMessage';
+import requiredErrorMessage from './../../../fieldError/requiredErrorMessage';
 
 type FieldConstraint = {
     value: string,
     validation: {
         required: (value: string) => boolean
     }
-}
+};
 
 export default function requiredTextInputField<
     Fields extends ConstraintFormField<Fields, FieldKey, FieldConstraint>,
@@ -24,7 +24,7 @@ export default function requiredTextInputField<
     form: Form<Fields>,
     fieldKey: FieldKey,
     extractFormState: (state: State) => FormState<Fields>,
-    label: (language: Language) => string,
+    label: (text: Text) => string,
     disableWhenFieldHasNoValueKey?: DisableWhenFieldHasNoValueKey
 }):  ComponentType<{}> {
     const {
@@ -37,20 +37,19 @@ export default function requiredTextInputField<
         ? formField(form, disableWhenFieldHasNoValueKey).value
         : undefined;
 
-    const Field = configure(Input, {
+    const Field = configure(TextInput, {
         id: form.id(fieldKey),
-        required: true
+        required: true,
+        label
     });
     
     return connect(
         (state: State) => {
             const formState = extractFormState(state);
-            const language = selectLanguage(state);
             const error = fieldError!(formState);
             return {
                 value: fieldValue(formState) as string,
-                error: requiredErrorMessage(error as undefined | 'required', language),
-                label: label(language),
+                error: requiredErrorMessage(error as undefined | 'required'),
                 disabled: disableWhenFieldHasNoValueKey
                     ? !disableWhenFieldHasNoValue!(formState)
                     : undefined

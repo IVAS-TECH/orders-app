@@ -1,7 +1,7 @@
-import FileUpload from './../fileUpload/FileUpload';
+import FileUploadWithText from './../fileUpload/FileUploadWithText';
 import form from './../../../../../../store/stencilForm';
 import { formField } from './../../../../../../store/form/reducer';
-import { State, selectLanguage, selectStencilForm } from './../../../../../../store/reducer';
+import { State, selectStencilForm } from './../../../../../../store/reducer';
 import { configure } from './../../../../../../component/utils';
 import { connect } from 'react-redux';
 
@@ -13,22 +13,15 @@ const {
     setValue
 } = formField(form, formKey);
 
-const Field = configure(FileUpload, {
-    id: form.id(formKey),
-});
+const Field = configure(FileUploadWithText, { id: form.id(formKey) });
 
 const FileField = connect(
     (state: State) => {
         const formState = selectStencilForm(state);
-        const language = selectLanguage(state);
-        const { noFileIsSelected, selectFile, changeFile } = language.forms.stencilForm.file;
         const fieldValue = value(formState);
         return {
             fileName: fieldValue ? fieldValue.name : undefined,
-            error: error(formState) !== undefined,
-            notSelectedText: noFileIsSelected,
-            fileSelectedText: changeFile,
-            fileNotSelectedText: selectFile
+            error: error(formState) !== undefined
         }
     }, { onFileChange: setValue }
 )(Field);

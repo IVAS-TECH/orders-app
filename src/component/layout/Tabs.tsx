@@ -9,8 +9,11 @@ import Order from './../page/Order';
 import OrderHistory from '../page/orderHistory/OrderHistory';
 import { connect } from 'react-redux';
 import { configure } from './../utils';
-import { State, selectLanguage, selectTab } from './../../store/reducer';
-import { Tab, TabMap, changeTab, tabIndex, tabs } from './../../store/tab';
+import { State, selectTab } from './../../store/reducer';
+import { changeTab, tabIndex, tabs } from './../../store/tab';
+import Tab, { TabMap } from './../../type/Tab';
+import Text from './../../text/language/Text';
+import TextContext from './../../text/TextContext';
 
 interface TabsProps {
     currentTab: Tab,
@@ -53,24 +56,28 @@ const Tabs: React.FC<TabsProps> = ({
     </React.Fragment>
 );
 
-const ConfiguredTabs = configure(Tabs, {
+type TabsWtihTextProps = Omit<TabsProps, 'label'> & { label: (text: Text) => TabMap<string> };
+
+const TabsWithText : React.FC<TabsWtihTextProps> = ({
+    label,
+    ...rest
+}) => (
+    <TextContext.Consumer>
+        {text => (
+            <Tabs {...rest} label={label(text)} />
+        )}
+    </TextContext.Consumer>
+);
+
+const ConfiguredTabs = configure(TabsWithText, {
     tabIndex,
-    tabs
+    tabs,
+    label: text => text.tab
 });
 
 const ConnectedTabs = connect(
-    (state: State) => {
-        const language = selectLanguage(state);
-        const { activeOrders, order, orderHistory } = language.tab;
-        return {
-            currentTab: selectTab(state),
-            label: {
-                'active-orders': activeOrders,
-                'order': order,
-                'order-history': orderHistory
-            }
-        }
-    }, { onTabChange: changeTab }
+    (state: State) => ({ currentTab: selectTab(state) }),
+    { onTabChange: changeTab }
 )(ConfiguredTabs);
 
 export default  ConnectedTabs;

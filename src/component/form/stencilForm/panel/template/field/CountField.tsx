@@ -7,7 +7,7 @@ const Field = numberFieldWithMinValue({
     fieldKey: 'count',
     extractFormState: selectStencilForm,
     minValue: countMin,
-    label: language => language.forms.stencilForm.count
+    label: text => text.stencilForm.count
 });
 
 export default Field;

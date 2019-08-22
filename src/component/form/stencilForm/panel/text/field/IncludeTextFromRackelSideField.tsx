@@ -6,7 +6,7 @@ const Field = booleanField({
     form,
     fieldKey: 'includeTextFromRackelSide',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.includeTextFromRackelSide
+    label: text => text.stencilForm.includeTextFromRackelSide
 });
 
 export default Field;

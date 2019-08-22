@@ -1,10 +1,10 @@
-import ImagePositionSelect from './../../../../../formControl/ImagePositionSelect'; 
+import ImagePositionSelect from './../../../../../formControlWithText/ImagePositionSelect'; 
 import { connect } from 'react-redux';
 import form from './../../../../../../store/stencilForm';
 import { formField } from './../../../../../../store/form/reducer';
 import { configure } from './../../../../../utils';
-import { selectStencilForm, selectLanguage, State } from './../../../../../../store/reducer';
-import requiredErrorMessage from '../../../../../../connect/form/formField/requiredErrorMessage';
+import { State, selectStencilForm  } from './../../../../../../store/reducer';
+import requiredErrorMessage from '../../../../../../fieldError/requiredErrorMessage';
 
 const {
     value,
@@ -13,17 +13,16 @@ const {
 } = formField(form, 'imagePosition');
 
 const Field = configure(ImagePositionSelect, {
-    required: true
+    required: true,
+    label: text => text.stencilForm.imagePosition
 });
 
 export default connect(
     (state: State) => {
-        const language = selectLanguage(state);
         const formState = selectStencilForm(state);
         return {
             value: value(formState),
-            label: language.forms.stencilForm.imagePosition,
-            error: requiredErrorMessage(error(formState), language)
-        }
+            error: requiredErrorMessage(error(formState))
+        };
     }, { onValueChange: setValue }
 )(Field);

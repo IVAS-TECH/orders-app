@@ -4,9 +4,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl, { ControlProps } from './FormControl';
 import MuiSelect from '@material-ui/core/Select';
 
-export interface Option<Value extends string | number>{
-    value: Value,
-    text: string
+export type OptionText<Value extends string | number> = {
+    [V in Value]: string
 };
 
 export interface SelectProps<Value extends string | number> extends ControlProps {
@@ -14,7 +13,8 @@ export interface SelectProps<Value extends string | number> extends ControlProps
     value: Value | '',
     onValueChange: (value: Value) => void,
     notSelectedText?: string,
-    options: Array<Option<Value>>
+    options: Array<Value>,
+    optionText: OptionText<Value>
 };
 
 type ChangeEvent = React.ChangeEvent<{name?: string; value: unknown}>;
@@ -38,7 +38,8 @@ export default function Select<Value extends string | number>(props: SelectProps
         value,
         onValueChange,
         notSelectedText,
-        options
+        options,
+        optionText
     } = props;
     return (
         <FormControl
@@ -55,10 +56,11 @@ export default function Select<Value extends string | number>(props: SelectProps
                     <MenuItem value=''>
                         {notSelectedText}
                     </MenuItem>}
-                {options.map(({value, text}) =>
+                {options.map(value => (
                     <MenuItem value={value} key={value}>
-                        {text}
-                    </MenuItem>)}
+                        {optionText[value]}
+                    </MenuItem>
+                ))}
             </MuiSelect>
         </FormControl>
     );

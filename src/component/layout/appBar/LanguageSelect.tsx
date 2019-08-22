@@ -1,28 +1,20 @@
-import Select, { SelectProps }  from '../../formControl/Select'; 
+import Select, { SelectProps }  from '../../formControlWithText/Select'; 
+import Language from './../../../type/Language';
 import { connect } from 'react-redux';
 import { configure } from '../../utils';
-import { Lang, setLanguage } from '../../../store/language/reducer';
-import { State, selectLanguageValue, selectLanguage } from '../../../store/reducer';
+import { State, selectLanguage } from '../../../store/reducer';
+import { setLanguage } from './../../../store/language';
 
-const LanguageSelect: React.FC<SelectProps<Lang>> = Select;
+const LanguageSelect: React.FC<SelectProps<Language>> = Select;
 
 const Field = configure(LanguageSelect, {
-    id: 'select-language'
+    id: 'select-language',
+    options: ['bg', 'en'],
+    label: text => text.language.language,
+    optionText: text => text.language.option
 });
 
 export default connect(
-    (state: State) => {
-        const { language, bg, en } = selectLanguage(state).language;
-        return {
-            value: selectLanguageValue(state),
-            label: language,
-            options: [{
-                    value: 'bg' as 'bg',
-                    text: bg
-                }, {
-                    value: 'en' as 'en',
-                    text: en
-                }]
-        }
-    }, { onValueChange: setLanguage }
+    (state: State) => ({ value: selectLanguage(state) }),
+    { onValueChange: setLanguage }
 )(Field);

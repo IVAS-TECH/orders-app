@@ -6,7 +6,7 @@ const Field = requiredTextInputField({
     form,
     fieldKey: 'textFromRackelSide',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.textFromRackelSide,
+    label: text => text.stencilForm.textFromRackelSide,
     disableWhenFieldHasNoValueKey: 'includeTextFromRackelSide'
 });
 

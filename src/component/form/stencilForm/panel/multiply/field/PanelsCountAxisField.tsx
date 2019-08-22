@@ -19,7 +19,7 @@ function panelsCountAxisField({ formField, axis }: InfoX | InfoY): ComponentType
         fieldKey: formField,
         extractFormState: selectStencilForm,
         minValue: countMin,
-        label: language => language.forms.stencilForm.panelsCountAxis(axis)
+        label: text => text.stencilForm.panelsCountAxis(axis)
     });
 }
 

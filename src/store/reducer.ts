@@ -1,8 +1,4 @@
-import {
-    reducer as languageReducer,
-    selector as languageSelector
-} from './language/reducer';
-import Language from './language/Language';
+import languageReducer from './language';
 import stencilForm  from './stencilForm';
 import invalidFormWarningReducer from './invalidFormWarning';
 import orderPreviewReducer from './orderPreview';
@@ -30,12 +26,8 @@ export default reducer;
 
 export type State = ReturnType<typeof reducer>;
 
-export function selectLanguageValue(state: State): State['language'] {
+export function selectLanguage(state: State): State['language'] {
     return state.language;
-};
-
-export function selectLanguage(state: State): Language {
-    return languageSelector(state.language);
 };
 
 export function selectStencilForm(state: State): State['stencilForm'] {

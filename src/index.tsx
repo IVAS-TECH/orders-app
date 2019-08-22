@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/styles';
 import DatePickerConfigProvider from './provider/DatePickerConfigProvider';
+import TextProvider from './provider/TextProvider';
 import { appTheme } from './theme';
 import * as serviceWorker from './serviceWorker';
 import store from './store/store'; 
@@ -12,7 +13,9 @@ ReactDOM.render(
     <Provider store={store}>
         <ThemeProvider theme={appTheme}>
             <DatePickerConfigProvider>
-                <App />
+                <TextProvider>
+                    <App />
+                </TextProvider>
             </DatePickerConfigProvider>
         </ThemeProvider>
     </Provider>

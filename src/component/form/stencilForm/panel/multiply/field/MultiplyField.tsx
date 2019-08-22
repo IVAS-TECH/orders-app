@@ -6,7 +6,7 @@ const Field = booleanField({
     form,
     fieldKey: 'multiply',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.multiply,
+    label: text => text.stencilForm.multiply,
     placeLableAtStart: true
 });
 

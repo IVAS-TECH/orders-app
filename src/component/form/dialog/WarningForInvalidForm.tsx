@@ -6,8 +6,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { connect } from 'react-redux';
-import { State, selectLanguage, selectInvalidFormWarning } from '../../../store/reducer';
-import { closeInvalidFormWarning } from '../../../store/invalidFormWarning';
+import { State, selectInvalidFormWarning } from './../../../store/reducer';
+import { closeInvalidFormWarning } from './../../../store/invalidFormWarning';
+import TextContext from './../../../text/TextContext';
 
 export interface WarningForInvalidFormProps {
     open: boolean,
@@ -41,17 +42,27 @@ const WarningForInvalidForm: React.FC<WarningForInvalidFormProps> = ({
     </Dialog>
 );
 
+type WarningForInvalidFormWithTextProps = Omit<WarningForInvalidFormProps, 'title' | 'warning' | 'okAction'>;
+
+const WarningForInvalidFormWithText: React.FC<WarningForInvalidFormWithTextProps> = ({
+    open,
+    onClose
+}) => (
+    <TextContext.Consumer>
+        {text => (
+            <WarningForInvalidForm
+                open={open}
+                onClose={onClose}
+                title={text.form.warning.formIsInvalid}
+                warning={text.form.warning.fieldValueIsInvalid}
+                okAction={text.action.ok} />
+        )}
+    </TextContext.Consumer>
+);
+
 const Connnected = connect(
-    (state: State) => {
-        const language = selectLanguage(state);
-        const { formIsInvalid, fieldValueIsInvalid } = language.forms.warning;
-        return {
-            open: selectInvalidFormWarning(state),
-            title: formIsInvalid,
-            warning: fieldValueIsInvalid,
-            okAction: language.action.ok
-        };
-    }, { onClose: closeInvalidFormWarning }
-)(WarningForInvalidForm);
+    (state: State) => ({ open: selectInvalidFormWarning(state) }),
+    { onClose: closeInvalidFormWarning }
+)(WarningForInvalidFormWithText);
 
 export default Connnected;

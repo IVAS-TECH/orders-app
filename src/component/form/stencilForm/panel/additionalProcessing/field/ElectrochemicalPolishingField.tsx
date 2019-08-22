@@ -6,7 +6,7 @@ const Field = booleanField({
     form,
     fieldKey: 'electrochemicalPolishing',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.electrochemicalPolishing,
+    label: text => text.stencilForm.electrochemicalPolishing,
     placeLableAtStart: true
 });
 

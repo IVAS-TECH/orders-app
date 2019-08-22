@@ -6,13 +6,10 @@ const Field = requiredSelectField({
     form,
     fieldKey: 'fidushalMarksSide',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.fidushalMarksSide,
-    notSelectedText: language => language.forms.notSelected('she'),
-    options: language => ({
-        'pcb': language.forms.stencilForm.options.pcbSide,
-        'rackel': language.forms.stencilForm.options.rackelSide,
-        'two-sided': language.forms.stencilForm.options.twoSided
-    })
+    label: text => text.stencilForm.fidushalMarksKind,
+    notSelectedText: text => text.form.notSelected('she'),
+    options: ['pcb', 'rackel', 'two-sided'],
+    optionText: text => text.stencilForm.optionsFor.fidushalMarksSide
 });
 
 export default Field;

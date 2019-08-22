@@ -19,7 +19,7 @@ function stepAxisField({ formField, axis }: InfoX | InfoY): ComponentType<{}> {
         fieldKey: formField,
         extractFormState: selectStencilForm,
         minValue: stepMin,
-        label: language => language.forms.stencilForm.stepAxis(axis)
+        label: text => text.stencilForm.stepAxis(axis)
     });
 }
 

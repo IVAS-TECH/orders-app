@@ -6,7 +6,7 @@ const Field = booleanField({
     form,
     fieldKey: 'includeTextFromPCBSide',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.includeTextFromPCBSide
+    label: text => text.stencilForm.includeTextFromPCBSide
 });
 
 export default Field;

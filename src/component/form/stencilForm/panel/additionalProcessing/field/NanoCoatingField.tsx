@@ -6,7 +6,7 @@ const Field = booleanField({
     form,
     fieldKey: 'nanoCoating',
     extractFormState: selectStencilForm,
-    label: language => language.forms.stencilForm.nanoCoating,
+    label: text => text.stencilForm.nanoCoating,
     placeLableAtStart: true
 });
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ControlProps } from './FormControl';
-import { handleOnChangeEvent } from './Input';
+import { handleOnChangeEvent } from './TextInput';
 import TextField from '@material-ui/core/TextField';
 
 export interface TextAreaProps extends ControlProps {

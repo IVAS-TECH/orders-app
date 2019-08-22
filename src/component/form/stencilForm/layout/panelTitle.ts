@@ -1,9 +1,12 @@
-import panelTitle from '../../../../connect/form/layout/panelTitle';
-import Language from '../../../../store/language/Language';
-import { ComponentType } from 'react';
+import { FunctionComponent } from 'react';
+import PanelTitle from '../../layout/PanelTitle';
+import Text from './../../../../text/language/Text';
+import { configure } from '../../../utils';
 
-export default function panelTitleWrapper(title: keyof Language['forms']['stencilForm']['panelTitle']): ComponentType<{}> {
-    return panelTitle(
-        language => language.forms.stencilForm.panelTitle[title]
-    );
+type Title = keyof Text['stencilForm']['panelTitle'];
+
+export default function panelTitle(title: Title): FunctionComponent<{}> {
+    return configure(PanelTitle, {
+        title: text => text.stencilForm.panelTitle[title]
+    });
 };
