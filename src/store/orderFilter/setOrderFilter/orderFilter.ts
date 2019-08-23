@@ -5,6 +5,7 @@ import statusReducer, { toggleKey as toggleStatus, order as statusOrder } from '
 import orderedByReducer, { toggleKey as toggleOrderedBy } from './orderedBy';
 import fileExtentionReducer, { toggleKey as toggleFileExtention, order as fileExtentionOrder } from './fileExtention';
 import fileNameReducer, { setFileName } from './fileName';
+import { selectIsFilterEmpty } from './keyedFilter';
 import setFilterStepReducer, { previousFilterStep, nextFilterStep, resetFilterStep } from './setFilterStep';
 import OrderFilter from '../../../type/OrderFilter';
 
@@ -66,6 +67,21 @@ export function selectFileName(state: State): State['fileName'] {
 
 export function selectSetFilterStep(state: State): State['setFilterStep'] {
     return state.setFilterStep;
+};
+
+const mapStepToKey = {
+    'status': 'status' as 'status',
+    'ordered-by': 'orderedBy' as 'orderedBy',
+    'file-extention': 'fileExtention' as 'fileExtention'
+};
+
+export function selectIsOrderFilterEmpty(state: State): boolean {
+    const step = state.setFilterStep;
+    if(step === 'status' || step === 'ordered-by' || step === 'file-extention') {
+        return selectIsFilterEmpty(state[mapStepToKey[step]]);
+    } else {
+        return true;
+    }
 };
 
 export function selectOrderFilter(state: State): OrderFilter {

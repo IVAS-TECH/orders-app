@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
 import { KeyedFilter } from '../../../type/OrderFilter';
+import { createSelector } from 'reselect';
 
 export type ToggleKeyAction<
     ToggleKey extends string,
@@ -41,4 +42,18 @@ export function selectPicked<Key extends string>(keyedFilter: KeyedFilter<Key>, 
     return order
         ? order.filter(filter)
         : (Object.keys(keyedFilter) as Array<Key>).filter(filter).sort();
+};
+
+const selectIsFilterEmpty = createSelector(idFilter, isFilterEmpty);
+
+export { selectIsFilterEmpty }
+
+type FilterObject = { [key: string]: boolean };
+
+function isFilterEmpty(keyedFilter: FilterObject): boolean {
+    return Object.keys(keyedFilter).some(key => keyedFilter[key]);
+};
+
+function idFilter(keyedFilter: FilterObject): FilterObject {
+    return keyedFilter;
 }

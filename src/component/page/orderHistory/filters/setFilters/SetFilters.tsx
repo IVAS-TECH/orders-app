@@ -19,11 +19,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { configure } from './../../../../utils';
 import { connect } from 'react-redux';
 import { State, selectSetOrderFilter } from './../../../../../store/reducer';
-import { selectSetFilterStep, previousFilterStep, nextFilterStep } from '../../../../../store/orderFilter/setOrderFilter/orderFilter';
+import { selectSetFilterStep, selectIsOrderFilterEmpty, previousFilterStep, nextFilterStep } from '../../../../../store/orderFilter/setOrderFilter/orderFilter';
 import { setCurrentOrderFilter } from '../../../../../store/orderFilter/orderFilter';
 
 interface SetFilterStepProps {
     currentFilterStep: FilterStep, 
+    disableNext: boolean,
     onBack: () => void,
     onNext: () => void,
     onSetFilters: () => void,
@@ -65,6 +66,7 @@ const useStyles = makeStyles(theme => ({
 
 const SetFilterStep: React.FC<SetFilterStepProps> = ({
     currentFilterStep,
+    disableNext,
     onBack,
     onNext,
     onSetFilters,
@@ -103,6 +105,7 @@ const SetFilterStep: React.FC<SetFilterStepProps> = ({
                                             <Button
                                                 variant='contained'
                                                 color='primary'
+                                                disabled={disableNext}
                                                 onClick={isLastStep ? onSetFilters : onNext}
                                                 className={classes.button}>
                                                     {isLastStep
@@ -133,8 +136,13 @@ const ConfiguredSetFilterStep = configure(SetFilterStep, {
 
 const SetFilter = connect(
     (state: State) => {
-        const currentFilterStep = selectSetFilterStep(selectSetOrderFilter(state));
-        return { currentFilterStep };
+        const orderFilter = selectSetOrderFilter(state);
+        const currentFilterStep = selectSetFilterStep(orderFilter);
+        const disableNext = !selectIsOrderFilterEmpty(orderFilter);
+        return {
+            currentFilterStep,
+            disableNext
+        };
     }, {
         onBack: previousFilterStep,
         onNext: nextFilterStep,
