@@ -4,14 +4,22 @@ import Form from './Form';
 import Langage from './Language';
 import Tab from './Tab';
 import StencilForm from './stencilForm/StencilForm';
+import OrderStatus from './OrderStatus';
+import OrderFilter from './OrderFilter';
+import OrderFilterStepLabel from './OrderFilterStepLabel';
 
-interface Type {
+interface Text {
     action: Action,
     bool: Bool,
     form: Form,
     language: Langage,
     tab: Tab,
-    stencilForm: StencilForm
+    stencilForm: StencilForm,
+    orderStatus: OrderStatus,
+    orderFilter: OrderFilter,
+    orderFilterStepLabel: OrderFilterStepLabel,
+    ordersSearchFilters: string,
+    fileNamePatternPlaceholder: string
 }
 
-export default Type;
+export default Text;

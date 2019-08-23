@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import SetFilters from './setFilters/SetFilters';
 import { connect } from 'react-redux';
 import { closeChangeOrderFilter } from './../../../../store/changeOrderFilter';
+import TextContext from './../../../../text/TextContext';
 
 interface ChangeFiltersProps {
     changeFilters: boolean,
@@ -16,13 +17,24 @@ const ChangeFilters: React.FC<ChangeFiltersProps> = ({
     changeFilters,
     onCancel
 }) => (
-    <Dialog open={changeFilters} onClose={onCancel} fullWidth maxWidth='md'>
+    <Dialog
+        open={changeFilters}
+        onClose={onCancel}
+        fullWidth
+        maxWidth='md'
+        scroll='paper' >
         <DialogContent>
             <SetFilters />
         </DialogContent>
         <DialogActions>
-            <Button variant='contained' color='default' size='large' onClick={onCancel}>
-                Cancel
+            <Button
+                variant='contained'
+                color='default'
+                size='large'
+                onClick={onCancel}>
+                <TextContext.Consumer>
+                    {text => text.action.cancel}
+                </TextContext.Consumer>
             </Button>
         </DialogActions>
     </Dialog>

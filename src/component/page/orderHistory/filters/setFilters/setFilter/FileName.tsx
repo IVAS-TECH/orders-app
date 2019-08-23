@@ -7,10 +7,7 @@ import { selectFileName, setFileName } from '../../../../../../store/orderFilter
 const Field = configure(TextInput, { id: 'order-filter-file-name' });
 
 const FileName = connect(
-    (state: State) => ({
-        value : selectFileName(selectSetOrderFilter(state)),
-        label: 'File name'
-    }),
+    (state: State) => ({ value : selectFileName(selectSetOrderFilter(state)) }),
     { onValueChange: setFileName }
 )(Field);
 

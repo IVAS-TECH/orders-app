@@ -5,6 +5,8 @@ import SingleValueFilter from './SingleValueFilter';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import FilterListIconWithLeftMargin from './../FilterListIconWithLeftMargin';
+import { OrderStatus } from '../../../../../type/OrderFilter';
+import TextContext from './../../../../../text/TextContext';
 import { connect } from 'react-redux';
 import { State, selectCurrentOrderFilter } from './../../../../../store/reducer';
 import {
@@ -18,7 +20,7 @@ import { resetFilterStep } from '../../../../../store/orderFilter/setOrderFilter
 
 interface CurrentOrderFilterProps {
     dateRange: string,
-    status: string[],
+    status: OrderStatus[],
     orderedBy: string[],
     fileExtention: string[],
     fileName: string,
@@ -33,44 +35,48 @@ const CurrentOrderFilters: React.FC<CurrentOrderFilterProps> = ({
     fileName,
     onRequestChangeFilters
 }) => (
-    <Grid container direction='column' spacing={4}>
-        <Grid item>
-            <SingleValueFilter
-                filter='Date'
-                value={dateRange} />
-        </Grid>
-        <Divider />
-        <Grid item>
-            <MultiValueFilter
-                filter='Status'
-                values={status} />
-        </Grid>
-        <Divider />
-        <Grid item>
-            <MultiValueFilter
-                filter='Ordered by'
-                values={orderedBy} />
-        </Grid>
-        <Divider />
-        <Grid item>
-            <MultiValueFilter
-                filter='File extention'
-                values={fileExtention} />
-        </Grid>
-        <Divider />
-        <Grid item>
-            <SingleValueFilter
-                filter='File name'
-                value={fileName} />
-        </Grid>
-        <Divider />
-        <Grid container justify='flex-end' item>
-            <Button variant='contained' color='primary' size='large' onClick={onRequestChangeFilters}>
-                Change filters
-                <FilterListIconWithLeftMargin />
-            </Button>
-        </Grid>
-    </Grid>
+    <TextContext.Consumer>
+        {text => (
+            <Grid container direction='column' spacing={4}>
+                <Grid item>
+                    <SingleValueFilter
+                        filter={text.orderFilter.dateInterval}
+                        value={dateRange} />
+                </Grid>
+                <Divider />
+                <Grid item>
+                    <MultiValueFilter
+                        filter={text.orderFilter.orderStatus}
+                        values={status.map(key => text.orderStatus[key])} />
+                </Grid>
+                <Divider />
+                <Grid item>
+                    <MultiValueFilter
+                        filter={text.orderFilter.orderedBy}
+                        values={orderedBy} />
+                </Grid>
+                <Divider />
+                <Grid item>
+                    <MultiValueFilter
+                        filter={text.orderFilter.fileExtention}
+                        values={fileExtention} />
+                </Grid>
+                <Divider />
+                <Grid item>
+                    <SingleValueFilter
+                        filter={text.orderFilter.fileName}
+                        value={fileName} />
+                </Grid>
+                <Divider />
+                <Grid container justify='flex-end' item>
+                    <Button variant='contained' color='primary' size='large' onClick={onRequestChangeFilters}>
+                        {text.action.changeFilters}
+                        <FilterListIconWithLeftMargin />
+                    </Button>
+                </Grid>
+            </Grid>
+        )}
+    </TextContext.Consumer>
 );
 
 const CurrentFilters = connect(
@@ -78,7 +84,7 @@ const CurrentFilters = connect(
         const currentOrderFilter = selectCurrentOrderFilter(state);
         return {
             dateRange: selectDateRange(currentOrderFilter),
-            status: selectPickedFromStatus(currentOrderFilter) as string[],
+            status: selectPickedFromStatus(currentOrderFilter),
             orderedBy: selectPickedFromOrderedBy(currentOrderFilter),
             fileExtention: selectPickedFromFileExtention(currentOrderFilter) as string[],
             fileName: selectFileName(currentOrderFilter)

@@ -11,6 +11,9 @@ import OrderedBy from './setFilter/OrderedBy';
 import FileExtention from './setFilter/FileExtention';
 import FileName from './setFilter/FileName';
 import FilterListIconWithLeftMargin from './../FilterListIconWithLeftMargin';
+import Text from './../../../../../text/language/Text';
+import TextContext from './../../../../../text/TextContext';
+import Typography from '@material-ui/core/Typography';
 import { FilterStep, FilterStepMap, filterStepIndex, filterSteps } from '../../../../../store/orderFilter/setOrderFilter/setFilterStep';
 import { makeStyles } from '@material-ui/core/styles';
 import { configure } from './../../../../utils';
@@ -28,22 +31,26 @@ interface SetFilterStepProps {
     filterSteps: Array<FilterStep>
 }
 
-const stepContent: FilterStepMap<React.ReactElement> = {
-    'start-date': <StartDate />,
-    'end-date': <EndDate />,
-    'status': <Status />,
-    'ordered-by': <OrderedBy />,
-    'file-extention': <FileExtention />,
-    'file-name': <FileName />
+const stepContent: FilterStepMap<(text: Text) => React.ReactElement> = {
+    'start-date': _ => <StartDate />,
+    'end-date': _ => <EndDate />,
+    'status': text => <Status text={text.orderStatus} />,
+    'ordered-by': _ => <OrderedBy />,
+    'file-extention': _ => <FileExtention />,
+    'file-name': text => (
+        <FileName
+            label={text.orderFilter.fileName}
+            placeholder={text.fileNamePatternPlaceholder} />
+    )
 };
 
-const label: FilterStepMap<string> = {
-    'start-date': 'Pick starting date',
-    'end-date': 'Pick end date',
-    'status': 'Pick from the list with order statuses',
-    'ordered-by': 'Pick from the list with Organization memebers',
-    'file-extention': 'Pick from the list of file extentions',
-    'file-name': 'Choose file name pattern'
+const labelMap: FilterStepMap<keyof Text['orderFilterStepLabel']> = {
+    'start-date': 'pickStartingDate',
+    'end-date': 'pickEndDate',
+    'status': 'pickOrderStatus',
+    'ordered-by': 'pickOrderedBy',
+    'file-extention': 'pickFileExtention',
+    'file-name': 'pickFileName'
 };
 
 const useStyles = makeStyles(theme => ({
@@ -69,44 +76,53 @@ const SetFilterStep: React.FC<SetFilterStepProps> = ({
     const isFirstStep = currentStepIndex === 0;
     const isLastStep = currentStepIndex === (filterSteps.length - 1);
     return (
-        <Stepper activeStep={currentStepIndex} orientation='vertical'>
-            {filterSteps.map(filterStep => (
-                <Step key={filterStep}>
-                    <StepLabel>
-                        {label[filterStep]}
-                    </StepLabel>
-                    <StepContent>
-                        {stepContent[filterStep]}
-                        <div className={classes.actionsContainer}>
-                            <div>
-                                <Button
-                                    variant='contained'
-                                    color='default'
-                                    disabled={isFirstStep}
-                                    onClick={onBack}
-                                    className={classes.button}>
-                                        {'Back'}
-                                </Button>
-                                <Button
-                                    variant='contained'
-                                    color='primary'
-                                    onClick={isLastStep ? onSetFilters : onNext}
-                                    className={classes.button}>
-                                        {isLastStep
-                                            ? (
-                                                <React.Fragment>
-                                                    {'Set filters'}
-                                                    <FilterListIconWithLeftMargin />
-                                                </React.Fragment>
-                                            ) : 'Next'
-                                        }
-                                </Button>
-                            </div>
-                        </div>
-                    </StepContent>
-                </Step>
-            ))}
-        </Stepper>
+        <TextContext.Consumer>
+            {text => (
+                <React.Fragment>
+                    <Typography variant="h4" align="center">
+                        {text.ordersSearchFilters}
+                    </Typography>
+                    <Stepper activeStep={currentStepIndex} orientation='vertical'>
+                        {filterSteps.map(filterStep => (
+                            <Step key={filterStep}>
+                                <StepLabel>
+                                    {text.orderFilterStepLabel[labelMap[filterStep]]}
+                                </StepLabel>
+                                <StepContent>
+                                    {stepContent[filterStep](text)}
+                                    <div className={classes.actionsContainer}>
+                                        <div>
+                                            <Button
+                                                variant='contained'
+                                                color='default'
+                                                disabled={isFirstStep}
+                                                onClick={onBack}
+                                                className={classes.button}>
+                                                    {text.action.back}
+                                            </Button>
+                                            <Button
+                                                variant='contained'
+                                                color='primary'
+                                                onClick={isLastStep ? onSetFilters : onNext}
+                                                className={classes.button}>
+                                                    {isLastStep
+                                                        ? (
+                                                            <React.Fragment>
+                                                                {text.action.applyFilters}
+                                                                <FilterListIconWithLeftMargin />
+                                                            </React.Fragment>
+                                                        ) : text.action.next
+                                                    }
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </StepContent>
+                            </Step>
+                        ))}
+                    </Stepper>
+                </React.Fragment>
+            )}
+        </TextContext.Consumer>
     );
 };
 

@@ -7,18 +7,7 @@ import { OrderStatus } from './../../../../../../type/OrderFilter';;
 
 const PickFromStatusList: React.FC<PickFromListProps<OrderStatus>> = PickFromList;
 
-const Picker = configure(PickFromStatusList, {
-    order: statusOrder,
-    text: {
-        waiting: 'Waiting',
-        accepted: 'Accepted',
-        rejected: 'Rejected',
-        canceled: 'Canceled',
-        processing: 'Processing',
-        ready: 'Ready',
-        delivered: 'Delivered'
-    }
-});
+const Picker = configure(PickFromStatusList, { order: statusOrder });
 
 const Status = connect(
     (state: State) => ({ listPick: selectStatus(selectSetOrderFilter(state)) }),

@@ -71,7 +71,7 @@ export function selectPickedFromOrderedBy(state: CurrentOrderFilterState): Retur
     return  state !== null ?  _selectPickedFromOrderedBy(state.orderedBy) : [];
 };
 
-export function selectPickedFromFileExtention(state: CurrentOrderFilterState): ReturnType<typeof _selectPickedFromFileExtention> | undefined {
+export function selectPickedFromFileExtention(state: CurrentOrderFilterState): ReturnType<typeof _selectPickedFromFileExtention> {
     return  state !== null ? _selectPickedFromFileExtention(state.fileExtention) : [];
 };
 

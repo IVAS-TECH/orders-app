@@ -5,6 +5,7 @@ import FilledInput from '@material-ui/core/FilledInput';
 export interface TextInputProps extends ControlProps {
     id: string,
     value: string,
+    placeholder?: string,
     onValueChange: (value: string) => void
 }
 
@@ -21,6 +22,7 @@ const Input: React.FC<TextInputProps> = ({
     id,
     value,
     label,
+    placeholder,
     disabled,
     required,
     error,
@@ -35,6 +37,7 @@ const Input: React.FC<TextInputProps> = ({
         <FilledInput
             id={id}
             value={value}
+            placeholder={placeholder}
             onChange={handleOnChangeEvent(value, onValueChange)} />
     </FormControl>
 );

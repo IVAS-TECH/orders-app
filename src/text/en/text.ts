@@ -5,15 +5,23 @@ import language from './language';
 import tab from './tab';
 import form from './form';
 import stencilForm from './stencilForm/stencilForm';
+import orderStatus from './orderStatus';
+import orderFilter from './orderFilter';
+import orderFilterStepLabel from './orderFilterStepLabel';
 
-const bg: Language = {
+const en: Language = {
     action,
     bool,
     language,
     tab,
     form,
-    stencilForm
+    stencilForm,
+    orderStatus,
+    orderFilter,
+    orderFilterStepLabel,
+    ordersSearchFilters: 'Ordres search filters',
+    fileNamePatternPlaceholder: 'Use ? to match any single character and * to match zero or more characters'
 };
 
-export default bg;
+export default en;
 
