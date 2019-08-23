@@ -63,16 +63,18 @@ export function selectDateRange(state: CurrentOrderFilterState): string {
         : '';
 };
 
+const emptyArray = [] as any[];
+
 export function selectPickedFromStatus(state: CurrentOrderFilterState): ReturnType<typeof _selectPickedFromStatus> {
-    return state !== null ? _selectPickedFromStatus(state.status) : [];
+    return state !== null ? _selectPickedFromStatus(state.status) : emptyArray;
 };
 
 export function selectPickedFromOrderedBy(state: CurrentOrderFilterState): ReturnType<typeof _selectPickedFromOrderedBy> {
-    return  state !== null ?  _selectPickedFromOrderedBy(state.orderedBy) : [];
+    return  state !== null ?  _selectPickedFromOrderedBy(state.orderedBy) : emptyArray;
 };
 
 export function selectPickedFromFileExtention(state: CurrentOrderFilterState): ReturnType<typeof _selectPickedFromFileExtention> {
-    return  state !== null ? _selectPickedFromFileExtention(state.fileExtention) : [];
+    return  state !== null ? _selectPickedFromFileExtention(state.fileExtention) : emptyArray;
 };
 
 export function selectFileName(state: CurrentOrderFilterState): string {
