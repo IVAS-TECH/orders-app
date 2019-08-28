@@ -6,10 +6,15 @@ import DatePickerConfigProvider from './provider/DatePickerConfigProvider';
 import TextProvider from './provider/TextProvider';
 import { appTheme } from './theme';
 import * as serviceWorker from './serviceWorker';
+import { State } from './store/reducer'; 
 import configureStore from './store/configureStore'; 
 import App from './App';
+import localForage from 'localforage';
 
-const store = configureStore({ language: 'en' });
+localForage.getItem('language').then((language) => {
+
+const persisted = (language === 'bg' || language === 'en') ? { language } : { };
+const store = configureStore(persisted as Partial<State>);
 
 ReactDOM.render(
     <Provider store={store}>
@@ -27,3 +32,4 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+})
