@@ -9,7 +9,7 @@ import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore'; 
 import App from './App';
 
-const store = configureStore();
+const store = configureStore({ language: 'en' });
 
 ReactDOM.render(
     <Provider store={store}>
