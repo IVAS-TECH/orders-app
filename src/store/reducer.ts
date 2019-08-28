@@ -2,7 +2,7 @@ import languageReducer from './language';
 import stencilForm  from './stencilForm';
 import invalidFormWarningReducer from './invalidFormWarning';
 import orderPreviewReducer from './orderPreview';
-import tabReducer from './tab';
+import locationReducer from './location/reducer';
 import orderFilterReducer, {
     selectCurrentOrderFilter as _selectCurrentOrderFilter,
     selectSetOrderFilter as _selectSetOrderFilter
@@ -15,7 +15,7 @@ const reducerMap = {
     stencilForm: stencilForm.reducer,
     invalidFormWarning: invalidFormWarningReducer,
     orderPreview: orderPreviewReducer,
-    tab: tabReducer,
+    location: locationReducer,
     orderFilter: orderFilterReducer,
     changeOrderFilter: changeOrderFilterReducer
 };
@@ -42,8 +42,12 @@ export function selectPreviewOrder(state: State): State['orderPreview'] {
     return state.orderPreview;
 };
 
-export function selectTab(state: State): State['tab'] {
-    return state.tab;
+export function selectLocation(state: State): State['location'] {
+    return state.location;
+};
+
+export function selectRoute(state: State): State['location']['type'] {
+    return state.location.type;
 };
 
 export function selectSetOrderFilter(state: State): ReturnType<typeof _selectSetOrderFilter> {

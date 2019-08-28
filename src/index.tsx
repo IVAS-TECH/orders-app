@@ -6,8 +6,10 @@ import DatePickerConfigProvider from './provider/DatePickerConfigProvider';
 import TextProvider from './provider/TextProvider';
 import { appTheme } from './theme';
 import * as serviceWorker from './serviceWorker';
-import store from './store/store'; 
+import configureStore from './store/configureStore'; 
 import App from './App';
+
+const store = configureStore();
 
 ReactDOM.render(
     <Provider store={store}>

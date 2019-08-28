@@ -38,3 +38,7 @@ export function createReducer<
         return initialState;
     };
 }
+
+export function createAction<ActionType extends string>(type: ActionType): () => { type: ActionType } {
+    return () => ({ type });
+}

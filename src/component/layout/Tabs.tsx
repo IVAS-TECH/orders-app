@@ -7,21 +7,36 @@ import OrderHistoryIcon from '@material-ui/icons/History';
 import ActiveOrdersIcon from '@material-ui/icons/Sync';
 import Order from './../page/Order';
 import OrderHistory from '../page/orderHistory/OrderHistory';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { configure } from './../utils';
-import { State, selectTab } from './../../store/reducer';
-import { changeTab, tabIndex, tabs } from './../../store/tab';
+import { State, selectRoute } from './../../store/reducer';
 import Tab, { TabMap } from './../../type/Tab';
 import Text from './../../text/language/Text';
 import TextContext from './../../text/TextContext';
+import {
+    ROUTE_ACTIVE_ORDERS,
+    ROUTE_ORDER,
+    ROUTE_ORDER_HISTORY,
+    navigateToActiveOrders,
+    navigateToOrder,
+    navigateToOrderHistory
+} from './../../store/location/route';
 
 interface TabsProps {
     currentTab: Tab,
-    onTabChange: (tab: Tab) => void,
-    label: TabMap<string>,
-    tabIndex: TabMap<number>,
-    tabs: Array<Tab>
+    dispatch: Dispatch
+    label: TabMap<string>
 };
+
+const tabIndex: TabMap<number> = {
+    'active-orders': 0,
+    'order': 1,
+    'order-history': 2
+};
+
+const tabs: ['active-orders', 'order', 'order-history']
+          = ['active-orders', 'order', 'order-history'];
 
 const page: TabMap<{ page: React.ReactNode, icon: React.ReactElement }> = {
     'active-orders': { page: 'NOT IMPLEMENTED', icon: <ActiveOrdersIcon /> },
@@ -29,18 +44,22 @@ const page: TabMap<{ page: React.ReactNode, icon: React.ReactElement }> = {
     'order-history': { page: <OrderHistory />, icon: <OrderHistoryIcon /> }
 };
 
+const action: TabMap<() => { type: string }> = {
+    'active-orders': navigateToActiveOrders,
+    'order': navigateToOrder,
+    'order-history': navigateToOrderHistory
+};
+
 const Tabs: React.FC<TabsProps> = ({
     currentTab,
-    onTabChange,
-    label,
-    tabIndex,
-    tabs
+    dispatch,
+    label
 }) => (
     <React.Fragment>
         <MuiAppBar position='static' >
             <MuiTabs
                 value={tabIndex[currentTab]}
-                onChange={(_, tabIndex) => onTabChange(tabs[tabIndex])}
+                onChange={(_, tabIndex) => dispatch(action[tabs[tabIndex]]())}
                 variant='fullWidth'
                 centered >
                 {tabs.map(tab => (
@@ -69,6 +88,17 @@ const TabsWithText : React.FC<TabsWtihTextProps> = ({
     </TextContext.Consumer>
 );
 
+const routeToTabMap: { [key: string]: Tab | undefined } = {
+    [ROUTE_ACTIVE_ORDERS]: 'active-orders',
+    [ROUTE_ORDER]: 'order',
+    [ROUTE_ORDER_HISTORY]: 'order-history'
+};
+
+function mapRouteToTab(route: string): Tab {
+    const tab = routeToTabMap[route];
+    return tab ? tab : tabs[0];
+}
+
 const ConfiguredTabs = configure(TabsWithText, {
     tabIndex,
     tabs,
@@ -76,8 +106,7 @@ const ConfiguredTabs = configure(TabsWithText, {
 });
 
 const ConnectedTabs = connect(
-    (state: State) => ({ currentTab: selectTab(state) }),
-    { onTabChange: changeTab }
+    (state: State) => ({ currentTab: mapRouteToTab(selectRoute(state)) })
 )(ConfiguredTabs);
 
 export default  ConnectedTabs;
