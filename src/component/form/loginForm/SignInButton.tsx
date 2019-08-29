@@ -4,22 +4,26 @@ import TextContext from './../../../text/TextContext';
 import { connect } from 'react-redux';
 import { State, selectLoginForm } from './../../../store/reducer';
 import loginForm from './../../../store/loginForm/form';
+import { signIn } from './../../../store/action';
 
 interface SignInButtonProps {
     className?: string,
-    disabled: boolean
+    disabled: boolean,
+    onSignIn: () => void
 }
 
 const SignInButton: React.FC<SignInButtonProps> = ({
     className,
-    disabled
+    disabled,
+    onSignIn
 }) => (
     <Button
         fullWidth
         variant='contained'
         color='primary'
         className={className}
-        disabled={disabled}>
+        disabled={disabled}
+        onClick={onSignIn}>
         {<TextContext.Consumer>
             {text => text.action.signIn}
         </TextContext.Consumer>}
@@ -29,7 +33,8 @@ const SignInButton: React.FC<SignInButtonProps> = ({
 const ConnectedButton = connect(
     (state: State) => ({
         disabled: !loginForm.selectors.form.isValid(selectLoginForm(state))
-    })
+    }),
+    { onSignIn: signIn }
 )(SignInButton);
 
 export default ConnectedButton;

@@ -41,13 +41,13 @@ function isUser(user: unknown): user is User {
         return false;
     }
     if(user === null) {
-        return true;
-    }
-    const userObj = user as { authToken: any, name: any };
-    if((userObj.authToken !== 'string') && (userObj.authToken) !== '') {
         return false;
     }
-    if((userObj.name !== 'string') && (userObj.name) !== '') {
+    const userObj = user as { authToken: any, name: any };
+    if((typeof userObj.authToken !== 'string') || (userObj.authToken === '')) {
+        return false;
+    }
+    if((typeof userObj.name !== 'string') || (userObj.name === '')) {
         return false;
     }
     return true;
