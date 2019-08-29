@@ -6,6 +6,7 @@ export interface TextInputProps extends ControlProps {
     id: string,
     value: string,
     placeholder?: string,
+    autoComplete?: string,
     onValueChange: (value: string) => void
 }
 
@@ -23,6 +24,8 @@ const Input: React.FC<TextInputProps> = ({
     value,
     label,
     placeholder,
+    autoComplete,
+    margin,
     disabled,
     required,
     error,
@@ -31,6 +34,7 @@ const Input: React.FC<TextInputProps> = ({
     <FormControl
         labelFor={id}
         label={label}
+        margin={margin}
         required={required}
         disabled={disabled}
         error={error}>
@@ -38,6 +42,7 @@ const Input: React.FC<TextInputProps> = ({
             id={id}
             value={value}
             placeholder={placeholder}
+            autoComplete={autoComplete}
             onChange={handleOnChangeEvent(value, onValueChange)} />
     </FormControl>
 );

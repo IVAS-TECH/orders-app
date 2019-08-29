@@ -8,6 +8,8 @@ import orderFilterReducer, {
     selectSetOrderFilter as _selectSetOrderFilter
 } from './orderFilter/orderFilter';
 import changeOrderFilterReducer from './changeOrderFilter';
+import userReducer from './user';
+import loginForm  from './loginForm';
 import { combineReducers } from 'redux';
 
 const reducerMap = {
@@ -17,7 +19,9 @@ const reducerMap = {
     orderPreview: orderPreviewReducer,
     location: locationReducer,
     orderFilter: orderFilterReducer,
-    changeOrderFilter: changeOrderFilterReducer
+    changeOrderFilter: changeOrderFilterReducer,
+    user: userReducer,
+    loginForm: loginForm.reducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -60,4 +64,12 @@ export function selectCurrentOrderFilter(state: State): ReturnType<typeof _selec
 
 export function selectChangeOrderFilter(state: State): State['changeOrderFilter'] {
     return state.changeOrderFilter;
+};
+
+export function selectUser(state: State): State['user'] {
+    return state.user;
+};
+
+export function selectLoginForm(state: State): State['loginForm'] {
+    return state.loginForm;
 };

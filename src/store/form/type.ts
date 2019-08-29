@@ -7,7 +7,7 @@ export interface Form {
 }
 export type Value = string | number | boolean | File | null;
 
-export interface SetFormFieldValueAction<Field = string, V = Value> extends Form {
+export interface SetFormFieldValue<Field = string, V = Value> extends Form {
     type: typeof SET_FORM_FIELD_VALUE,
     formField: Field,
     value: V
@@ -17,4 +17,4 @@ export interface ShowErrors extends Form {
     type: typeof SHOW_ERRORS
 };
 
-export type FormAction = SetFormFieldValueAction | ShowErrors;
+export type FormAction = SetFormFieldValue | ShowErrors;

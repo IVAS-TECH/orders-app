@@ -8,7 +8,9 @@ const action: Action = {
     back: 'Back',
     next: 'Next',
     applyFilters: 'Apply filters',
-    changeFilters: 'Change filters'
+    changeFilters: 'Change filters',
+    signIn: 'Sign in',
+    signOut: 'Sign out'
 };
 
 export default action;

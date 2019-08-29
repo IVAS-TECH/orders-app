@@ -8,7 +8,9 @@ const action: Action = {
     back: 'Назад',
     next: 'Напред',
     applyFilters: 'Приложи филтри',
-    changeFilters: 'Промени филтрите'
+    changeFilters: 'Промени филтрите',
+    signIn: 'Вход',
+    signOut: 'Излез'
 };
 
 export default action;

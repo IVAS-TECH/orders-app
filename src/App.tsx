@@ -2,13 +2,25 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from './component/layout/appBar/AppBar';
 import Tabs from './component/layout/Tabs';
+import SignIn from './component/page/SignIn';
+import { State, selectUser } from './store/reducer';
+import { selectIsLoggedIn } from './store/user';
+import { connect } from 'react-redux';
 
-const App: React.FC<{}> = () => (
+interface AppProps {
+    isLoggedIn: boolean
+}
+
+const App: React.FC<AppProps> = ({ isLoggedIn }) => (
     <React.Fragment>
         <CssBaseline />
         <AppBar />
-        <Tabs />
+        {isLoggedIn ?  <Tabs /> : <SignIn />}
     </React.Fragment>
 );
 
-export default App;
+const ConnectedApp = connect(
+    (state: State) => ({ isLoggedIn: selectIsLoggedIn(selectUser(state)) })
+)(App);
+
+export default ConnectedApp;

@@ -27,6 +27,7 @@
     "@types/react": "16.8.23",
     "@types/react-dom": "16.8.5",
     "@types/redux-first-router": "^2.1.4",
+    "@types/validator": "^10.11.3",
     "date-fns": "^2.0.0-beta.5",
     "localforage": "^1.7.3",
     "react": "^16.9.0",
@@ -37,7 +38,8 @@
     "redux-first-router": "^2.1.4",
     "redux-saga": "^1.0.5",
     "reselect": "^4.0.0",
-    "typescript": "3.5.3"
+    "typescript": "3.5.3",
+    "validator": "^11.1.0"
   },
   "eslintConfig": {
     "extends": "react-app"

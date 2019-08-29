@@ -21,7 +21,7 @@ const PreviewOrderButtonOuter = styled(DivWithClassName)({
 
 const Form: React.FC = () => (
     <Fragment>
-        <form>
+        <form noValidate>
             <TemplatePanel />
             <PanelDivider />
             <FidushalMarksPanel />

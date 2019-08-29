@@ -10,26 +10,66 @@ import { State } from './store/reducer';
 import configureStore from './store/configureStore'; 
 import App from './App';
 import localForage from 'localforage';
+import Language from './type/Language';
+import User from './type/User';
 
-localForage.getItem('language').then((language) => {
+const persistedKeys = ['language', 'user'];
 
-const persisted = (language === 'bg' || language === 'en') ? { language } : { };
-const store = configureStore(persisted as Partial<State>);
+const items = persistedKeys.map(key => localForage.getItem(key));
 
-ReactDOM.render(
-    <Provider store={store}>
-        <ThemeProvider theme={appTheme}>
-            <DatePickerConfigProvider>
-                <TextProvider>
-                    <App />
-                </TextProvider>
-            </DatePickerConfigProvider>
-        </ThemeProvider>
-    </Provider>
-, document.getElementById('root'));
+Promise.all(items).then(([language, user]) => {
+    const persisted: Partial<State> = {};
+    if(isLanguage(language)) {
+        persisted.language = language;
+    }
+    if(isUser(user)) {
+        persisted.user = user;
+    }
+    renderApp(persisted);
+}).catch((err) => {
+    console.log('[localforage] getItem');
+    console.log(err);
+    renderApp();
+});
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
-})
+function isLanguage(language: unknown): language is Language {
+    return (language === 'bg' || language === 'en');
+}
+
+function isUser(user: unknown): user is User {
+    if(typeof user !== 'object') {
+        return false;
+    }
+    if(user === null) {
+        return true;
+    }
+    const userObj = user as { authToken: any, name: any };
+    if((userObj.authToken !== 'string') && (userObj.authToken) !== '') {
+        return false;
+    }
+    if((userObj.name !== 'string') && (userObj.name) !== '') {
+        return false;
+    }
+    return true;
+}
+
+function renderApp(persisted?: Partial<State>): void {
+    const store = configureStore(persisted);
+
+    ReactDOM.render(
+        <Provider store={store}>
+            <ThemeProvider theme={appTheme}>
+                <DatePickerConfigProvider>
+                    <TextProvider>
+                        <App />
+                    </TextProvider>
+                </DatePickerConfigProvider>
+            </ThemeProvider>
+        </Provider>
+    , document.getElementById('root'));
+
+    // If you want your app to work offline and load faster, you can change
+    // unregister() to register() below. Note this comes with some pitfalls.
+    // Learn more about service workers: https://bit.ly/CRA-PWA
+    serviceWorker.unregister();
+}

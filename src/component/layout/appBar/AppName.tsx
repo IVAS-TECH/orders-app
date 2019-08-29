@@ -2,7 +2,7 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from '@material-ui/core/Grid';
 
-const Name: React.FC<{}> = () => (
+const AppName: React.FC<{}> = () => (
     <Grid container direction='row' spacing={4} justify='space-around' alignItems='center'>
         <Grid item>
             <Typography component='span' variant='h4' color='primary' noWrap>
@@ -23,5 +23,5 @@ const Name: React.FC<{}> = () => (
     </Grid>
 );
 
-export default Name;
+export default AppName;
 

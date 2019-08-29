@@ -12,6 +12,7 @@ function* handleSetLanguage({ language }: SetLanguageAction) {
         yield call(persistLanguage, language);
     } catch(error) {
         console.log('[localforage] setItem: language');
+        console.log(error);
     }
 }
 

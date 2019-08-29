@@ -7,7 +7,7 @@ import {
     SHOW_ERRORS,
     Form as TypesForm,
     Value,
-    SetFormFieldValueAction,
+    SetFormFieldValue,
     ShowErrors,
     FormAction
 } from './type';
@@ -115,11 +115,11 @@ export type FormFieldRedux<
 > = keyof Fields[Field]['validation'] extends string ? {
     value: (state: FormState<Fields>) => FormField<Fields, Field>['value'],
     error: (state: FormState<Fields>) => FormField<Fields, Field>['error'],
-    setValue: (value: FormField<Fields, Field>['value']) => SetFormFieldValueAction<Field, FormField<Fields, Field>['value']>
+    setValue: (value: FormField<Fields, Field>['value']) => SetFormFieldValue<Field, FormField<Fields, Field>['value']>
 } : {
     value: (state: FormState<Fields>) => FormField<Fields, Field>['value'],
     error?: undefined,
-    setValue: (value: FormField<Fields, Field>['value']) => SetFormFieldValueAction<Field, FormField<Fields, Field>['value']>
+    setValue: (value: FormField<Fields, Field>['value']) => SetFormFieldValue<Field, FormField<Fields, Field>['value']>
 };
 
 export type FormFieldsValues<
@@ -240,7 +240,7 @@ function createFormReducer<Fields extends Constraint<Fields>>(formConfig: FormCo
     return createReducer(initalState, {
         [SET_FORM_FIELD_VALUE]: (
             state: FormState<Fields>,
-            action: SetFormFieldValueAction
+            action: SetFormFieldValue
         ) => handleSetFormFieldValue(
             formConfig,
             conditionMap,
@@ -310,7 +310,7 @@ function handleSetFormFieldValue<Fields extends Constraint<Fields>>(
     conditionMap: CondtionMap<Fields>,
     validationDependsOnMap: ValidationDependsOnMap<Fields>,
     state: FormState<Fields>,
-    action: SetFormFieldValueAction
+    action: SetFormFieldValue
 ): FormState<Fields> {
     const {formName, value} = action;
     const formField = action.formField as keyof Fields;

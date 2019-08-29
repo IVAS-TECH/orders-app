@@ -1,15 +1,18 @@
 import { connectRoutes } from 'redux-first-router';
 import {
-    /*ROUTE_SIGN_IN,
+    ROUTE_SIGN_IN,
     ROUTE_SIGN_UP,
-    ROUTE_REGISTER_ORGANIZATION,*/
+    ROUTE_REGISTER_ORGANIZATION,
     ROUTE_ACTIVE_ORDERS,
     ROUTE_ORDER,
     ROUTE_ORDER_HISTORY
 } from './route';
 
 const routeMap = {
-    [ROUTE_ACTIVE_ORDERS]: '/',
+    [ROUTE_SIGN_IN]: '/signIn',
+    [ROUTE_SIGN_UP]: '/signUp',
+    [ROUTE_REGISTER_ORGANIZATION]: '/createOrganization',
+    [ROUTE_ACTIVE_ORDERS]: '/active',
     [ROUTE_ORDER]: '/order',
     [ROUTE_ORDER_HISTORY]: '/history'
 };

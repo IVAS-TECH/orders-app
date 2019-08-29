@@ -6,7 +6,9 @@ interface Action {
     back: string,
     next: string,
     applyFilters: string,
-    changeFilters: string
+    changeFilters: string,
+    signIn: string,
+    signOut: string
 }
 
 export default Action;
