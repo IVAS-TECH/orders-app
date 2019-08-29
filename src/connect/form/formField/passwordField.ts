@@ -13,10 +13,13 @@ export default function passwordField<
     Fields extends ConstraintFormField<Fields, FieldKey, PasswordField>,
     FieldKey extends keyof Fields
 >(
-{ form, fieldKey, extractFormState }: {
+{ form, fieldKey, extractFormState, extractShowErrorState, showError, dontShowError }: {
     form: Form<Fields>,
     fieldKey: FieldKey,
-    extractFormState: (state: State) => FormState<Fields>
+    extractFormState: (state: State) => FormState<Fields>,
+    extractShowErrorState: (state: State) => boolean,
+    showError: () => { type: string },
+    dontShowError: () => { type: string }
 }):  ComponentType<{}> {
     const {
         value: fieldValue,
@@ -27,6 +30,7 @@ export default function passwordField<
     const Field = configure(TextInput, {
         id: form.id(fieldKey),
         required: true,
+        type: 'password',
         label,
         margin: true,
         autoComplete: 'current-password'
@@ -35,13 +39,19 @@ export default function passwordField<
     return connect(
         (state: State) => {
             const formState = extractFormState(state);
-            const error = fieldError!(formState);
+            const validationError = fieldError!(formState) as undefined | Validation;
+            const shouldShow = extractShowErrorState(state);
+            const error = shouldShow ? errorMessageForPassword(validationError) : undefined
             return {
                 value: fieldValue(formState) as string,
-                error: errorMessageForPassword(error as undefined | Validation),
+                error
             };
         },
-        { onValueChange: setValue as (value: string) => { type: string } }
+        {
+            onValueChange: setValue as (value: string) => { type: string },
+            onFocus: dontShowError,
+            onBlur: showError
+        }
     )(Field);
 };
 

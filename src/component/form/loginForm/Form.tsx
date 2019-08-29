@@ -2,8 +2,7 @@ import React from 'react';
 import EmailField from './field/EmailField';
 import PasswordField from './field/PasswordField';
 import RememberMeField from './field/RememberMeField';
-import Button from '@material-ui/core/Button';
-import TextContext from './../../../text/TextContext';
+import SignInButton from './SignInButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -21,18 +20,7 @@ const Form: React.FC<{}> = () => {
             <EmailField />
             <PasswordField />
             <RememberMeField />
-            <TextContext.Consumer>
-                {text => (
-                    <Button
-                        fullWidth
-                        variant='contained'
-                        color='primary'
-                        className={classes.button}>
-                        {text.action.signIn}
-                    </Button>
-
-                )}
-            </TextContext.Consumer>
+            <SignInButton />
         </form>
     );
 };

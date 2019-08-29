@@ -1,5 +1,5 @@
 import booleanField from  '../../../../connect/form/formField/booleanField';
-import form from '../../../../store/loginForm';
+import form from '../../../../store/loginForm/form';
 import { selectLoginForm } from '../../../../store/reducer';
 
 const Field = booleanField({

@@ -1,7 +1,7 @@
-import createForm, { FormState, FormFieldsValues } from './form/reducer';
-import { EmailField, emailField } from './form/formField/formFieldWithValueValidation/EmailField';
-import { PasswordField, passwordField } from './form/formField/formFieldWithValueValidation/PasswordField';
-import { BooleanField, booleanField } from './form/formField/formFieldWithoutValidation/BooleanField';
+import createForm, { FormState, FormFieldsValues } from '../form/reducer';
+import { EmailField, emailField } from '../form/formField/formFieldWithValueValidation/EmailField';
+import { PasswordField, passwordField } from '../form/formField/formFieldWithValueValidation/PasswordField';
+import { BooleanField, booleanField } from '../form/formField/formFieldWithoutValidation/BooleanField';
 
 export interface Fields {
     email: EmailField,

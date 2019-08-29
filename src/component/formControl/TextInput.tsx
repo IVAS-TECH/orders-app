@@ -5,9 +5,12 @@ import FilledInput from '@material-ui/core/FilledInput';
 export interface TextInputProps extends ControlProps {
     id: string,
     value: string,
+    type?: string,
     placeholder?: string,
     autoComplete?: string,
-    onValueChange: (value: string) => void
+    onValueChange: (value: string) => void,
+    onFocus?: () => void,
+    onBlur?: () => void
 }
 
 export function handleOnChangeEvent(currentValue: string, onValueChange?: (_: string) => void) {
@@ -17,10 +20,11 @@ export function handleOnChangeEvent(currentValue: string, onValueChange?: (_: st
             onValueChange(eventValue);
         }
     }
-}
+};
 
 const Input: React.FC<TextInputProps> = ({
     id,
+    type,
     value,
     label,
     placeholder,
@@ -29,7 +33,9 @@ const Input: React.FC<TextInputProps> = ({
     disabled,
     required,
     error,
-    onValueChange
+    onValueChange,
+    onFocus,
+    onBlur
 }) => (
     <FormControl
         labelFor={id}
@@ -40,10 +46,13 @@ const Input: React.FC<TextInputProps> = ({
         error={error}>
         <FilledInput
             id={id}
+            type={type}
             value={value}
             placeholder={placeholder}
             autoComplete={autoComplete}
-            onChange={handleOnChangeEvent(value, onValueChange)} />
+            onChange={handleOnChangeEvent(value, onValueChange)}
+            onFocus={onFocus}
+            onBlur={onBlur} />
     </FormControl>
 );
 

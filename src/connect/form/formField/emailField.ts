@@ -13,10 +13,13 @@ export default function emailField<
     Fields extends ConstraintFormField<Fields, FieldKey, EmailField>,
     FieldKey extends keyof Fields
 >(
-{ form, fieldKey, extractFormState }: {
+{ form, fieldKey, extractFormState, extractShowErrorState, showError, dontShowError }: {
     form: Form<Fields>,
     fieldKey: FieldKey,
-    extractFormState: (state: State) => FormState<Fields>
+    extractFormState: (state: State) => FormState<Fields>,
+    extractShowErrorState: (state: State) => boolean,
+    showError: () => { type: string },
+    dontShowError: () => { type: string }
 }):  ComponentType<{}> {
     const {
         value: fieldValue,
@@ -35,13 +38,19 @@ export default function emailField<
     return connect(
         (state: State) => {
             const formState = extractFormState(state);
-            const error = fieldError!(formState);
+            const validationError = fieldError!(formState) as undefined | ErrorKind;
+            const shouldShow = extractShowErrorState(state);
+            const error = shouldShow ? errorMessageForEmail(validationError) : undefined
             return {
                 value: fieldValue(formState) as string,
-                error: errorMessageForEmail(error as undefined | ErrorKind),
+                error
             };
         },
-        { onValueChange: setValue as (value: string) => { type: string } }
+        {
+            onValueChange: setValue as (value: string) => { type: string },
+            onFocus: dontShowError,
+            onBlur: showError
+        }
     )(Field);
 };
 
