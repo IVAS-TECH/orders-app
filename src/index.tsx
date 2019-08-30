@@ -11,7 +11,7 @@ import configureStore from './store/configureStore';
 import App from './App';
 import localForage from 'localforage';
 import Language from './type/Language';
-import User from './type/User';
+import isUser from './logic/validate/isUser';
 
 const persistedKeys = ['language', 'user'];
 
@@ -34,23 +34,6 @@ Promise.all(items).then(([language, user]) => {
 
 function isLanguage(language: unknown): language is Language {
     return (language === 'bg' || language === 'en');
-}
-
-function isUser(user: unknown): user is User {
-    if(typeof user !== 'object') {
-        return false;
-    }
-    if(user === null) {
-        return false;
-    }
-    const userObj = user as { authToken: any, name: any };
-    if((typeof userObj.authToken !== 'string') || (userObj.authToken === '')) {
-        return false;
-    }
-    if((typeof userObj.name !== 'string') || (userObj.name === '')) {
-        return false;
-    }
-    return true;
 }
 
 function renderApp(persisted?: Partial<State>): void {

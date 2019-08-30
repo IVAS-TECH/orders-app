@@ -6,6 +6,7 @@ import { navigateToActiveOrders } from './../location/route';
 import { State, selectLoginForm } from './../reducer';
 import loginForm from './../loginForm/form';
 import request from './../../logic/request';
+import isUser from './../../logic/validate/isUser';
 import localForage from 'localforage';
 
 type Data = { email: string, password: string, rememberMe: boolean };
@@ -26,14 +27,11 @@ function* handleSignIn() {
             method: 'POST',
             data: { email, password }
         });
-        if(error) {
-            // HANDLE ERROR !!!
-            console.log(error);
-        } else {
-            const user: User = {
-                authToken: token,
-                name: userName
-            };
+        const user = {
+            authToken: token,
+            name: userName
+        };
+        if(isUser(user)) {
             if(remember) {
                 try {
                     yield call(persistUser, user);
@@ -44,6 +42,10 @@ function* handleSignIn() {
             }
             yield put(login(user));
             yield put(navigateToActiveOrders());
+        } else {
+            const errorToHandle = error ? error : { badResponse: true };
+            // HANDLE ERROR !!!
+            console.log(errorToHandle);
         }
     } catch(error) {
         console.log('[fetch] /api/user/login');
