@@ -9,9 +9,7 @@ export type OrderStatus
 | 'ready'
 | 'delivered';
 
-export type OrderStatusMap<T> = {
-    [S in OrderStatus]: T
-};
+export type OrderStatusMap<T> = Record<OrderStatus, T>;
 
 export type FileExtention
 = '.zip'

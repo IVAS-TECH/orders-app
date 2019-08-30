@@ -12,9 +12,7 @@ type ErrorString = (text: Text) => string;
 
 type ErrorKind = Validation;
 
-type ErrorMap = {
-    [E in ErrorKind]: ErrorString
-};
+type ErrorMap = Record<ErrorKind, ErrorString>;
 
 const errorMap: ErrorMap = {
     required,

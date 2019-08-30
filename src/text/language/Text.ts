@@ -7,6 +7,8 @@ import StencilForm from './stencilForm/StencilForm';
 import OrderStatus from './OrderStatus';
 import OrderFilter from './OrderFilter';
 import OrderFilterStepLabel from './OrderFilterStepLabel';
+import RequestFor from './RequestFor';
+import ResponseResult from './ResponseResult';
 
 interface Text {
     action: Action,
@@ -19,7 +21,9 @@ interface Text {
     orderFilter: OrderFilter,
     orderFilterStepLabel: OrderFilterStepLabel,
     ordersSearchFilters: string,
-    fileNamePatternPlaceholder: string
+    fileNamePatternPlaceholder: string,
+    requestFor: RequestFor,
+    responseResult: ResponseResult
 }
 
 export default Text;

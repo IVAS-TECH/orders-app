@@ -8,6 +8,8 @@ import stencilForm from './stencilForm/stencilForm';
 import orderStatus from './orderStatus';
 import orderFilter from './orderFilter';
 import orderFilterStepLabel from './orderFilterStepLabel';
+import requestFor from './requestFor';
+import responseResult from './responseResult';
 
 const en: Language = {
     action,
@@ -20,7 +22,9 @@ const en: Language = {
     orderFilter,
     orderFilterStepLabel,
     ordersSearchFilters: 'Ordres search filters',
-    fileNamePatternPlaceholder: 'Use ? to match any single character and * to match zero or more characters'
+    fileNamePatternPlaceholder: 'Use ? to match any single character and * to match zero or more characters',
+    requestFor,
+    responseResult
 };
 
 export default en;

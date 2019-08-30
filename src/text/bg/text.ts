@@ -8,6 +8,8 @@ import stencilForm from './stencilForm/stencilForm';
 import orderStatus from './orderStatus';
 import orderFilter from './orderFilter';
 import orderFilterStepLabel from './orderFilterStepLabel';
+import requestFor from './requestFor';
+import responseResult from './responseResult';
 
 const bg: Language = {
     action,
@@ -20,7 +22,9 @@ const bg: Language = {
     orderFilter,
     orderFilterStepLabel,
     ordersSearchFilters: 'Филтри за търсене на поръчки',
-    fileNamePatternPlaceholder: 'Използвайте ? за кой да е символ и * за нула или повече символи'
+    fileNamePatternPlaceholder: 'Използвайте ? за кой да е символ и * за нула или повече символи',
+    requestFor,
+    responseResult
 };
 
 export default bg;

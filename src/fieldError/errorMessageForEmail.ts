@@ -6,9 +6,7 @@ type ErrorString = (text: Text) => string;
 
 export type ErrorKind = 'required' | 'email';
 
-type ErrorMap = {
-    [E in ErrorKind]: ErrorString
-};
+type ErrorMap = Record<ErrorKind, ErrorString>;
 
 const errorMap: ErrorMap = {
     required,

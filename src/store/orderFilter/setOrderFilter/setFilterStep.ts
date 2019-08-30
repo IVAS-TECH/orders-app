@@ -14,9 +14,7 @@ export type FilterStep
 | 'file-extention'
 | 'file-name';
 
-export type FilterStepMap<T> = {
-    [Filter in FilterStep]: T
-};
+export type FilterStepMap<T> = Record<FilterStep, T>;
 
 export interface PreviousFilterStep {
     type: typeof PREVIOUS_FILTER_STEP

@@ -6,9 +6,7 @@ type ErrorString = (text: Text) => string;
 
 type ErrorKind = 'required' | 'min';
 
-type ErrorMap = {
-    [E in ErrorKind]: ErrorString
-};
+type ErrorMap = Record<ErrorKind, ErrorString>;
 
 const mapError: (min: number) => ErrorMap
 = min => ({

@@ -1,8 +1,9 @@
-import { takeEvery, call, select, put } from 'redux-saga/effects';
+import { takeEvery, call, select, put, all, delay } from 'redux-saga/effects';
 import User from './../../type/User';
 import { SIGN_IN } from './../action';
 import { login } from './../user';
 import { navigateToActiveOrders } from './../location/route';
+import { showRequestFor, hideRequestFor } from './../showRequestFor';
 import { State, selectLoginForm } from './../reducer';
 import loginForm from './../loginForm/form';
 import request from './../../logic/request';
@@ -23,12 +24,17 @@ const url = '/api/user/login';
 
 function* handleSignIn() {
     const { email, password, remember } = yield select(selectData);
+    yield put(showRequestFor('signIn'));
     try {
-        const { token, userName, error } = yield call(request, {
-            url,
-            method: 'POST',
-            data: { email, password }
-        });
+        const [ response ] = yield all([
+            call(request, {
+                url,
+                method: 'POST',
+                data: { email, password }
+            }),
+            delay(2 * 1000)
+        ]);
+        const { token, userName, error } = response;
         const user = {
             authToken: token,
             name: userName
@@ -42,16 +48,18 @@ function* handleSignIn() {
                     console.log(error);
                 }
             }
+            yield put(hideRequestFor());
             yield put(login(user));
             yield put(navigateToActiveOrders());
         } else {
             const errorToHandle = error ? error : { badResponse: true };
-            // HANDLE ERROR !!!
             console.log(errorToHandle);
+            yield put(hideRequestFor());
         }
     } catch(error) {
         console.log(`[fetch] ${url}`);
         console.log(error);
+        yield put(hideRequestFor());
     }
 }
 

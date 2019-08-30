@@ -20,6 +20,6 @@ const reducer = createReducer('bg' as Language, {
         _state: Language,
         { language }: SetLanguageAction
     ) => language
-})
+});
 
 export default reducer;
