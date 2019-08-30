@@ -11,12 +11,21 @@ const form: Form = {
         symbols: 'Input excepts only letters, digits and - (dash) and _ (under score)',
         lowerCaseLetter: 'Input must contain at least 1 lower case letter',
         upperCaseLetter: 'Input must contain at least 1 upper case letter',
-        digit: 'Input must contain at least 1 digit'
+        digit: 'Input must contain at least 1 digit',
+        phone: 'This is invalid phone number',
+        passwordsDontMatch: 'Password and Confirm password values do not match'
     },
     field: {
         email: 'Email address',
         password: 'Password',
-        rememberMe: 'Remember me'
+        rememberMe: 'Remember me',
+        confirmPassword: 'Confirm password',
+        phone: 'Telephone',
+        organization: 'Organization',
+        userName: 'User name'
+    },
+    text: {
+        forgotPassword: 'Forgot password ?'
     },
     warning: {
         formIsInvalid: 'Form is invalid',

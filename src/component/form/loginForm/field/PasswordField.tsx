@@ -3,7 +3,6 @@ import form from '../../../../store/loginForm/form';
 import { selectLoginForm, selectShowLoginError } from '../../../../store/reducer';
 import { showPasswordError, dontShowPasswordError } from '../../../../store/loginForm/showError';
 
-
 const Field = passwordField({
     form,
     fieldKey: 'password',

@@ -10,7 +10,8 @@ const action: Action = {
     applyFilters: 'Apply filters',
     changeFilters: 'Change filters',
     signIn: 'Sign in',
-    signOut: 'Sign out'
+    signOut: 'Sign out',
+    createOrganization: 'Create organization'
 };
 
 export default action;

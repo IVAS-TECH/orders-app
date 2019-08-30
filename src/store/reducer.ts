@@ -10,6 +10,7 @@ import orderFilterReducer, {
 import changeOrderFilterReducer from './changeOrderFilter';
 import userReducer from './user';
 import loginFormReducer  from './loginForm/loginForm';
+import organizationManagerFormReducer  from './organizationManagerForm/organizationManagerForm';
 import { combineReducers } from 'redux';
 
 const reducerMap = {
@@ -21,7 +22,8 @@ const reducerMap = {
     orderFilter: orderFilterReducer,
     changeOrderFilter: changeOrderFilterReducer,
     user: userReducer,
-    loginForm: loginFormReducer
+    loginForm: loginFormReducer,
+    organizationManagerForm: organizationManagerFormReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -76,4 +78,12 @@ export function selectLoginForm(state: State): State['loginForm']['form'] {
 
 export function selectShowLoginError(state: State): State['loginForm']['showError'] {
     return state.loginForm.showError;
+};
+
+export function selectOrganizationManagerForm(state: State): State['organizationManagerForm']['form'] {
+    return state.organizationManagerForm.form;
+};
+
+export function selectShowOrganizationManagerError(state: State): State['organizationManagerForm']['showError'] {
+    return state.organizationManagerForm.showError;
 };

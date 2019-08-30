@@ -2,20 +2,20 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextContext from './../../../text/TextContext';
 import { connect } from 'react-redux';
-import { State, selectLoginForm } from './../../../store/reducer';
-import loginForm from './../../../store/loginForm/form';
-import { signIn } from './../../../store/action';
+import { State, selectOrganizationManagerForm } from './../../../store/reducer';
+import form from './../../../store/organizationManagerForm/form';
+import { createOrganization } from './../../../store/action';
 
 interface SignInButtonProps {
     className?: string,
     disabled: boolean,
-    onSignIn: () => void
+    onCreateOrganization: () => void
 }
 
 const SignInButton: React.FC<SignInButtonProps> = ({
     className,
     disabled,
-    onSignIn
+    onCreateOrganization
 }) => (
     <Button
         fullWidth
@@ -23,18 +23,18 @@ const SignInButton: React.FC<SignInButtonProps> = ({
         color='primary'
         className={className}
         disabled={disabled}
-        onClick={onSignIn}>
+        onClick={onCreateOrganization}>
         {<TextContext.Consumer>
-            {text => text.action.signIn}
+            {text => text.action.createOrganization}
         </TextContext.Consumer>}
     </Button>
 );
 
 const ConnectedButton = connect(
     (state: State) => ({
-        disabled: !loginForm.selectors.form.isValid(selectLoginForm(state))
+        disabled: !form.selectors.form.isValid(selectOrganizationManagerForm(state))
     }),
-    { onSignIn: signIn }
+    { onCreateOrganization: createOrganization }
 )(SignInButton);
 
 export default ConnectedButton;

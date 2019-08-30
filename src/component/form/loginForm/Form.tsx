@@ -2,7 +2,10 @@ import React from 'react';
 import EmailField from './field/EmailField';
 import PasswordField from './field/PasswordField';
 import RememberMeField from './field/RememberMeField';
-import SignInButton from './SignInButton';
+import SignInButton from './button/SignInButton';
+import ForgotPasswordButton from './button/ForgotPasswordButton';
+import CreateOrganizationButton from './button/CreateOrganizationButton';
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -20,7 +23,15 @@ const Form: React.FC<{}> = () => {
             <EmailField />
             <PasswordField />
             <RememberMeField />
-            <SignInButton />
+            <SignInButton className={classes.button} />
+            <Grid container direction='row'>
+                <Grid item xs>
+                    <ForgotPasswordButton className={classes.button} />
+                </Grid>
+                <Grid item xs>
+                    <CreateOrganizationButton className={classes.button} />
+                </Grid>
+            </Grid>
         </form>
     );
 };

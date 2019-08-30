@@ -8,7 +8,8 @@ interface Action {
     applyFilters: string,
     changeFilters: string,
     signIn: string,
-    signOut: string
+    signOut: string,
+    createOrganization: string
 }
 
 export default Action;

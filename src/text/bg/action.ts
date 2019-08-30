@@ -10,7 +10,8 @@ const action: Action = {
     applyFilters: 'Приложи филтри',
     changeFilters: 'Промени филтрите',
     signIn: 'Вход',
-    signOut: 'Излез'
+    signOut: 'Излез',
+    createOrganization: 'Създай организация'
 };
 
 export default action;

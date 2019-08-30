@@ -11,12 +11,21 @@ interface Form {
         symbols: string,
         lowerCaseLetter: string,
         upperCaseLetter: string,
-        digit: string
+        digit: string,
+        phone: string,
+        passwordsDontMatch: string
     },
     field: {
         email: string,
         password: string,
-        rememberMe: string
+        rememberMe: string,
+        confirmPassword: string,
+        phone: string,
+        organization: string,
+        userName: string
+    },
+    text: {
+        forgotPassword: string
     },
     warning: {
         formIsInvalid: string,
