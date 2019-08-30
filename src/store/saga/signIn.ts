@@ -19,11 +19,13 @@ function selectData(state: State): Data {
     return loginForm.selectors.form.values(selectLoginForm(state)) as Data;
 }
 
+const url = '/api/user/login';
+
 function* handleSignIn() {
     const { email, password, remember } = yield select(selectData);
     try {
         const { token, userName, error } = yield call(request, {
-            url: '/api/user/login',
+            url,
             method: 'POST',
             data: { email, password }
         });
@@ -48,7 +50,7 @@ function* handleSignIn() {
             console.log(errorToHandle);
         }
     } catch(error) {
-        console.log('[fetch] /api/user/login');
+        console.log(`[fetch] ${url}`);
         console.log(error);
     }
 }
