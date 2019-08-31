@@ -1,5 +1,7 @@
 import { createAction } from './../utils';
 
+export const ROUTE_HOME = 'ivas-tech/orders-app/location/ROUTE_HOME';
+
 export const ROUTE_SIGN_IN = 'ivas-tech/orders-app/location/ROUTE_SIGN_IN';
 
 export const ROUTE_SIGN_UP = 'ivas-tech/orders-app/location/ROUTE_SIGN_UP';

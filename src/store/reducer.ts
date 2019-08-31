@@ -11,6 +11,7 @@ import changeOrderFilterReducer from './changeOrderFilter';
 import userReducer from './user';
 import loginFormReducer  from './loginForm/loginForm';
 import organizationManagerFormReducer  from './organizationManagerForm/organizationManagerForm';
+import registerFormReducer  from './registerForm/registerForm';
 import showErrorMessageReducer from './showErrorMessage';
 import showRequestForReducer from './showRequestFor';
 import showRequestResultReducer from './showRequestResult';
@@ -27,6 +28,7 @@ const reducerMap = {
     user: userReducer,
     loginForm: loginFormReducer,
     organizationManagerForm: organizationManagerFormReducer,
+    registerForm: registerFormReducer,
     showErrorMessage: showErrorMessageReducer,
     showRequestFor: showRequestForReducer,
     showRequestResult: showRequestResultReducer
@@ -92,6 +94,14 @@ export function selectOrganizationManagerForm(state: State): State['organization
 
 export function selectShowOrganizationManagerError(state: State): State['organizationManagerForm']['showError'] {
     return state.organizationManagerForm.showError;
+};
+
+export function selectRegisterForm(state: State): State['registerForm']['form'] {
+    return state.registerForm.form;
+};
+
+export function selectShowRegisterError(state: State): State['registerForm']['showError'] {
+    return state.registerForm.showError;
 };
 
 export function selectShowErrorMessage(state: State): State['showErrorMessage'] {

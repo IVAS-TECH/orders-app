@@ -11,6 +11,7 @@ const action: Action = {
     changeFilters: 'Промени филтрите',
     signIn: 'Вход',
     signOut: 'Излез',
+    signUp: 'Регистрация',
     createOrganization: 'Създай организация'
 };
 

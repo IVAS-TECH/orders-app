@@ -1,5 +1,6 @@
 import { connectRoutes } from 'redux-first-router';
 import {
+    ROUTE_HOME,
     ROUTE_SIGN_IN,
     ROUTE_SIGN_UP,
     ROUTE_CREATE_ORGANIZATION,
@@ -9,8 +10,9 @@ import {
 } from './route';
 
 const routeMap = {
+    [ROUTE_HOME]: '/',
     [ROUTE_SIGN_IN]: '/signIn',
-    [ROUTE_SIGN_UP]: '/signUp',
+    [ROUTE_SIGN_UP]: '/signUp/:organzation/:email?',
     [ROUTE_CREATE_ORGANIZATION]: '/createOrganization',
     [ROUTE_ACTIVE_ORDERS]: '/active',
     [ROUTE_ORDER]: '/order',

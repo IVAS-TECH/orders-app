@@ -9,6 +9,7 @@ interface Action {
     changeFilters: string,
     signIn: string,
     signOut: string,
+    signUp: string,
     createOrganization: string
 }
 

@@ -11,6 +11,7 @@ const action: Action = {
     changeFilters: 'Change filters',
     signIn: 'Sign in',
     signOut: 'Sign out',
+    signUp: 'Sign up',
     createOrganization: 'Create organization'
 };
 

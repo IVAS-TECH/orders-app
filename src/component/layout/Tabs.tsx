@@ -15,6 +15,7 @@ import Tab, { TabMap } from './../../type/Tab';
 import Text from './../../text/language/Text';
 import TextContext from './../../text/TextContext';
 import {
+    ROUTE_HOME,
     ROUTE_ACTIVE_ORDERS,
     ROUTE_ORDER,
     ROUTE_ORDER_HISTORY,
@@ -88,7 +89,8 @@ const TabsWithText : React.FC<TabsWtihTextProps> = ({
     </TextContext.Consumer>
 );
 
-const routeToTabMap: { [key: string]: Tab | undefined } = {
+const routeToTabMap: Record<string, Tab | undefined> = {
+    [ROUTE_HOME]: 'active-orders',
     [ROUTE_ACTIVE_ORDERS]: 'active-orders',
     [ROUTE_ORDER]: 'order',
     [ROUTE_ORDER_HISTORY]: 'order-history'
