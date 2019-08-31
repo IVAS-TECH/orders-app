@@ -4,7 +4,8 @@ const requestFor: RequestFor = {
     title: 'Waiting for request\'s response',
     text: {
         signIn: 'Signing in',
-        createOrganization: 'Creating organization and user profile'
+        createOrganization: 'Creating organization and user profile',
+        signUp: 'Signing up'
     }
 };
 

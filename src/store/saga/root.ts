@@ -4,6 +4,7 @@ import languageSaga from './language';
 import signInSaga from './signIn';
 import signOutSaga from './signOut';
 import createOrganizationSaga from './createOrganization';
+import signUpSaga from './signUp';
 
 export default function* rootSaga() {
     yield call(boot);
@@ -11,4 +12,5 @@ export default function* rootSaga() {
     yield fork(signInSaga);
     yield fork(signOutSaga);
     yield fork(createOrganizationSaga);
+    yield fork(signUpSaga);
 };

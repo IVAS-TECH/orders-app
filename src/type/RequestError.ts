@@ -14,7 +14,9 @@ export type ValidationError
 export type ResultError
 = { failedTo: string }
 | { organizationExists: string }
-| { userWithThisEmailExists: string };
+| { userWithThisEmailExists: string }
+| { userWithThisUserNameExistsInTheOrganization: string }
+| { invalidOrganizationToken: true };
 
 export type RequestError
 = InternalError
@@ -27,6 +29,7 @@ export type TextErrorMessage
 | 'invalidData'
 | 'badResponse'
 | 'failedToSignIn'
+| 'invalidOrganizationToken'
 | 'couldNotRememberSignIn'
 | 'networkError'
 | 'unknownError';
@@ -37,6 +40,9 @@ export type DataErrorMessage
     data: string
 } | {
     error: 'organizationExists',
+    data: string
+} | {
+    error: 'userWithThisUserNameExistsInTheOrganization',
     data: string
 };
 
@@ -64,7 +70,7 @@ export function isValidationError(error: RequestError): error is InternalError {
 };
 
 export function isResultError(error: RequestError): error is RequestError {
-    return !isInternalError(error) && !isValidationError(error);
+    return !isInternalError(error) && !isValidationError(error) && !isBadResponse(error);
 };
 
 export function isTextErrorMessage(errorMessage: ErrorMessage): errorMessage is TextErrorMessage {
@@ -85,14 +91,20 @@ export function requestErrorToErrorMessage(error: RequestError): ErrorMessage {
     if(isValidationError(error)) {
         return 'invalidData';
     }
-    const { failedTo, organizationExists, userWithThisEmailExists } = error as Record<string, string | undefined>;
-    if(organizationExists) {
-        return { error: 'organizationExists', data: organizationExists };
+    if((error as { invalidOrganizationToken?: true }).invalidOrganizationToken) {
+        return 'invalidOrganizationToken';
     }
-    if(userWithThisEmailExists) {
-        return { error: 'userWithThisEmailExists', data: userWithThisEmailExists };
+    const resultError = error as Record<string, string | undefined>;
+    if(resultError.organizationExists) {
+        return { error: 'organizationExists', data: resultError.organizationExists };
     }
-    if(failedTo === 'signIn') {
+    if(resultError.userWithThisEmailExists) {
+        return { error: 'userWithThisEmailExists', data: resultError.userWithThisEmailExists };
+    }
+    if(resultError.userWithThisUserNameExistsInTheOrganization) {
+        return { error: 'userWithThisUserNameExistsInTheOrganization', data: resultError.userWithThisUserNameExistsInTheOrganization };
+    }
+    if(resultError.failedTo === 'signIn') {
         return 'failedToSignIn';
     }
     return 'unknownError';

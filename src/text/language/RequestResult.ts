@@ -1,8 +1,9 @@
-import RequestResultType from '../../type/RequestResult';
-
 interface RequestResult {
     title: string,
-    text: Record<RequestResultType, string>
+    text: {
+        createdOrganizationManager: (email: string) => string,
+        registeredUser: (email: string) => string
+    }
 }
 
 export default RequestResult;
