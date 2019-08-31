@@ -1,10 +1,10 @@
-import ResponseResult from './../language/ResponseResult';
+import RequestResult from '../language/RequestResult';
 
-const responseResult: ResponseResult = {
+const requestResult: RequestResult = {
     title: 'Request result',
     text: {
         createdOrganizationManager: 'Organization and user profile were successfully created. Confirmation email was send. Follow instructions there to activate your user profile.'
     }
 };
 
-export default responseResult;
+export default requestResult;

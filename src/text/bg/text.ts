@@ -9,7 +9,7 @@ import orderStatus from './orderStatus';
 import orderFilter from './orderFilter';
 import orderFilterStepLabel from './orderFilterStepLabel';
 import requestFor from './requestFor';
-import responseResult from './responseResult';
+import requestResult from './resquestResult';
 
 const bg: Language = {
     action,
@@ -24,7 +24,7 @@ const bg: Language = {
     ordersSearchFilters: 'Филтри за търсене на поръчки',
     fileNamePatternPlaceholder: 'Използвайте ? за кой да е символ и * за нула или повече символи',
     requestFor,
-    responseResult
+    requestResult
 };
 
 export default bg;

@@ -8,7 +8,7 @@ import OrderStatus from './OrderStatus';
 import OrderFilter from './OrderFilter';
 import OrderFilterStepLabel from './OrderFilterStepLabel';
 import RequestFor from './RequestFor';
-import ResponseResult from './ResponseResult';
+import RequestResult from './RequestResult';
 
 interface Text {
     action: Action,
@@ -23,7 +23,7 @@ interface Text {
     ordersSearchFilters: string,
     fileNamePatternPlaceholder: string,
     requestFor: RequestFor,
-    responseResult: ResponseResult
+    requestResult: RequestResult
 }
 
 export default Text;

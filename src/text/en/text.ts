@@ -9,7 +9,7 @@ import orderStatus from './orderStatus';
 import orderFilter from './orderFilter';
 import orderFilterStepLabel from './orderFilterStepLabel';
 import requestFor from './requestFor';
-import responseResult from './responseResult';
+import requestResult from './requestResult';
 
 const en: Language = {
     action,
@@ -24,7 +24,7 @@ const en: Language = {
     ordersSearchFilters: 'Ordres search filters',
     fileNamePatternPlaceholder: 'Use ? to match any single character and * to match zero or more characters',
     requestFor,
-    responseResult
+    requestResult
 };
 
 export default en;

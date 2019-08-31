@@ -1,10 +1,10 @@
-import ResponseResult from './../language/ResponseResult';
+import RequestResult from '../language/RequestResult';
 
-const responseResult: ResponseResult = {
+const requestResult: RequestResult = {
     title: 'Резултат от заявката',
     text: {
         createdOrganizationManager: 'Създадени са организация и потребителски профил. Изпратено е електронно писмо за потвърждение. Изпълнете инструкциите за да активирате своя потребителски профил.'
     }
 };
 
-export default responseResult;
+export default requestResult;

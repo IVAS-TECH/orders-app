@@ -6,26 +6,26 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import TextContext from '../../text/TextContext';
-import ResponseResult from '../../type/ResponseResult';
-import { State, selectShowResponseResult } from '../../store/reducer';
-import { hideResponseResult } from '../../store/showResponseResult';
+import RequestResult from '../../type/RequestResult';
+import { State, selectShowRequestResult } from '../../store/reducer';
+import { hideRequestResult } from '../../store/showRequestResult';
 import { connect } from 'react-redux';
 
-interface ShowResponseResultProps {
-    show: ResponseResult | null,
+interface ShowRequestResultProps {
+    show: RequestResult | null,
     onOk: () => void
 }
 
-const ShowResponseResult: React.FC<ShowResponseResultProps> = ({ show, onOk }) => (
+const ShowRequestResult: React.FC<ShowRequestResultProps> = ({ show, onOk }) => (
     <TextContext.Consumer>
         {text => (
             <Dialog open={show !== null} maxWidth='sm'>
                 <DialogTitle>
-                    {text.responseResult.title}
+                    {text.requestResult.title}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {show && text.responseResult.text[show]}
+                        {show && text.requestResult.text[show]}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -39,8 +39,8 @@ const ShowResponseResult: React.FC<ShowResponseResultProps> = ({ show, onOk }) =
 );
 
 const Connected = connect(
-    (state: State) => ({ show: selectShowResponseResult(state) }),
-    { onOk: hideResponseResult }
-)(ShowResponseResult);
+    (state: State) => ({ show: selectShowRequestResult(state) }),
+    { onOk: hideRequestResult }
+)(ShowRequestResult);
 
 export default Connected;

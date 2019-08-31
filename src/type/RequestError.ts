@@ -16,13 +16,13 @@ export type ResultError
 | { organizationExists: string }
 | { userExists: string };
 
-export type ResponseError
+export type RequestError
 = InternalError
 | ValidationError
 | ResultError
 | BadResponse;
 
-export default ResponseError;
+export default RequestError;
 
 export type TextErrorMessage
 = 'internalError'
@@ -35,23 +35,23 @@ export type TextErrorMessage
 export type DataErrorMessage
 = {
     error: 'userExists',
-    user: string
+    data: string
 } | {
     error: 'organizationExists',
-    organization: string
+    data: string
 };
 
 export type ErrorMessage = TextErrorMessage | DataErrorMessage;
 
-export function isInternalError(error: ResponseError): error is InternalError {
+export function isInternalError(error: RequestError): error is InternalError {
     return (typeof (error as any).reason) === 'string';
 };
 
-export function isBadResponse(error: ResponseError): error is BadResponse {
+export function isBadResponse(error: RequestError): error is BadResponse {
     return (error as any).badResponse;
 };
 
-export function isValidationError(error: ResponseError): error is InternalError {
+export function isValidationError(error: RequestError): error is InternalError {
     if((error as any).invalidData === 'notAnObject') {
         return true;
     }
@@ -64,7 +64,7 @@ export function isValidationError(error: ResponseError): error is InternalError 
     return false;
 };
 
-export function isResultError(error: ResponseError): error is ResponseError {
+export function isResultError(error: RequestError): error is RequestError {
     return !isInternalError(error) && !isValidationError(error);
 };
 
@@ -76,7 +76,7 @@ export function isDataErrorMessage(errorMessage: ErrorMessage): errorMessage is 
     return !isTextErrorMessage(errorMessage);
 };
 
-export function responseErrorToErrorMessage(error: ResponseError): ErrorMessage {
+export function requestErrorToErrorMessage(error: RequestError): ErrorMessage {
     if(isInternalError(error)) {
         return 'internalError';
     }
@@ -88,10 +88,10 @@ export function responseErrorToErrorMessage(error: ResponseError): ErrorMessage 
     }
     const { failedTo, organizationExists, userExists } = error as Record<string, string | undefined>;
     if(organizationExists) {
-        return { error: 'organizationExists', organization: organizationExists };
+        return { error: 'organizationExists', data: organizationExists };
     }
     if(userExists) {
-        return { error: 'userExists', user: userExists };
+        return { error: 'userExists', data: userExists };
     }
     if(failedTo === 'signIn') {
         return 'failedToSignIn';
