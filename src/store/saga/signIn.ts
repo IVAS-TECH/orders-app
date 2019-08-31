@@ -42,15 +42,14 @@ function* handleSignIn() {
             name: userName
         };
         if(isUser(user)) {
+            yield put(hideRequestFor());
             if(remember) {
                 try {
                     yield call(persistUser, user);
                 } catch(error) {
-                    console.log('[localforage] setItem: user');
-                    console.log(error);
+                    yield put(showErrorMessage('couldNotRememberSignIn'));
                 }
             }
-            yield put(hideRequestFor());
             yield put(login(user));
             yield put(navigateToActiveOrders());
         } else {

@@ -7,6 +7,7 @@ const errorMessage: ErrorMessage = {
         invalidData: 'Valid data was sent to the server but it was reported that is invalid. Please contact us.',
         badResponse: 'The received response was not expected. Please contact us.',
         failedToSignIn: 'Invalid email and password combination.',
+        couldNotRememberSignIn: 'Could not remember singing in. You can continue to use the application but you will not be remembered. This is due to browser error.',
         networkError: 'Network error occured. Please check your connection. Try again after some time if you are connected to the internet. If this message shows again please contact us.',
         unknownError: 'Unknown error occured. Try again after some time. If this message shows again please contact us.' 
     },

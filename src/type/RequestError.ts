@@ -27,6 +27,7 @@ export type TextErrorMessage
 | 'invalidData'
 | 'badResponse'
 | 'failedToSignIn'
+| 'couldNotRememberSignIn'
 | 'networkError'
 | 'unknownError';
 
