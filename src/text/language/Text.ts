@@ -9,6 +9,7 @@ import OrderFilter from './OrderFilter';
 import OrderFilterStepLabel from './OrderFilterStepLabel';
 import RequestFor from './RequestFor';
 import RequestResult from './RequestResult';
+import ErrorMessage from './ErrorMessage';
 
 interface Text {
     action: Action,
@@ -23,7 +24,8 @@ interface Text {
     ordersSearchFilters: string,
     fileNamePatternPlaceholder: string,
     requestFor: RequestFor,
-    requestResult: RequestResult
+    requestResult: RequestResult,
+    errorMessage: ErrorMessage
 }
 
 export default Text;

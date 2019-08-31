@@ -14,15 +14,13 @@ export type ValidationError
 export type ResultError
 = { failedTo: string }
 | { organizationExists: string }
-| { userExists: string };
+| { userWithThisEmailExists: string };
 
 export type RequestError
 = InternalError
 | ValidationError
 | ResultError
 | BadResponse;
-
-export default RequestError;
 
 export type TextErrorMessage
 = 'internalError'
@@ -34,7 +32,7 @@ export type TextErrorMessage
 
 export type DataErrorMessage
 = {
-    error: 'userExists',
+    error: 'userWithThisEmailExists',
     data: string
 } | {
     error: 'organizationExists',
@@ -86,12 +84,12 @@ export function requestErrorToErrorMessage(error: RequestError): ErrorMessage {
     if(isValidationError(error)) {
         return 'invalidData';
     }
-    const { failedTo, organizationExists, userExists } = error as Record<string, string | undefined>;
+    const { failedTo, organizationExists, userWithThisEmailExists } = error as Record<string, string | undefined>;
     if(organizationExists) {
         return { error: 'organizationExists', data: organizationExists };
     }
-    if(userExists) {
-        return { error: 'userExists', data: userExists };
+    if(userWithThisEmailExists) {
+        return { error: 'userWithThisEmailExists', data: userWithThisEmailExists };
     }
     if(failedTo === 'signIn') {
         return 'failedToSignIn';

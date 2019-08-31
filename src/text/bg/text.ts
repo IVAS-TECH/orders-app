@@ -10,6 +10,7 @@ import orderFilter from './orderFilter';
 import orderFilterStepLabel from './orderFilterStepLabel';
 import requestFor from './requestFor';
 import requestResult from './resquestResult';
+import errorMessage from './errorMessage';
 
 const bg: Language = {
     action,
@@ -24,7 +25,8 @@ const bg: Language = {
     ordersSearchFilters: 'Филтри за търсене на поръчки',
     fileNamePatternPlaceholder: 'Използвайте ? за кой да е символ и * за нула или повече символи',
     requestFor,
-    requestResult
+    requestResult,
+    errorMessage
 };
 
 export default bg;

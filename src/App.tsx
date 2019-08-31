@@ -5,6 +5,7 @@ import Tabs from './component/layout/Tabs';
 import User from './component/layout/User';
 import ShowRequestFor from './component/dialog/ShowRequestFor';
 import ShowRequestResult from './component/dialog/ShowRequestResult';
+import ShowErrorMessage from './component/dialog/ShowErrorMessage';
 import { State, selectUser } from './store/reducer';
 import { selectIsLoggedIn } from './store/user';
 import { connect } from 'react-redux';
@@ -20,6 +21,7 @@ const App: React.FC<AppProps> = ({ isLoggedIn }) => (
         {isLoggedIn ?  <Tabs /> : <User />}
         <ShowRequestFor />
         <ShowRequestResult />
+        <ShowErrorMessage />
     </React.Fragment>
 );
 

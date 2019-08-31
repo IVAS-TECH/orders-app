@@ -4,6 +4,8 @@ import { SIGN_IN } from './../action';
 import { login } from './../user';
 import { navigateToActiveOrders } from './../location/route';
 import { showRequestFor, hideRequestFor } from './../showRequestFor';
+import { showErrorMessage } from './../showErrorMessage';
+import { requestErrorToErrorMessage } from './../../type/RequestError';
 import { State, selectLoginForm } from './../reducer';
 import loginForm from './../loginForm/form';
 import request from './../../logic/request';
@@ -53,13 +55,12 @@ function* handleSignIn() {
             yield put(navigateToActiveOrders());
         } else {
             const errorToHandle = error ? error : { badResponse: true };
-            console.log(errorToHandle);
             yield put(hideRequestFor());
+            yield put(showErrorMessage(requestErrorToErrorMessage(errorToHandle)));
         }
     } catch(error) {
-        console.log(`[fetch] ${url}`);
-        console.log(error);
         yield put(hideRequestFor());
+        yield put(showErrorMessage('networkError'));
     }
 }
 

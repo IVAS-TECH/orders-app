@@ -1,7 +1,11 @@
-import { takeEvery, call, select, put } from 'redux-saga/effects';
+import { takeEvery, call, select, put, all, delay } from 'redux-saga/effects';
 import { CREATE_ORGANIZATION } from './../action';
 import { navigateToSignIn } from './../location/route';
 import { State, selectOrganizationManagerForm } from './../reducer';
+import { showRequestFor, hideRequestFor } from './../showRequestFor';
+import { showRequestResult } from './../showRequestResult';
+import { showErrorMessage } from './../showErrorMessage';
+import { requestErrorToErrorMessage } from './../../type/RequestError';
 import form, { Fields } from './../organizationManagerForm/form';
 import request from './../../logic/request';
 
@@ -15,22 +19,29 @@ const url = '/api/user/organizationManager';
 
 function* handleCreateOrganization() {
     const data = yield select(selectData);
+    yield put(showRequestFor('createOrganization'));
     try {
-        const { result, error } = yield call(request, {
-            url,
-            method: 'POST',
-            data
-        });
+        const [ response ] = yield all([
+            call(request, {
+                url,
+                method: 'POST',
+                data
+            }),
+            delay(3 * 1000)
+        ]);
+        const { result, error } = response;
         if(result === 'createdOrganizationManager') {
+            yield put(hideRequestFor());
             yield put(navigateToSignIn());
+            yield put(showRequestResult('createdOrganizationManager'));
         } else {
             const errorToHandle = error ? error : { badResponse: true };
-            // HANDLE ERROR !!!
-            console.log(errorToHandle);
+            yield put(hideRequestFor());
+            yield put(showErrorMessage(requestErrorToErrorMessage(errorToHandle)));
         }
     } catch(error) {
-        console.log(`[fetch] ${url}`);
-        console.log(error);
+        yield put(hideRequestFor());
+        yield put(showErrorMessage('networkError'));
     }
 }
 

@@ -6,17 +6,18 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import TextContext from '../../text/TextContext';
-import RequestResult from '../../type/RequestResult';
-import { State, selectShowRequestResult } from '../../store/reducer';
-import { hideRequestResult } from '../../store/showRequestResult';
+import Text from '../../text/language/Text';
+import { ErrorMessage, isTextErrorMessage } from '../../type/RequestError';
+import { State, selectShowErrorMessage } from '../../store/reducer';
+import { hideErrorMessage } from '../../store/showErrorMessage';
 import { connect } from 'react-redux';
 
-interface ShowRequestResultProps {
-    show: RequestResult | null,
+interface ShowErrorMessageProps {
+    show: ErrorMessage | null,
     onOk: () => void
 }
 
-const ShowRequestResult: React.FC<ShowRequestResultProps> = ({ show, onOk }) => (
+const ShowErrorMessage: React.FC<ShowErrorMessageProps> = ({ show, onOk }) => (
     <TextContext.Consumer>
         {text => (
             <Dialog open={show !== null} maxWidth='md'>
@@ -25,7 +26,7 @@ const ShowRequestResult: React.FC<ShowRequestResultProps> = ({ show, onOk }) => 
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {show && text.requestResult.text[show]}
+                        {show && textForErrorMessage(text, show)}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -39,8 +40,16 @@ const ShowRequestResult: React.FC<ShowRequestResultProps> = ({ show, onOk }) => 
 );
 
 const Connected = connect(
-    (state: State) => ({ show: selectShowRequestResult(state) }),
-    { onOk: hideRequestResult }
-)(ShowRequestResult);
+    (state: State) => ({ show: selectShowErrorMessage(state) }),
+    { onOk: hideErrorMessage }
+)(ShowErrorMessage);
 
 export default Connected;
+
+function textForErrorMessage(text: Text, errorMessage: ErrorMessage): string {
+    if(isTextErrorMessage(errorMessage)) {
+        return text.errorMessage.text[errorMessage];
+    }
+    const { error, data } = errorMessage;
+    return text.errorMessage.data[error](data);
+}
