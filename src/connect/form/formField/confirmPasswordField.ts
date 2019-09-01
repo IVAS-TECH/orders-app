@@ -8,6 +8,7 @@ import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
 import { ConfirmPasswordField, Validation } from './../../../store/form/formField/formFieldWithStateValidation/ConfirmPasswordField';
 import errorMessageForConfirmPassword from './../../../fieldError/errorMessageForConfirmPassword';
+import Action from './../../../type/Action';
 
 export default function confrimPasswordField<
     Fields extends ConstraintFormField<Fields, FieldKey, ConfirmPasswordField>,
@@ -18,8 +19,8 @@ export default function confrimPasswordField<
     fieldKey: FieldKey,
     extractFormState: (state: State) => FormState<Fields>,
     extractShowErrorState: (state: State) => boolean,
-    showError: () => { type: string },
-    dontShowError: () => { type: string }
+    showError: () => Action,
+    dontShowError: () => Action
 }):  ComponentType<{}> {
     const {
         value: fieldValue,
@@ -47,7 +48,7 @@ export default function confrimPasswordField<
             };
         },
         {
-            onValueChange: setValue as (value: string) => { type: string },
+            onValueChange: setValue as (value: string) => Action,
             onFocus: dontShowError,
             onBlur: showError
         }

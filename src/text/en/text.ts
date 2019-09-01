@@ -11,6 +11,8 @@ import orderFilterStepLabel from './orderFilterStepLabel';
 import requestFor from './requestFor';
 import requestResult from './requestResult';
 import errorMessage from './errorMessage';
+import accessDeniedDialog from './accessDeniedDialog';
+import couldNotLoadDataDialog from './couldNotLoadDataDialog';
 
 const en: Language = {
     action,
@@ -26,7 +28,9 @@ const en: Language = {
     fileNamePatternPlaceholder: 'Use ? to match any single character and * to match zero or more characters',
     requestFor,
     requestResult,
-    errorMessage
+    errorMessage,
+    accessDeniedDialog,
+    couldNotLoadDataDialog
 };
 
 export default en;

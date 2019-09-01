@@ -6,6 +6,8 @@ import User from './component/layout/User';
 import ShowRequestFor from './component/dialog/ShowRequestFor';
 import ShowRequestResult from './component/dialog/ShowRequestResult';
 import ShowErrorMessage from './component/dialog/ShowErrorMessage';
+import ShowAccessDenied from './component/dialog/ShowAccessDenied';
+import ShowCouldNotLoadData from './component/dialog/ShowCouldNotLoadData';
 import { State, selectUser } from './store/reducer';
 import { selectIsLoggedIn } from './store/user';
 import { connect } from 'react-redux';
@@ -22,6 +24,8 @@ const App: React.FC<AppProps> = ({ isLoggedIn }) => (
         <ShowRequestFor />
         <ShowRequestResult />
         <ShowErrorMessage />
+        <ShowAccessDenied />
+        <ShowCouldNotLoadData />
     </React.Fragment>
 );
 

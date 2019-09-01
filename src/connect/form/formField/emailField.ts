@@ -8,6 +8,7 @@ import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
 import { EmailField } from './../../../store/form/formField/formFieldWithValueValidation/EmailField';
 import errorMessageForEmail, { ErrorKind } from './../../../fieldError/errorMessageForEmail';
+import Action from './../../../type/Action';
 
 export default function emailField<
     Fields extends ConstraintFormField<Fields, FieldKey, EmailField>,
@@ -18,8 +19,8 @@ export default function emailField<
     fieldKey: FieldKey,
     extractFormState: (state: State) => FormState<Fields>,
     extractShowErrorState: (state: State) => boolean,
-    showError: () => { type: string },
-    dontShowError: () => { type: string }
+    showError: () => Action,
+    dontShowError: () => Action
 }):  ComponentType<{}> {
     const {
         value: fieldValue,
@@ -47,7 +48,7 @@ export default function emailField<
             };
         },
         {
-            onValueChange: setValue as (value: string) => { type: string },
+            onValueChange: setValue as (value: string) => Action,
             onFocus: dontShowError,
             onBlur: showError
         }

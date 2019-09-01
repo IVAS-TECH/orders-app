@@ -11,6 +11,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { configure } from './../utils';
 import { State, selectRoute } from './../../store/reducer';
+import Action from './../../type/Action';
 import Tab, { TabMap } from './../../type/Tab';
 import Text from './../../text/language/Text';
 import TextContext from './../../text/TextContext';
@@ -45,7 +46,7 @@ const page: TabMap<{ page: React.ReactNode, icon: React.ReactElement }> = {
     'order-history': { page: <OrderHistory />, icon: <OrderHistoryIcon /> }
 };
 
-const action: TabMap<() => { type: string }> = {
+const action: TabMap<() => Action> = {
     'active-orders': navigateToActiveOrders,
     'order': navigateToOrder,
     'order-history': navigateToOrderHistory

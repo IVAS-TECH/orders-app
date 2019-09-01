@@ -7,6 +7,7 @@ import Text from '../../../text/language/Text';
 import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
 import requiredOrMinErrorMessage from './../../../fieldError/requiredOrMinErrorMessage';
+import Action from './../../../type/Action';
 
 type FieldConstraint = {
     value: number | '',
@@ -51,6 +52,6 @@ export default function numberFieldWithMinValue<
                 error: errorMessage(error as undefined | 'required' | 'min')
             };
         },
-        { onValueChange: setValue as (value: number | '') => { type: string } }
+        { onValueChange: setValue as (value: number | '') => Action }
     )(Field);
 };

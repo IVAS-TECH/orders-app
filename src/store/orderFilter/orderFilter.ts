@@ -4,6 +4,7 @@ import { selectPickedFromOrderedBy as _selectPickedFromOrderedBy } from './setOr
 import { selectPickedFromFileExtention as _selectPickedFromFileExtention } from './setOrderFilter/fileExtention';
 import orderFilterReducer, { selectOrderFilter } from './setOrderFilter/orderFilter';
 import OrderFilter from '../../type/OrderFilter';
+import Action from '../../type/Action';
 
 export type CurrentOrderFilterState = null | OrderFilter;
 
@@ -26,7 +27,7 @@ export function setCurrentOrderFilter(): SetCurrentOrderFilter {
 
 const noCurrentOrderFilter = null as CurrentOrderFilterState;
 
-export default function reducer(state: State | undefined, action: { type: string }): State {
+export default function reducer(state: State | undefined, action: Action): State {
     if(state === undefined) {
         return {
             currentOrderFilter: noCurrentOrderFilter ,

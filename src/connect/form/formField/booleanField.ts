@@ -6,6 +6,7 @@ import { State } from '../../../store/reducer';
 import Text from '../../../text/language/Text';
 import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
+import Action from '../../../type/Action';
 
 export default function booleanField<
     Fields extends ConstraintFormField<Fields, FieldKey, {
@@ -32,6 +33,6 @@ export default function booleanField<
     
     return connect(
         (state: State) => ({ checked: fieldValue(extractFormState(state)) }),
-        { onToggle: setValue as (checked: boolean) => { type: string } }
+        { onToggle: setValue as (checked: boolean) => Action }
     )(Field);
 }

@@ -33,13 +33,12 @@ function* handleSignUp() {
             delay(3 * 1000)
         ]);
         const { result, error } = response;
+        yield put(hideRequestFor());
         if(result === 'registeredUser') {
-            yield put(hideRequestFor());
             yield put(navigateToSignIn());
             yield put(showRequestResult({ result: 'registeredUser', data: data.email }));
         } else {
             const errorToHandle = error ? error : { badResponse: true };
-            yield put(hideRequestFor());
             yield put(showErrorMessage(requestErrorToErrorMessage(errorToHandle)));
         }
     } catch(error) {

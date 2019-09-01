@@ -7,6 +7,7 @@ import Text from '../../../text/language/Text';
 import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
 import requiredErrorMessage from './../../../fieldError/requiredErrorMessage';
+import Action from './../../../type/Action';
 
 type FieldConstraint = {
     value: string,
@@ -55,6 +56,6 @@ export default function requiredTextInputField<
                     : undefined
             };
         },
-        { onValueChange: setValue as (value: string) => { type: string } }
+        { onValueChange: setValue as (value: string) => Action }
     )(Field);
 };

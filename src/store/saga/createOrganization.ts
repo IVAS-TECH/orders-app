@@ -30,13 +30,12 @@ function* handleCreateOrganization() {
             delay(3 * 1000)
         ]);
         const { result, error } = response;
+        yield put(hideRequestFor());
         if(result === 'createdOrganizationManager') {
-            yield put(hideRequestFor());
             yield put(navigateToSignIn());
             yield put(showRequestResult({ result: 'createdOrganizationManager', data: data.email }));
         } else {
             const errorToHandle = error ? error : { badResponse: true };
-            yield put(hideRequestFor());
             yield put(showErrorMessage(requestErrorToErrorMessage(errorToHandle)));
         }
     } catch(error) {

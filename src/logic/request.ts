@@ -3,7 +3,7 @@ export type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 export interface RequestInput<Data extends { [K in keyof Data]: Data[K] }> {
     url: string,
     method: Method,
-    data: Data,
+    data?: Data,
     token?: string
 };
 
@@ -25,6 +25,6 @@ export default function request<
     return fetch(url, {
         method,
         headers,
-        body: JSON.stringify(data)
+        body: data ? JSON.stringify(data) : undefined
     }).then(response => response.json());
 };

@@ -1,12 +1,8 @@
 import keyedFilter, { ToggleKeyAction, selectPicked } from './keyedFilter';
 import { OrderedByFilter } from '../../../type/OrderFilter';
+import OrganizationMember from '../../../type/OrganizationMember';
 import { createReducer } from './../../utils';
 import { createSelector } from 'reselect';
-
-export interface OrganizationMember {
-    _id: string,
-    name: string
-};
 
 export const TOGGLE_KEY = 'ivas-tech/orders-app/orderFilter/orderedBy/TOGGLE_KEY';
 
@@ -20,16 +16,8 @@ export interface LoadStateFromOrganizationMembers {
 };
 
 const initialState: OrderedByFilter = {
-    idFilter: {
-        'id1': true,
-        'id2': false,
-        'id3': true
-    },
-    name: {
-        'id1': 'Ivo Stratev',
-        'id2': 'Georgi Ivanov',
-        'id3': 'Petar Georgiev'
-    }
+    idFilter: { },
+    name: { }
 };
 
 const idKeyFilter = keyedFilter<typeof TOGGLE_KEY, string>(TOGGLE_KEY, initialState.idFilter);

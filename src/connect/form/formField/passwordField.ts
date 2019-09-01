@@ -8,6 +8,7 @@ import { ComponentType } from 'react';
 import ConstraintFormField from './ConstraintFormField';
 import { PasswordField, Validation } from './../../../store/form/formField/formFieldWithValueValidation/PasswordField';
 import errorMessageForPassword from './../../../fieldError/errorMessageForPassword';
+import Action from './../../../type/Action';
 
 export default function passwordField<
     Fields extends ConstraintFormField<Fields, FieldKey, PasswordField>,
@@ -18,8 +19,8 @@ export default function passwordField<
     fieldKey: FieldKey,
     extractFormState: (state: State) => FormState<Fields>,
     extractShowErrorState: (state: State) => boolean,
-    showError: () => { type: string },
-    dontShowError: () => { type: string }
+    showError: () => Action,
+    dontShowError: () => Action
 }):  ComponentType<{}> {
     const {
         value: fieldValue,
@@ -48,7 +49,7 @@ export default function passwordField<
             };
         },
         {
-            onValueChange: setValue as (value: string) => { type: string },
+            onValueChange: setValue as (value: string) => Action,
             onFocus: dontShowError,
             onBlur: showError
         }

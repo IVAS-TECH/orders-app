@@ -15,6 +15,8 @@ import registerFormReducer  from './registerForm/registerForm';
 import showErrorMessageReducer from './showErrorMessage';
 import showRequestForReducer from './showRequestFor';
 import showRequestResultReducer from './showRequestResult';
+import showAccessDeniedReducer from './showAccessDenied';
+import showCouldNotLoadDataReducer from './showCouldNotLoadData';
 import { combineReducers } from 'redux';
 
 const reducerMap = {
@@ -31,7 +33,9 @@ const reducerMap = {
     registerForm: registerFormReducer,
     showErrorMessage: showErrorMessageReducer,
     showRequestFor: showRequestForReducer,
-    showRequestResult: showRequestResultReducer
+    showRequestResult: showRequestResultReducer,
+    showAccessDenied: showAccessDeniedReducer,
+    showCouldNotLoadData: showCouldNotLoadDataReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -114,4 +118,12 @@ export function selectShowRequestFor(state: State): State['showRequestFor'] {
 
 export function selectShowRequestResult(state: State): State['showRequestResult'] {
     return state.showRequestResult;
+};
+
+export function selectShowAccessDenied(state: State): State['showAccessDenied'] {
+    return state.showAccessDenied;
+};
+
+export function selectShowCouldNotLoadData(state: State): State['showCouldNotLoadData'] {
+    return state.showCouldNotLoadData;
 };

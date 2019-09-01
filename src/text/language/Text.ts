@@ -10,6 +10,8 @@ import OrderFilterStepLabel from './OrderFilterStepLabel';
 import RequestFor from './RequestFor';
 import RequestResult from './RequestResult';
 import ErrorMessage from './ErrorMessage';
+import AccessDeniedDialog from './AccessDeniedDialog';
+import CouldNotLoadDataDialog from './CouldNotLoadDataDialog';
 
 interface Text {
     action: Action,
@@ -25,7 +27,9 @@ interface Text {
     fileNamePatternPlaceholder: string,
     requestFor: RequestFor,
     requestResult: RequestResult,
-    errorMessage: ErrorMessage
+    errorMessage: ErrorMessage,
+    accessDeniedDialog: AccessDeniedDialog,
+    couldNotLoadDataDialog: CouldNotLoadDataDialog
 }
 
 export default Text;

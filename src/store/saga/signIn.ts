@@ -41,8 +41,8 @@ function* handleSignIn() {
             authToken: token,
             name: userName
         };
+        yield put(hideRequestFor());
         if(isUser(user)) {
-            yield put(hideRequestFor());
             if(remember) {
                 try {
                     yield call(persistUser, user);
@@ -54,7 +54,6 @@ function* handleSignIn() {
             yield put(navigateToActiveOrders());
         } else {
             const errorToHandle = error ? error : { badResponse: true };
-            yield put(hideRequestFor());
             yield put(showErrorMessage(requestErrorToErrorMessage(errorToHandle)));
         }
     } catch(error) {

@@ -11,6 +11,8 @@ import orderFilterStepLabel from './orderFilterStepLabel';
 import requestFor from './requestFor';
 import requestResult from './resquestResult';
 import errorMessage from './errorMessage';
+import accessDeniedDialog from './accessDeniedDialog';
+import couldNotLoadDataDialog from './couldNotLoadDataDialog';
 
 const bg: Language = {
     action,
@@ -26,7 +28,9 @@ const bg: Language = {
     fileNamePatternPlaceholder: 'Използвайте ? за кой да е символ и * за нула или повече символи',
     requestFor,
     requestResult,
-    errorMessage
+    errorMessage,
+    accessDeniedDialog,
+    couldNotLoadDataDialog
 };
 
 export default bg;
