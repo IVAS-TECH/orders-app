@@ -5,6 +5,7 @@ import { ConfirmPasswordField, confirmPasswordField } from '../form/formField/fo
 import { OrganizationNameField, organizationNameField } from '../form/formField/formFieldWithValueValidation/OrganizationNameField';
 import { UserNameField, userNameField } from '../form/formField/formFieldWithValueValidation/UserNameField';
 import { PhoneField, phoneField } from '../form/formField/formFieldWithValueValidation/PhoneField';
+import { ROUTE_CREATE_ORGANIZATION } from '../location/route';
 
 export interface Fields {
     email: EmailField,
@@ -29,6 +30,6 @@ const form = createForm<Fields>({
         userName: userNameField,
         phone: phoneField
     }
-});
+}, [ ROUTE_CREATE_ORGANIZATION ]);
 
 export default form;

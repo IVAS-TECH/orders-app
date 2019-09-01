@@ -2,6 +2,7 @@ import createForm, { FormState, FormFieldsValues } from '../form/reducer';
 import { EmailField, emailField } from '../form/formField/formFieldWithValueValidation/EmailField';
 import { PasswordField, passwordField } from '../form/formField/formFieldWithValueValidation/PasswordField';
 import { BooleanField, booleanField } from '../form/formField/formFieldWithoutValidation/BooleanField';
+import { ROUTE_HOME , ROUTE_SIGN_IN } from '../location/route';
 
 export interface Fields {
     email: EmailField,
@@ -20,6 +21,6 @@ const form = createForm<Fields>({
         password: passwordField,
         remember: booleanField()
     }
-});
+}, [ ROUTE_HOME, ROUTE_SIGN_IN ]);
 
 export default form;

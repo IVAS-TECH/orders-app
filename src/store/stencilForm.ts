@@ -5,6 +5,7 @@ import { NumberFieldWithMinValue, numberFieldWithMinValue } from './form/formFie
 import { StringField, stringField } from './form/formField/formFieldWithoutValidation/StringField';
 import FormFieldWithValueValidation from './form/formField/formFieldWithValueValidation/FormFieldWithValueValidation';
 import * as StencilData from './../type/StencilData';
+import { ROUTE_HOME, ROUTE_ORDER } from './location/route';
 
 export type SheetThickness = StencilData.SheetThickness;
 
@@ -105,7 +106,7 @@ const form = createForm<Fields>({
         nanoCoating: booleanField(),
         electrochemicalPolishing: booleanField()
     }
-});
+}, [ ROUTE_HOME, ROUTE_ORDER ]);
 
 export function formData(formState: State): null | FormData {
     const formValues = form.selectors.form.values(formState);

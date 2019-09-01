@@ -5,6 +5,7 @@ import { selectPickedFromFileExtention as _selectPickedFromFileExtention } from 
 import orderFilterReducer, { selectOrderFilter } from './setOrderFilter/orderFilter';
 import OrderFilter from '../../type/OrderFilter';
 import Action from '../../type/Action';
+import { ROUTE_ORDER_HISTORY } from '../location/route';
 
 export type CurrentOrderFilterState = null | OrderFilter;
 
@@ -27,27 +28,27 @@ export function setCurrentOrderFilter(): SetCurrentOrderFilter {
 
 const noCurrentOrderFilter = null as CurrentOrderFilterState;
 
-export default function reducer(state: State | undefined, action: Action): State {
-    if(state === undefined) {
-        return {
-            currentOrderFilter: noCurrentOrderFilter ,
-            setOrderFilter: orderFilterReducer(undefined, action)
-        };
-    } else {
-        if(action.type === SET_CURRENT_ORDER_FILTER) {
-            const { setOrderFilter } = state;
-            return {
-                currentOrderFilter: selectOrderFilter(setOrderFilter),
-                setOrderFilter
-            };
-        } else {
-            const { currentOrderFilter, setOrderFilter } = state;
-            return {
-                currentOrderFilter,
-                setOrderFilter: orderFilterReducer(setOrderFilter, action)
-            };
-        }
+const initialState: State = {
+    currentOrderFilter: noCurrentOrderFilter,
+    setOrderFilter: orderFilterReducer(undefined, { type: undefined })
+};
+
+export default function reducer(state: State = initialState, action: Action): State {
+    if(action.type === ROUTE_ORDER_HISTORY) {
+        return initialState;
     }
+    if(action.type === SET_CURRENT_ORDER_FILTER) {
+        const { setOrderFilter } = state;
+        return {
+            currentOrderFilter: selectOrderFilter(setOrderFilter),
+            setOrderFilter
+        };
+    }
+    const { currentOrderFilter, setOrderFilter } = state;
+    return {
+        currentOrderFilter,
+        setOrderFilter: orderFilterReducer(setOrderFilter, action)
+    };
 };
 
 export function selectCurrentOrderFilter(state: State): CurrentOrderFilterState {

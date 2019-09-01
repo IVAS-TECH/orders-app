@@ -2,10 +2,10 @@ import create from '../flag';
 
 const { reducer, action: { turnOn, turnOff } } = create({
     email: true,
-    password: false,
-    confirmPassword: false,
-    userName: false,
-    phone: false
+    password: true,
+    confirmPassword: true,
+    userName: true,
+    phone: true
 }, 'register');
 
 export const showEmailError = () => turnOn('email');

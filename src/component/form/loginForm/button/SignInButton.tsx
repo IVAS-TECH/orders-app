@@ -8,22 +8,23 @@ import { signIn } from '../../../../store/action';
 
 interface SignInButtonProps {
     className?: string,
-    disabled: boolean,
-    onSignIn: () => void
+    isFormValid: boolean,
+    showFormErrors: () => void,
+    signIn: () => void
 }
 
 const SignInButton: React.FC<SignInButtonProps> = ({
     className,
-    disabled,
-    onSignIn
+    isFormValid,
+    showFormErrors,
+    signIn
 }) => (
     <Button
         fullWidth
         variant='contained'
         color='primary'
         className={className}
-        disabled={disabled}
-        onClick={onSignIn}>
+        onClick={isFormValid ? signIn : showFormErrors}>
         <TextContext.Consumer>
             {text => text.action.signIn}
         </TextContext.Consumer>
@@ -32,9 +33,12 @@ const SignInButton: React.FC<SignInButtonProps> = ({
 
 const ConnectedButton = connect(
     (state: State) => ({
-        disabled: !loginForm.selectors.form.isValid(selectLoginForm(state))
+        isFormValid: loginForm.selectors.form.isValid(selectLoginForm(state))
     }),
-    { onSignIn: signIn }
+    {
+        signIn,
+        showFormErrors: loginForm.actions.showErrors
+    }
 )(SignInButton);
 
 export default ConnectedButton;

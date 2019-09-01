@@ -8,22 +8,23 @@ import { createOrganization } from './../../../store/action';
 
 interface SignInButtonProps {
     className?: string,
-    disabled: boolean,
-    onCreateOrganization: () => void
+    isFormValid: boolean,
+    showFormErrors: () => void,
+    createOrganization: () => void
 }
 
 const SignInButton: React.FC<SignInButtonProps> = ({
     className,
-    disabled,
-    onCreateOrganization
+    isFormValid,
+    showFormErrors,
+    createOrganization
 }) => (
     <Button
         fullWidth
         variant='contained'
         color='primary'
         className={className}
-        disabled={disabled}
-        onClick={onCreateOrganization}>
+        onClick={isFormValid ? createOrganization : showFormErrors}>
         {<TextContext.Consumer>
             {text => text.action.createOrganization}
         </TextContext.Consumer>}
@@ -32,9 +33,12 @@ const SignInButton: React.FC<SignInButtonProps> = ({
 
 const ConnectedButton = connect(
     (state: State) => ({
-        disabled: !form.selectors.form.isValid(selectOrganizationManagerForm(state))
+        isFormValid: form.selectors.form.isValid(selectOrganizationManagerForm(state))
     }),
-    { onCreateOrganization: createOrganization }
+    {
+        createOrganization,
+        showFormErrors: form.actions.showErrors
+    }
 )(SignInButton);
 
 export default ConnectedButton;

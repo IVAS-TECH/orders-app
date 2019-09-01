@@ -2,6 +2,8 @@ import { Reducer } from 'redux';
 
 import { createReducer } from '../utils';
 
+import Action from '../../type/Action';
+
 import {
     SET_FORM_FIELD_VALUE,
     SHOW_ERRORS,
@@ -133,7 +135,7 @@ export type FormFieldsValues<
 };
 
 export interface Form<Fields extends Constraint<Fields>> {
-    reducer: Reducer<FormState<Fields>, FormAction>,
+    reducer: Reducer<FormState<Fields>, Action>,
     selectors: {
         field: {
             [Field in keyof Fields]: keyof Fields[Field]['validation'] extends string ? {
@@ -175,7 +177,8 @@ type ValidationDependsOnMap<
 }
 
 export default function createForm<Fields extends Constraint<Fields>>(
-    formConfig: FormConfig<Fields>
+    formConfig: FormConfig<Fields>,
+    resetOnAction?: string[]
 ): Form<Fields> {
     const { formName, fields } = formConfig;
     let selectorsField: Partial<Form<Fields>['selectors']['field']> = {};
@@ -193,7 +196,7 @@ export default function createForm<Fields extends Constraint<Fields>>(
     const isValid: Form<Fields>['selectors']['form']['isValid']
         = createSelector(id, hasNoErrors(formConfig));
     return {
-        reducer: createFormReducer(formConfig),
+        reducer: createFormReducer(formConfig, resetOnAction),
         selectors: {
             field: selectorsField,
             form: {
@@ -233,11 +236,14 @@ function id<A>(a: A): A {
     return a;
 }
 
-function createFormReducer<Fields extends Constraint<Fields>>(formConfig: FormConfig<Fields>): Reducer<FormState<Fields>, FormAction> {
+function createFormReducer<Fields extends Constraint<Fields>>(
+    formConfig: FormConfig<Fields>,
+    resetOnAction?: string[]
+): Reducer<FormState<Fields>, Action> {
     const initalState = createInitialState(formConfig);
     const conditionMap = createConditionMap(formConfig);
     const validationDependsOnMap = createValidationDependsOnMap(formConfig);
-    return createReducer(initalState, {
+    const reducer = createReducer(initalState, {
         [SET_FORM_FIELD_VALUE]: (
             state: FormState<Fields>,
             action: SetFormFieldValue
@@ -253,6 +259,14 @@ function createFormReducer<Fields extends Constraint<Fields>>(formConfig: FormCo
             action: ShowErrors
         ) => handleShowErrors(formConfig, state, action)
     });
+    return (state: FormState<Fields> = initalState, action: Action) => {
+        if(resetOnAction) {
+            if(resetOnAction.includes(action.type)) {
+                return initalState;
+            }
+        }
+        return reducer(state, action as FormAction);
+    };
 };
 
 function createInitialState<Fields extends Constraint<Fields>>(
