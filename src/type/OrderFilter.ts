@@ -17,15 +17,18 @@ export type FileExtention
 | '.tar.gz'
 | '.tgz';
 
-export type KeyedFilter<Keys extends string> = {
-    [Key in Keys]: boolean
+export type KeyedFilter<Keys extends string> = Record<Keys, boolean>;
+
+export interface OrderedByFilter {
+    idFilter: KeyedFilter<string>,
+    name: Record<string, string>
 };
 
 export default interface Filter {
     startDate: DateType,
     endDate: DateType,
     status: KeyedFilter<OrderStatus>,
-    orderedBy: KeyedFilter<string>,
+    orderedBy: OrderedByFilter,
     fileExtention: KeyedFilter<FileExtention>,
     fileName: string
 };

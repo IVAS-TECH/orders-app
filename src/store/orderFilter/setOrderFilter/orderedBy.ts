@@ -1,24 +1,74 @@
-import keyedFilter, { selectPicked } from './keyedFilter';
-import { KeyedFilter } from '../../../type/OrderFilter';
+import keyedFilter, { ToggleKeyAction, selectPicked } from './keyedFilter';
+import { OrderedByFilter } from '../../../type/OrderFilter';
+import { createReducer } from './../../utils';
+import { createSelector } from 'reselect';
 
-const TOGGLE_KEY = 'ivas-tech/orders-app/orderFilter/orderedBy/TOGGLE_KEY';
+export interface OrganizationMember {
+    _id: string,
+    name: string
+};
 
-const temp = ['Ivo Stratev', 'Borislav Stratev', 'Ivan Petrov', 'Grigor Dimitrov', 'Dimitar Petrov',
-'Ivan Shoov', 'Boris Dimitrov', 'Ivan Ivanov', 'Tanq Andonova'];
+export const TOGGLE_KEY = 'ivas-tech/orders-app/orderFilter/orderedBy/TOGGLE_KEY';
 
-const tempInitial = temp.reduce((obj, person) => {
-    obj[person] = true;
-    return obj
- }, {} as { [key: string]: boolean });
+export const LOAD_STATE_FROM_ORGANIZATION_MEMBERS = 'ivas-tech/orders-app/orderFilter/orderedBy/LOAD_STATE_FROM_ORGANIZATION_MEMBERS';
 
-const fileExtention = keyedFilter<typeof TOGGLE_KEY, string>(TOGGLE_KEY, tempInitial /* {} */ );
+export type ToggleKey = ToggleKeyAction<typeof TOGGLE_KEY, string>;
 
-const { toggleKey } = fileExtention.action;
+export interface LoadStateFromOrganizationMembers {
+    type: typeof LOAD_STATE_FROM_ORGANIZATION_MEMBERS,
+    members: Array<OrganizationMember>
+};
+
+const initialState: OrderedByFilter = {
+    idFilter: {
+        'id1': true,
+        'id2': false,
+        'id3': true
+    },
+    name: {
+        'id1': 'Ivo Stratev',
+        'id2': 'Georgi Ivanov',
+        'id3': 'Petar Georgiev'
+    }
+};
+
+const idKeyFilter = keyedFilter<typeof TOGGLE_KEY, string>(TOGGLE_KEY, initialState.idFilter);
+
+const { toggleKey } = idKeyFilter.action;
 
 export { toggleKey };
 
-export default fileExtention.reducer;
+export function loadStateFromOrganizationMembers(members: Array<OrganizationMember>): LoadStateFromOrganizationMembers {
+    return { type: LOAD_STATE_FROM_ORGANIZATION_MEMBERS, members };
+};
 
-export function selectPickedFromOrderedBy(filter: KeyedFilter<string>): string[] {
-    return selectPicked(filter);
-}
+const reducer = createReducer(initialState, {
+    [TOGGLE_KEY]: (
+        state: OrderedByFilter,
+        action: ToggleKey
+    ) => ({
+        idFilter: idKeyFilter.reducer(state.idFilter, action),
+        name: state.name
+    }),
+    [LOAD_STATE_FROM_ORGANIZATION_MEMBERS]: (
+        _state: OrderedByFilter,
+        { members }: LoadStateFromOrganizationMembers
+    ) => {
+        const idFilter: OrderedByFilter['idFilter'] = { };
+        const name: OrderedByFilter['name'] = { };
+        for(const member of members) {
+            const id = member._id;
+            idFilter[id] = true;
+            name[id] = member.name;
+        }
+        return { idFilter, name };
+    }
+});
+
+export default reducer;
+
+export const selectPickedFromOrderedBy = createSelector(
+    (state: OrderedByFilter) => state.name,
+    (state: OrderedByFilter) => selectPicked(state.idFilter),
+    (name: Record<string, string>, picked: string[]) => picked.map(id => name[id])
+);

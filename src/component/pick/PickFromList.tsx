@@ -12,9 +12,7 @@ export type ListPick<Key extends string> = {
 export interface PickFromListProps<Key extends string> {
     listPick: ListPick<Key>,
     order?: Array<Key>,
-    text?: {
-        [K in Key]: string
-    }
+    text?: Record<Key, string>,
     onToggleFromList: (key: Key) => void
 };
 

@@ -7,7 +7,7 @@ import fileExtentionReducer, { toggleKey as toggleFileExtention, order as fileEx
 import fileNameReducer, { setFileName } from './fileName';
 import { selectIsFilterEmpty } from './keyedFilter';
 import setFilterStepReducer, { previousFilterStep, nextFilterStep, resetFilterStep } from './setFilterStep';
-import OrderFilter from '../../../type/OrderFilter';
+import OrderFilter, { OrderedByFilter, KeyedFilter } from '../../../type/OrderFilter';
 
 export {
     setStartDate,
@@ -78,7 +78,11 @@ const mapStepToKey = {
 export function selectIsOrderFilterEmpty(state: State): boolean {
     const step = state.setFilterStep;
     if(step === 'status' || step === 'ordered-by' || step === 'file-extention') {
-        return selectIsFilterEmpty(state[mapStepToKey[step]]);
+        const filterState = state[mapStepToKey[step]];
+        const filter = step === 'ordered-by'
+            ? (filterState as OrderedByFilter).idFilter
+            : filterState as KeyedFilter<string>;
+        return selectIsFilterEmpty(filter);
     } else {
         return true;
     }

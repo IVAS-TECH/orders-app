@@ -6,7 +6,10 @@ import { selectOrderedBy, toggleOrderedBy } from '../../../../../../store/orderF
 const PickFromOrderedByList: React.FC<PickFromListProps<string>> = PickFromList;
 
 const OrderedBy = connect(
-    (state: State) => ({ listPick: selectOrderedBy(selectSetOrderFilter(state)) }),
+    (state: State) => {
+        const { idFilter, name } = selectOrderedBy(selectSetOrderFilter(state));
+        return { listPick: idFilter, text: name };
+    },
     { onToggleFromList: toggleOrderedBy }
 )(PickFromOrderedByList);
 
