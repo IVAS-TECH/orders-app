@@ -6,6 +6,7 @@ import signOutSaga from './signOut';
 import createOrganizationSaga from './createOrganization';
 import signUpSaga from './signUp';
 import loadDataSaga from './loadData';
+import orderSaga from './order';
 
 export default function* rootSaga() {
     yield call(boot);
@@ -15,4 +16,5 @@ export default function* rootSaga() {
     yield fork(createOrganizationSaga);
     yield fork(signUpSaga);
     yield fork(loadDataSaga);
+    yield fork(orderSaga);
 };

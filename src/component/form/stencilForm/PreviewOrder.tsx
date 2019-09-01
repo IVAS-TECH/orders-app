@@ -12,17 +12,21 @@ import convertStencilFormDataToStencilData from './../../../logic/convertStencil
 import { connect } from 'react-redux';
 import { State, selectPreviewOrder, selectStencilForm } from './../../../store/reducer';
 import TextContext from './../../../text/TextContext';
+import { createSelector } from 'reselect';
+import { makeOrder } from './../../../store/action';
 
 export interface PreviewOrderProps {
     preview: boolean,
-    stencilData?: StencilDataType,
-    onClose: () => void
+    stencilData: null | StencilDataType,
+    onClose: () => void,
+    makeOrder: (stencilData: StencilDataType) => void
 };
 
 const PreviewOrderDialog: React.FC<PreviewOrderProps> = ({
     preview,
     stencilData,
-    onClose
+    onClose,
+    makeOrder
 }) => (
     <TextContext.Consumer>
         {text => (
@@ -34,7 +38,10 @@ const PreviewOrderDialog: React.FC<PreviewOrderProps> = ({
                     {stencilData && <StencilData text={text} stencilData={stencilData!} />}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={onClose} color='primary' variant='contained'>
+                    <Button
+                        onClick={stencilData ? (() => makeOrder(stencilData)) : onClose}
+                        color='primary'
+                        variant='contained'>
                         {text.action.makeOrder}
                     </Button>
                 </DialogActions>
@@ -43,18 +50,24 @@ const PreviewOrderDialog: React.FC<PreviewOrderProps> = ({
     </TextContext.Consumer>
 );
 
+
+const stencilData = createSelector(
+    formData,
+    stencilData => stencilData === null ? null : convertStencilFormDataToStencilData(stencilData)
+);
+
 const PreviewOrder = connect(
     (state: State) => {
         const preview = selectPreviewOrder(state);
-        const stencilFormState = selectStencilForm(state);
-        const stencilData = formData(stencilFormState);
         return {
             preview,
-            stencilData: stencilData === null
-                ? undefined
-                : convertStencilFormDataToStencilData(stencilData)
+            stencilData: preview ? stencilData(selectStencilForm(state)) : null
         };
-    }, { onClose: closeOrderPreview }
+    },
+    {
+        onClose: closeOrderPreview,
+        makeOrder
+    }
 )(PreviewOrderDialog);
 
 export default PreviewOrder;

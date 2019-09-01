@@ -14,6 +14,7 @@ export interface MultiplyOnAxis {
 };
 
 export interface StencilData {
+    file: File | { url: string },
     fileName: string,
     fileIsFromRackelSide: boolean,
     count: number,

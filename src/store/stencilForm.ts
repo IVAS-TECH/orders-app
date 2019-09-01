@@ -6,6 +6,7 @@ import { StringField, stringField } from './form/formField/formFieldWithoutValid
 import FormFieldWithValueValidation from './form/formField/formFieldWithValueValidation/FormFieldWithValueValidation';
 import * as StencilData from './../type/StencilData';
 import { ROUTE_HOME, ROUTE_ORDER } from './location/route';
+import { createSelector } from 'reselect';
 
 export type SheetThickness = StencilData.SheetThickness;
 
@@ -72,9 +73,8 @@ export type FormData = {
     electrochemicalPolishing: boolean
 };
 
-const countMin = 1;
-
-const stepMin = 0;
+export const countMin = 1;
+export const stepMin = 0;
 
 const form = createForm<Fields>({
     formName: 'stencilForm',
@@ -108,8 +108,14 @@ const form = createForm<Fields>({
     }
 }, [ ROUTE_HOME, ROUTE_ORDER ]);
 
-export function formData(formState: State): null | FormData {
-    const formValues = form.selectors.form.values(formState);
+export default form;
+
+export const formData = createSelector(
+    form.selectors.form.values,
+    formValuesToFormData
+);
+
+function formValuesToFormData(formValues: FormFieldsValues<Fields>): null | FormData {
     const isEmpty = Object.keys(formValues).length === 0;
     return isEmpty ? null : {
         file: formValues.file!,
@@ -136,7 +142,3 @@ export function formData(formState: State): null | FormData {
         electrochemicalPolishing: formValues.electrochemicalPolishing!
     };
 };
-
-export default form;
-
-export { countMin, stepMin };

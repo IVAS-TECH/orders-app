@@ -3,6 +3,7 @@ import { StencilData } from './../type/StencilData';
 
 export default function convert(formData: FormData): StencilData {
     const stencilData: StencilData = {
+        file: formData.file,
         fileName: formData.fileName,
         fileIsFromRackelSide: formData.fileIsFromRackelSide,
         count: formData.count,
