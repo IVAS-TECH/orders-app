@@ -7,7 +7,7 @@ export interface BadResponse {
 };
 
 export type ValidationError
-= { invalidData: 'notAnObject' }
+= { invalidData: string }
 | { invalidKey: string }
 | { invalidField: string };
 
