@@ -76,6 +76,12 @@ export type FormData = {
 export const countMin = 1;
 export const stepMin = 0;
 
+export const CREATED_ORDER = 'ivas-tech/orders-app/stencilForm/CREATED_ORDER';
+
+export function createdOrder() {
+    return { type: CREATED_ORDER };
+};
+
 const form = createForm<Fields>({
     formName: 'stencilForm',
     fields: {
@@ -106,7 +112,7 @@ const form = createForm<Fields>({
         nanoCoating: booleanField(),
         electrochemicalPolishing: booleanField()
     }
-}, [ ROUTE_HOME, ROUTE_ORDER ]);
+}, [ ROUTE_HOME, ROUTE_ORDER, CREATED_ORDER ]);
 
 export default form;
 

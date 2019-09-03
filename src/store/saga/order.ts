@@ -1,7 +1,12 @@
-import { takeEvery, call, select } from 'redux-saga/effects';
+import { takeEvery, call, select, put, all, delay } from 'redux-saga/effects';
 import { MAKE_ORDER, MakeOrder } from '../action';
 import { State, selectUser } from './../reducer';
+import { showRequestFor, hideRequestFor } from './../showRequestFor';
 import { selectAuthToken } from './../user';
+import { showRequestResult } from './../showRequestResult';
+import { createdOrder as createdOrderAction } from './../stencilForm';
+import { showErrorMessage } from './../showErrorMessage';
+import { requestErrorToErrorMessage } from './../../type/RequestError';
 import order from './../../logic/order';
 
 function selectAuthorizationToken(state: State): string {
@@ -9,12 +14,25 @@ function selectAuthorizationToken(state: State): string {
 }
 
 function* handleMakeOrder({ stencilData }: MakeOrder) {
+    const authToken: string = yield select(selectAuthorizationToken);
+    yield put(showRequestFor('makeOrder'));
     try {
-        const authToken: string = yield select(selectAuthorizationToken);
-        const response = yield call(order, stencilData, authToken);
-        console.log({ response });
+        const [ response ] = yield all([
+            call(order, stencilData, authToken),
+            delay(3 * 1000)
+        ]);
+        const { createdOrder, error } = response;
+        yield put(hideRequestFor());
+        if(createdOrder) {
+            yield put(createdOrderAction());
+            yield put(showRequestResult({ result: 'createdOrder', data: createdOrder }));
+        } else {
+            const errorToHandle = error ? error : { badResponse: true };
+            yield put(showErrorMessage(requestErrorToErrorMessage(errorToHandle)));
+        }
     } catch(error) {
-        console.log({error})
+        yield put(hideRequestFor());
+        yield put(showErrorMessage('networkError'));
     }
 }
 

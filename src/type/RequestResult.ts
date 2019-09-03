@@ -5,6 +5,9 @@ type RequestResult
 } | {
     result: 'registeredUser',
     data: string
+} | {
+    result: 'createdOrder',
+    data: string
 };
 
 export default RequestResult;

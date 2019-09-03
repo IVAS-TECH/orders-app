@@ -1,4 +1,5 @@
 import { createReducer } from './utils';
+import { CREATED_ORDER } from './stencilForm';
 
 export const OPEN_ORDER_PREVIEW = 'ivas-tech/orders-app/orderPreview/OPEN_ORDER_PREVIEW';
 
@@ -28,7 +29,11 @@ const reducer = createReducer(false, {
     [CLOSE_ORDER_PREVIEW]: (
         _state: boolean,
         _action: CloseOrderPreview
-    ) => false
+    ) => false,
+    [CREATED_ORDER]: (
+        _state: boolean,
+        _action: { type: typeof CREATED_ORDER }
+     ) => false
 });
 
 export default reducer;
