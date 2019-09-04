@@ -4,7 +4,10 @@ interface OrderInfo {
     id: string,
     orderedBy: string,
     date: Date,
-    file: string,
+    file: {
+        name: string,
+        id: string
+    },
     status: OrderStatus
 }
 

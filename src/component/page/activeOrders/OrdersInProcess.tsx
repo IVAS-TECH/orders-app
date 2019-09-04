@@ -6,6 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import OrderInfo from './../../../type/OrderInfo';
 import TextContext from './../../../text/TextContext';
 import Text from './../../../text/language/Text';
@@ -72,7 +73,14 @@ function tableRow(text: Text): (orderInfo: OrderInfo) => JSX.Element {
             <TableCell>{orderInfo.id}</TableCell>
             <TableCell>{orderInfo.orderedBy}</TableCell>
             <TableCell>{format(orderInfo.date, 'dd.MM.yyyy HH:mm')}</TableCell>
-            <TableCell>{orderInfo.file}</TableCell>
+            <TableCell>
+                <Button
+                    href={`api/file/${orderInfo.file.id}/${orderInfo.file.name}`}
+                    download={orderInfo.file.name}
+                    color='primary'>
+                {orderInfo.file.name}        
+                </Button>
+            </TableCell>
             <TableCell>{text.orderStatus[orderInfo.status]}</TableCell>
         </TableRow>
     );
