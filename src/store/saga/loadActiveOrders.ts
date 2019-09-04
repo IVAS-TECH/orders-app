@@ -1,10 +1,10 @@
 import { put } from 'redux-saga/effects';
 import Action from './../../type/Action';
 import { showCouldNotLoadData } from './../showCouldNotLoadData';
-import { loadStateFromOrganizationMembers } from './../orderFilter/setOrderFilter/orderedBy';
-import isMembers from './../../logic/validate/isMembers';
+import { loadActiveOrders } from './../activeOrders';
+import parseISO from 'date-fns/parseISO';
 
-export default function* loadMembers(retryAction: Action, response: unknown) {
+export default function* load(retryAction: Action, response: unknown) {
     if(typeof response !== 'object') {
         yield put(showCouldNotLoadData(retryAction));
         return;
@@ -13,10 +13,11 @@ export default function* loadMembers(retryAction: Action, response: unknown) {
         yield put(showCouldNotLoadData(retryAction));
         return;
     }
-    const { members } = response as { members?: unknown };
-    if(!isMembers(members)) {
+    const { activeOrders } = response as { activeOrders?: unknown };
+    if(!(activeOrders instanceof Array)) {
         yield put(showCouldNotLoadData(retryAction));
         return;
     }
-    yield put(loadStateFromOrganizationMembers(members));
+    const activeOrdersWithDate = activeOrders.map(order => ({...order, date: parseISO(order.date) }))
+    yield put(loadActiveOrders(activeOrdersWithDate));
 };

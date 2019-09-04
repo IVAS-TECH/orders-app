@@ -3,6 +3,7 @@ type RequestFor
 | 'createOrganization'
 | 'signUp'
 | 'organizationMembers'
-| 'makeOrder';
+| 'makeOrder'
+| 'activeOrders';
 
 export default RequestFor;

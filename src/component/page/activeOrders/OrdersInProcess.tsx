@@ -68,7 +68,7 @@ function tableHead(text: Text): JSX.Element {
 
 function tableRow(text: Text): (orderInfo: OrderInfo) => JSX.Element {
     return orderInfo => (
-        <TableRow>
+        <TableRow key={orderInfo.id}>
             <TableCell>{orderInfo.id}</TableCell>
             <TableCell>{orderInfo.orderedBy}</TableCell>
             <TableCell>{format(orderInfo.date, 'dd.MM.yyyy HH:mm')}</TableCell>

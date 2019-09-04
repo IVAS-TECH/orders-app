@@ -7,7 +7,8 @@ const requestFor: RequestFor = {
         createOrganization: 'Creating organization and user profile',
         signUp: 'Signing up',
         organizationMembers: 'Loading organization members list',
-        makeOrder: 'Making order'
+        makeOrder: 'Making order',
+        activeOrders: 'Loading active orders'
     }
 };
 

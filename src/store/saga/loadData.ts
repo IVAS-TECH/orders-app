@@ -1,16 +1,18 @@
 import { takeEvery, call, put, all, delay, select } from 'redux-saga/effects';
 import Action from './../../type/Action';
 import {
-    //ROUTE_ACTIVE_ORDERS,
+    ROUTE_HOME,
+    ROUTE_ACTIVE_ORDERS,
     ROUTE_ORDER_HISTORY
 } from './../location/route';
-import { State, selectLocation, selectUser } from './../reducer';
-import { selectAuthToken } from './../user';
+import { selectLocation, selectUser } from './../reducer';
+import { selectAuthToken, selectIsLoggedIn } from './../user';
 import request from './../../logic/request';
 import { showRequestFor, hideRequestFor } from '../showRequestFor';
 import { showAccessDenied }  from '../showAccessDenied';
 import { showCouldNotLoadData } from '../showCouldNotLoadData';
 import RequestFor from '../../type/RequestFor';
+import loadActiveOrders from './loadActiveOrders';
 import loadMembers from './loadMembers';
 
 interface LoadInfo {
@@ -20,6 +22,16 @@ interface LoadInfo {
 }
 
 const loadDataFor: Record<string, LoadInfo> = {
+    [ROUTE_HOME]: {
+        url: '/api/activeOrders',
+        loadData: 'activeOrders',
+        continuation: loadActiveOrders
+    },
+    [ROUTE_ACTIVE_ORDERS]: {
+        url: '/api/activeOrders',
+        loadData: 'activeOrders',
+        continuation: loadActiveOrders
+    },
     [ROUTE_ORDER_HISTORY]: {
         url: '/api/organization/members',
         loadData: 'organizationMembers',
@@ -29,14 +41,15 @@ const loadDataFor: Record<string, LoadInfo> = {
 
 type LoadAction = { type: keyof typeof loadDataFor };
 
-function selectAuthorizationToken(state: State): string {
-    return selectAuthToken(selectUser(state));
-}
-
 function* handleLoadData(action: LoadAction) {
     const route = action.type;
     const { url, loadData, continuation } = loadDataFor[route];
-    const authToken = yield select(selectAuthorizationToken);
+    const user = yield select(selectUser);
+    const isLoggedIn = selectIsLoggedIn(user);
+    if(!isLoggedIn) {
+        return;
+    }
+    const authToken = selectAuthToken(user);
     yield put(showRequestFor(loadData));
     try {
         const [ response ] = yield all([

@@ -1,37 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import OrdersInProcess from './OrdersInProcess';
+import OrderInfo from './../../../type/OrderInfo';
+import { State, selectActiveOrders } from './../../../store/reducer';
+import { connect } from 'react-redux';
 
-const data = [
-    {
-        id: '483483583475',
-        orderedBy: 'Ivo Stratev',
-        date: new Date(),
-        file: 'archive1.zip',
-        status: 'waiting' as 'waiting'
-    },
-    {
-        id: '483483583475',
-        orderedBy: 'Ivo Stratev',
-        date: new Date(),
-        file: 'archive1.zip',
-        status: 'waiting' as 'waiting'
-    },
-    {
-        id: '483483583475',
-        orderedBy: 'Ivo Stratev',
-        date: new Date(),
-        file: 'archive1.zip',
-        status: 'waiting' as 'waiting'
-    },
-    {
-        id: '483483583475',
-        orderedBy: 'Ivo Stratev',
-        date: new Date(),
-        file: 'archive1.zip',
-        status: 'waiting' as 'waiting'
-    }
-];
+interface ActiveOrdersProps {
+    ordersInProcess: OrderInfo[]
+}
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -50,15 +26,21 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const ActiveOrders: React.FC<{}> = () => {
+const ActiveOrders: React.FC<ActiveOrdersProps> = ({
+    ordersInProcess
+}) => {
     const classes = useStyles();
     return (
         <OrdersInProcess
             paperClass={classes.paper}
             titleClass={classes.title}
             noOrdersToShowClass={classes.noOrdersText}
-            orders={Math.random() < 0.5 ? data : []} />
+            orders={ordersInProcess} />
     );
 };
 
-export default ActiveOrders;
+const Page = connect(
+    (state: State) => ({ ordersInProcess: selectActiveOrders(state) })
+)(ActiveOrders);
+
+export default Page;

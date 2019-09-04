@@ -17,6 +17,7 @@ import showRequestForReducer from './showRequestFor';
 import showRequestResultReducer from './showRequestResult';
 import showAccessDeniedReducer from './showAccessDenied';
 import showCouldNotLoadDataReducer from './showCouldNotLoadData';
+import activeOrdersReducer from './activeOrders';
 import { combineReducers } from 'redux';
 
 const reducerMap = {
@@ -35,7 +36,8 @@ const reducerMap = {
     showRequestFor: showRequestForReducer,
     showRequestResult: showRequestResultReducer,
     showAccessDenied: showAccessDeniedReducer,
-    showCouldNotLoadData: showCouldNotLoadDataReducer
+    showCouldNotLoadData: showCouldNotLoadDataReducer,
+    activeOrders: activeOrdersReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -126,4 +128,8 @@ export function selectShowAccessDenied(state: State): State['showAccessDenied'] 
 
 export function selectShowCouldNotLoadData(state: State): State['showCouldNotLoadData'] {
     return state.showCouldNotLoadData;
+};
+
+export function selectActiveOrders(state: State): State['activeOrders'] {
+    return state.activeOrders;
 };
