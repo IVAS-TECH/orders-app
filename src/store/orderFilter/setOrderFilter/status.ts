@@ -1,5 +1,6 @@
 import keyedFilter, { selectPicked } from './keyedFilter';
-import { KeyedFilter, OrderStatus } from '../../../type/OrderFilter';
+import OrderStatus from '../../../type/OrderStatus';
+import { KeyedFilter } from '../../../type/OrderFilter';
 
 const TOGGLE_KEY = 'ivas-tech/orders-app/orderFilter/status/TOGGLE_KEY';
 

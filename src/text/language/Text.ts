@@ -12,6 +12,7 @@ import RequestResult from './RequestResult';
 import ErrorMessage from './ErrorMessage';
 import AccessDeniedDialog from './AccessDeniedDialog';
 import CouldNotLoadDataDialog from './CouldNotLoadDataDialog';
+import OrderInfo from './OrderInfo';
 
 interface Text {
     action: Action,
@@ -29,7 +30,8 @@ interface Text {
     requestResult: RequestResult,
     errorMessage: ErrorMessage,
     accessDeniedDialog: AccessDeniedDialog,
-    couldNotLoadDataDialog: CouldNotLoadDataDialog
+    couldNotLoadDataDialog: CouldNotLoadDataDialog,
+    orderInfo: OrderInfo
 }
 
 export default Text;

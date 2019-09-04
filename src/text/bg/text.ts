@@ -13,6 +13,7 @@ import requestResult from './resquestResult';
 import errorMessage from './errorMessage';
 import accessDeniedDialog from './accessDeniedDialog';
 import couldNotLoadDataDialog from './couldNotLoadDataDialog';
+import orderInfo from './orderInfo';
 
 const bg: Language = {
     action,
@@ -30,7 +31,8 @@ const bg: Language = {
     requestResult,
     errorMessage,
     accessDeniedDialog,
-    couldNotLoadDataDialog
+    couldNotLoadDataDialog,
+    orderInfo
 };
 
 export default bg;

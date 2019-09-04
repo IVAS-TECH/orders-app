@@ -3,7 +3,7 @@ import { configure } from './../../../../../utils';
 import PickFromList, { PickFromListProps } from './../../../../../pick/PickFromList';
 import { State, selectSetOrderFilter } from './../../../../../../store/reducer';
 import { selectStatus, toggleStatus, statusOrder } from '../../../../../../store/orderFilter/setOrderFilter/orderFilter';
-import { OrderStatus } from './../../../../../../type/OrderFilter';;
+import OrderStatus from './../../../../../../type/OrderStatus';
 
 const PickFromStatusList: React.FC<PickFromListProps<OrderStatus>> = PickFromList;
 

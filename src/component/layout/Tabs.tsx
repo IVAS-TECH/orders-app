@@ -5,6 +5,7 @@ import MuiTab from '@material-ui/core/Tab';
 import OrderIcon from '@material-ui/icons/PlaylistAdd';
 import OrderHistoryIcon from '@material-ui/icons/History';
 import ActiveOrdersIcon from '@material-ui/icons/Sync';
+import ActiveOrders from './../page/activeOrders/ActiveOrders';
 import Order from './../page/Order';
 import OrderHistory from '../page/orderHistory/OrderHistory';
 import { Dispatch } from 'redux';
@@ -41,7 +42,7 @@ const tabs: ['active-orders', 'order', 'order-history']
           = ['active-orders', 'order', 'order-history'];
 
 const page: TabMap<{ page: React.ReactNode, icon: React.ReactElement }> = {
-    'active-orders': { page: 'NOT IMPLEMENTED', icon: <ActiveOrdersIcon /> },
+    'active-orders': { page: <ActiveOrders />, icon: <ActiveOrdersIcon /> },
     'order': { page: <Order />, icon:  <OrderIcon /> },
     'order-history': { page: <OrderHistory />, icon: <OrderHistoryIcon /> }
 };

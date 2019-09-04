@@ -1,15 +1,5 @@
 import DateType from './Date';
-
-export type OrderStatus
-= 'waiting'
-| 'accepted'
-| 'rejected'
-| 'canceled'
-| 'processing'
-| 'ready'
-| 'delivered';
-
-export type OrderStatusMap<T> = Record<OrderStatus, T>;
+import OrderStatus from './OrderStatus';
 
 export type FileExtention
 = '.zip'

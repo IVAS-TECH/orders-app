@@ -1,4 +1,4 @@
-import { OrderStatusMap } from './../../type/OrderFilter';
+import { OrderStatusMap } from './../../type/OrderStatus';
 
 type OrderStatus = OrderStatusMap<string>;
 

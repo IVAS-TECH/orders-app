@@ -13,6 +13,7 @@ import requestResult from './requestResult';
 import errorMessage from './errorMessage';
 import accessDeniedDialog from './accessDeniedDialog';
 import couldNotLoadDataDialog from './couldNotLoadDataDialog';
+import orderInfo from './orderInfo';
 
 const en: Language = {
     action,
@@ -30,7 +31,8 @@ const en: Language = {
     requestResult,
     errorMessage,
     accessDeniedDialog,
-    couldNotLoadDataDialog
+    couldNotLoadDataDialog,
+    orderInfo
 };
 
 export default en;

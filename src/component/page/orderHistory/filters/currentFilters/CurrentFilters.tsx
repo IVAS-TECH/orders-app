@@ -5,7 +5,7 @@ import SingleValueFilter from './SingleValueFilter';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import FilterListIconWithLeftMargin from './../FilterListIconWithLeftMargin';
-import { OrderStatus } from '../../../../../type/OrderFilter';
+import OrderStatus from '../../../../../type/OrderStatus';
 import TextContext from './../../../../../text/TextContext';
 import { connect } from 'react-redux';
 import { State, selectCurrentOrderFilter } from './../../../../../store/reducer';
