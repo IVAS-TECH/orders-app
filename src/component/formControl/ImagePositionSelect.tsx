@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import HorizontalImagePosition from './../imagePosition/HorizontalImagePosition';
 import VerticalImagePosition from './../imagePosition/VerticalImagePosition'; 
-import { ImagePosition } from './../../type/StencilData'; 
+import { ImagePosition } from './../../type/OrderData'; 
 
 export type Value = '' | ImagePosition;
 

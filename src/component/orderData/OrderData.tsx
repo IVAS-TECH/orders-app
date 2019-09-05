@@ -1,15 +1,15 @@
 import React from 'react';
 import DataItem from './DataItem';
 import MuiDivider from '@material-ui/core/Divider';
-import TextArea from './../formControl/TextArea';
+import TextArea from '../formControl/TextArea';
 import { styled } from '@material-ui/styles';
-import Text from './../../text/language/Text';
-import ImagePosition from './../imagePosition/ImagePosition';
-import { StencilData as StencilDataType } from './../../type/StencilData';
+import Text from '../../text/language/Text';
+import ImagePosition from '../imagePosition/ImagePosition';
+import { OrderData as OrderDataType } from '../../type/OrderData';
 
-export interface StencilDataProps {
+export interface OrderDataProps {
     text: Text,
-    stencilData: StencilDataType
+    orderData: OrderDataType
 };
 
 const Divider = styled(MuiDivider)({
@@ -17,100 +17,100 @@ const Divider = styled(MuiDivider)({
     marginBottom: 8
 });
 
-const StencilData: React.FC<StencilDataProps> = ({
+const OrderData: React.FC<OrderDataProps> = ({
     text,
-    stencilData
+    orderData
 }) => (
      <div>
         <DataItem
             description={text.stencilForm.file.fileArchive}
-            value={stencilData.fileName} />
+            value={orderData.fileName} />
         <Divider />
         <DataItem
             description={text.stencilForm.isFromRackelSide}
-            value={text.bool(stencilData.fileIsFromRackelSide)} />
+            value={text.bool(orderData.fileIsFromRackelSide)} />
         <Divider />
         <DataItem
             description={text.stencilForm.count}
-            value={stencilData.count} />
+            value={orderData.count} />
         <Divider />
         <DataItem
             description={text.stencilForm.sheetThickness}
-            value={stencilData.sheetThickness.toString() + ' μm'} />
+            value={orderData.sheetThickness.toString() + ' μm'} />
         <Divider />
         <DataItem
             description={text.stencilForm.panelTitle.fidushalMarks}
-            value={text.bool(!!stencilData.fidushalMarks)} />
-        {!!stencilData.fidushalMarks && <React.Fragment>
+            value={text.bool(!!orderData.fidushalMarks)} />
+        {!!orderData.fidushalMarks && <React.Fragment>
             <DataItem
                 description={text.stencilForm.fidushalMarksKind}
-                value={text.stencilForm.optionsFor.fidushalMarksKind[stencilData.fidushalMarks.kind]} />
+                value={text.stencilForm.optionsFor.fidushalMarksKind[orderData.fidushalMarks.kind]} />
             <DataItem
                 description={text.stencilForm.fidushalMarksSide}
-                value={text.stencilForm.optionsFor.fidushalMarksSide[stencilData.fidushalMarks.side]} />
+                value={text.stencilForm.optionsFor.fidushalMarksSide[orderData.fidushalMarks.side]} />
         </React.Fragment>}
         <Divider />
         <DataItem
             description={text.stencilForm.panelTitle.modificationsRequirements}
-            value={text.bool(!!stencilData.modificationsRequirements)} />
+            value={text.bool(!!orderData.modificationsRequirements)} />
         <Divider />
-        {!!stencilData.modificationsRequirements && <React.Fragment>
+        {!!orderData.modificationsRequirements && <React.Fragment>
             <TextArea
                 label={text.stencilForm.modificationsRequirements}
                 disabled
-                value={stencilData.modificationsRequirements}
+                value={orderData.modificationsRequirements}
                 expectedSymbolsPerRow={87} />
             <Divider />
         </React.Fragment>}
         <DataItem
             description={text.stencilForm.panelTitle.text}
-            value={text.bool(!!stencilData.text)} />
-        {!!stencilData.text && <React.Fragment>
-            {stencilData.text!.rackelSide && <DataItem
+            value={text.bool(!!orderData.text)} />
+        {!!orderData.text && <React.Fragment>
+            {orderData.text!.rackelSide && <DataItem
                 description={text.stencilForm.textFromRackelSide}
-                value={stencilData.text.rackelSide} />
+                value={orderData.text.rackelSide} />
             }
-            {stencilData.text!.pcbSide && <DataItem
+            {orderData.text!.pcbSide && <DataItem
                 description={text.stencilForm.textFromPCBSide}
-                value={stencilData.text.pcbSide} />
+                value={orderData.text.pcbSide} />
             }
         </React.Fragment>}
         <Divider />
         <DataItem
             description={text.stencilForm.panelTitle.multiply}
-            value={text.bool(!!stencilData.multiply)} />
-        {!!stencilData.multiply && <React.Fragment>
+            value={text.bool(!!orderData.multiply)} />
+        {!!orderData.multiply && <React.Fragment>
             <DataItem
                 description={text.stencilForm.panelsCountAxis('X')}
-                value={stencilData.multiply.x.panelsCount} />
+                value={orderData.multiply.x.panelsCount} />
             <DataItem
                 description={text.stencilForm.stepAxis('X')}
-                value={stencilData.multiply.x.step.toString() + ' mm'} />
+                value={orderData.multiply.x.step.toString() + ' mm'} />
             <DataItem
                 description={text.stencilForm.panelsCountAxis('Y')}
-                value={stencilData.multiply.y.panelsCount} />
+                value={orderData.multiply.y.panelsCount} />
             <DataItem
                 description={text.stencilForm.stepAxis('Y')}
-                value={stencilData.multiply.y.step.toString() + ' mm'} />
+                value={orderData.multiply.y.step.toString() + ' mm'} />
         </React.Fragment>}
         <Divider />
         <DataItem
             description={text.stencilForm.position}
-            value={text.stencilForm.optionsFor.position[stencilData.position]} />
+            value={text.stencilForm.optionsFor.position[orderData.position]} />
         <Divider />
         <DataItem
             description={text.stencilForm.imagePosition}
-            item={<ImagePosition position={stencilData.imagePosition} />} />
+            item={<ImagePosition position={orderData.imagePosition} />} />
         <Divider />
         <DataItem
             description={text.stencilForm.nanoCoating}
-            value={text.bool(stencilData.nanoCoating)} />
+            value={text.bool(orderData.nanoCoating)} />
         <Divider />
         <DataItem
             description={text.stencilForm.electrochemicalPolishing}
-            value={text.bool(stencilData.electrochemicalPolishing)} />
+            value={text.bool(orderData.electrochemicalPolishing)} />
         <Divider />
     </div>
 );
 
-export default StencilData;
+export default OrderData;

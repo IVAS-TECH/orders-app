@@ -2,7 +2,7 @@ import {
     FidushalMarksKind,
     FidushalMarksSide,
     Position
-} from './../../../type/StencilData';
+} from './../../../type/OrderData';
 
 interface OptionsFor {
     fidushalMarksKind: {

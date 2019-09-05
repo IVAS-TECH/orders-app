@@ -1,7 +1,7 @@
 import React from 'react';
 import HorizontalImagePosition from './HorizontalImagePosition';
 import VerticalImagePosition from './VerticalImagePosition';
-import { ImagePosition as ImagePositionValue } from './../../type/StencilData';
+import { ImagePosition as ImagePositionValue } from './../../type/OrderData';
 
 const ImagePosition : React.FC<{ position: ImagePositionValue }> = ({
     position

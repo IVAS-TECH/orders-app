@@ -4,11 +4,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { StencilData as StencilDataType } from './../../../type/StencilData';
-import StencilData from './../../stencilData/StencilData';
+import { OrderData as OrderDataType } from './../../../type/OrderData';
+import OrderData from './../../orderData/OrderData';
 import { formData } from './../../../store/stencilForm';
 import { closeOrderPreview } from './../../../store/orderPreview';
-import convertStencilFormDataToStencilData from './../../../logic/convertStencilFormDataToStencilData';
+import convertStencilFormDataToOrderData from './../../../logic/convertStencilFormDataToOrderData';
 import { connect } from 'react-redux';
 import { State, selectPreviewOrder, selectStencilForm } from './../../../store/reducer';
 import TextContext from './../../../text/TextContext';
@@ -17,14 +17,14 @@ import { makeOrder } from './../../../store/action';
 
 export interface PreviewOrderProps {
     preview: boolean,
-    stencilData: null | StencilDataType,
+    orderData: null | OrderDataType,
     onClose: () => void,
-    makeOrder: (stencilData: StencilDataType) => void
+    makeOrder: (orderData: OrderDataType) => void
 };
 
 const PreviewOrderDialog: React.FC<PreviewOrderProps> = ({
     preview,
-    stencilData,
+    orderData,
     onClose,
     makeOrder
 }) => (
@@ -35,11 +35,11 @@ const PreviewOrderDialog: React.FC<PreviewOrderProps> = ({
                     {text.action.previewOrder}
                 </DialogTitle>
                 <DialogContent>
-                    {stencilData && <StencilData text={text} stencilData={stencilData!} />}
+                    {orderData && <OrderData text={text} orderData={orderData!} />}
                 </DialogContent>
                 <DialogActions>
                     <Button
-                        onClick={stencilData ? (() => makeOrder(stencilData)) : onClose}
+                        onClick={orderData ? (() => makeOrder(orderData)) : onClose}
                         color='primary'
                         variant='contained'>
                         {text.action.makeOrder}
@@ -51,9 +51,9 @@ const PreviewOrderDialog: React.FC<PreviewOrderProps> = ({
 );
 
 
-const stencilData = createSelector(
+const orderData = createSelector(
     formData,
-    stencilData => stencilData === null ? null : convertStencilFormDataToStencilData(stencilData)
+    orderData => orderData === null ? null : convertStencilFormDataToOrderData(orderData)
 );
 
 const PreviewOrder = connect(
@@ -61,7 +61,7 @@ const PreviewOrder = connect(
         const preview = selectPreviewOrder(state);
         return {
             preview,
-            stencilData: preview ? stencilData(selectStencilForm(state)) : null
+            orderData: preview ? orderData(selectStencilForm(state)) : null
         };
     },
     {

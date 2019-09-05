@@ -13,7 +13,7 @@ export interface MultiplyOnAxis {
     step: number
 };
 
-export interface StencilData {
+export interface OrderData {
     file: File | { url: string },
     fileName: string,
     fileIsFromRackelSide: boolean,

@@ -1,10 +1,10 @@
-import { StencilData } from "../type/StencilData";
+import { OrderData } from "../type/OrderData";
 
-export default function order(stencilData: StencilData, authToken: string): Promise<unknown> {
+export default function order(orderData: OrderData, authToken: string): Promise<unknown> {
     const formData = new FormData();
-    const { file, ...data } = stencilData;
+    const { file, ...data } = orderData;
     console.log(file);
-    formData.append('archive', file as File, stencilData.fileName);
+    formData.append('archive', file as File, orderData.fileName);
     formData.append('data', JSON.stringify(data));
     return fetch('/api/order', {
         method: 'POST',

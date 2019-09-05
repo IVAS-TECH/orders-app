@@ -1,8 +1,8 @@
-import { FormData } from './../store/stencilForm';
-import { StencilData } from './../type/StencilData';
+import { FormData } from '../store/stencilForm';
+import { OrderData } from '../type/OrderData';
 
-export default function convert(formData: FormData): StencilData {
-    const stencilData: StencilData = {
+export default function convert(formData: FormData): OrderData {
+    const orderData: OrderData = {
         file: formData.file,
         fileName: formData.fileName,
         fileIsFromRackelSide: formData.fileIsFromRackelSide,
@@ -15,19 +15,19 @@ export default function convert(formData: FormData): StencilData {
     };
     const text = extractText(formData);
     if(formData.fidushalMarks) {
-        stencilData.fidushalMarks = {
+        orderData.fidushalMarks = {
             kind: formData.fidushalMarksKind!,
             side: formData.fidushalMarksSide!
         };
     }
     if(formData.modificationsRequirements !== '') {
-        stencilData.modificationsRequirements = formData.modificationsRequirements;
+        orderData.modificationsRequirements = formData.modificationsRequirements;
     }
     if(text) {
-        stencilData.text = text;
+        orderData.text = text;
     }
     if(formData.multiply) {
-        stencilData.multiply = {
+        orderData.multiply = {
             x: {
                 panelsCount: formData.panelsCountX!,
                 step: formData.stepX!
@@ -38,10 +38,10 @@ export default function convert(formData: FormData): StencilData {
             }
         };
     }
-    return stencilData;
+    return orderData;
 }
 
-function extractText(formData: FormData): StencilData['text'] {
+function extractText(formData: FormData): OrderData['text'] {
     if(formData.includeTextFromRackelSide && formData.includeTextFromPCBSide) {
         return {
             rackelSide: formData.textFromRackelSide!,

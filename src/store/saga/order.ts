@@ -13,12 +13,12 @@ function selectAuthorizationToken(state: State): string {
     return selectAuthToken(selectUser(state));
 }
 
-function* handleMakeOrder({ stencilData }: MakeOrder) {
+function* handleMakeOrder({ orderData }: MakeOrder) {
     const authToken: string = yield select(selectAuthorizationToken);
     yield put(showRequestFor('makeOrder'));
     try {
         const [ response ] = yield all([
-            call(order, stencilData, authToken),
+            call(order, orderData, authToken),
             delay(3 * 1000)
         ]);
         const { createdOrder, error } = response;

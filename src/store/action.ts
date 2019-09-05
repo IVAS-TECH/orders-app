@@ -1,5 +1,5 @@
 import { createAction } from './utils';
-import { StencilData } from './../type/StencilData';
+import { OrderData } from './../type/OrderData';
 
 export const SIGN_IN = 'ivas-tech/orders-app/action/SIGN_IN';
 
@@ -11,7 +11,7 @@ export const MAKE_ORDER = 'ivas-tech/orders-app/action/MAKE_ORDER';
 
 export interface MakeOrder {
     type: typeof MAKE_ORDER,
-    stencilData: StencilData
+    orderData: OrderData
 };
 
 export const signIn = createAction(SIGN_IN);
@@ -20,7 +20,7 @@ export const createOrganization = createAction(CREATE_ORGANIZATION);
 
 export const signUp = createAction(SIGN_UP);
 
-export function makeOrder(stencilData: StencilData): MakeOrder {
-    return { type: MAKE_ORDER, stencilData };
+export function makeOrder(orderData: OrderData): MakeOrder {
+    return { type: MAKE_ORDER, orderData };
 };
 

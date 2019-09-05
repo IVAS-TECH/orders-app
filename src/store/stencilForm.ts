@@ -4,19 +4,19 @@ import { BooleanField, booleanField } from './form/formField/formFieldWithoutVal
 import { NumberFieldWithMinValue, numberFieldWithMinValue } from './form/formField/formFieldWithValueValidation/NumberFieldWithMinValue';
 import { StringField, stringField } from './form/formField/formFieldWithoutValidation/StringField';
 import FormFieldWithValueValidation from './form/formField/formFieldWithValueValidation/FormFieldWithValueValidation';
-import * as StencilData from './../type/StencilData';
+import * as OrderData from './../type/OrderData';
 import { ROUTE_HOME, ROUTE_ORDER } from './location/route';
 import { createSelector } from 'reselect';
 
-export type SheetThickness = StencilData.SheetThickness;
+export type SheetThickness = OrderData.SheetThickness;
 
-export type FidushalMarksKind = StencilData.FidushalMarksKind;
+export type FidushalMarksKind = OrderData.FidushalMarksKind;
 
-export type FidushalMarksSide = StencilData.FidushalMarksSide;
+export type FidushalMarksSide = OrderData.FidushalMarksSide;
 
-export type Position = StencilData.Position;
+export type Position = OrderData.Position;
 
-export type ImagePosition = StencilData.ImagePosition;
+export type ImagePosition = OrderData.ImagePosition;
 
 type RequiredFileField = FormFieldWithValueValidation<File, null , 'required'>;
 
