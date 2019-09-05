@@ -1,12 +1,8 @@
 import { Reducer } from 'redux';
 
-type Action<State, ActionType, ReducerAction> = ReducerAction extends (state: State, action: infer A) => State
-    ? A extends {
-        type: ActionType
-    }
-        ? A
-        : never
-    : never;
+type Action<State, ActionType, ReducerAction>
+= ReducerAction extends (state: State, action: infer A) => State
+    ? A extends { type: ActionType } ? A : never : never;
 
 type Constaint<State, ReducerMap extends {
     [ActionType in keyof ReducerMap]: ReducerMap[ActionType]
