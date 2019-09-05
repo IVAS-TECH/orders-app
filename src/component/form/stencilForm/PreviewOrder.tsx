@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import ClosableDialogTitle from './../../dialog/ClosableDialogTitle';
 import { OrderData as OrderDataType } from './../../../type/OrderData';
 import OrderData from './../../orderData/OrderData';
 import { formData } from './../../../store/stencilForm';
@@ -31,10 +31,10 @@ const PreviewOrderDialog: React.FC<PreviewOrderProps> = ({
     <TextContext.Consumer>
         {text => (
             <Dialog open={preview} onClose={onClose} fullWidth maxWidth='md' scroll='body'>
-                <DialogTitle>
+                <ClosableDialogTitle onClose={onClose}>
                     {text.action.previewOrder}
-                </DialogTitle>
-                <DialogContent>
+                </ClosableDialogTitle>
+                <DialogContent dividers>
                     {orderData && <OrderData text={text} orderData={orderData!} />}
                 </DialogContent>
                 <DialogActions>

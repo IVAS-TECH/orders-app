@@ -23,7 +23,7 @@ const ShowCouldNotLoadData: React.FC<ShowCouldNotLoadDataProps> = ({ retryAction
                 <DialogTitle>
                     {text.couldNotLoadDataDialog.title}
                 </DialogTitle>
-                <DialogContent>
+                <DialogContent dividers>
                     <DialogContentText>
                         {text.couldNotLoadDataDialog.text}
                     </DialogContentText>

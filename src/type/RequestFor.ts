@@ -4,6 +4,7 @@ type RequestFor
 | 'signUp'
 | 'organizationMembers'
 | 'makeOrder'
-| 'activeOrders';
+| 'activeOrders'
+| 'orderData';
 
 export default RequestFor;

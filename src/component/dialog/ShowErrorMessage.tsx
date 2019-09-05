@@ -24,7 +24,7 @@ const ShowErrorMessage: React.FC<ShowErrorMessageProps> = ({ show, onOk }) => (
                 <DialogTitle>
                     {text.requestResult.title}
                 </DialogTitle>
-                <DialogContent>
+                <DialogContent dividers>
                     <DialogContentText>
                         {show && textForErrorMessage(text, show)}
                     </DialogContentText>

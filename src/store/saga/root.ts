@@ -7,6 +7,7 @@ import createOrganizationSaga from './createOrganization';
 import signUpSaga from './signUp';
 import loadDataSaga from './loadData';
 import orderSaga from './order';
+import fetchOrderSaga from './fetchOrderData';
 
 export default function* rootSaga() {
     yield call(boot);
@@ -17,4 +18,5 @@ export default function* rootSaga() {
     yield fork(signUpSaga);
     yield fork(loadDataSaga);
     yield fork(orderSaga);
+    yield fork(fetchOrderSaga);
 };

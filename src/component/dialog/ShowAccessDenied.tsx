@@ -22,7 +22,7 @@ const ShowAccessDenied: React.FC<ShowAccessDeniedProps> = ({ show, onOk }) => (
                 <DialogTitle>
                     {text.accessDeniedDialog.title}
                 </DialogTitle>
-                <DialogContent>
+                <DialogContent dividers>
                     <DialogContentText>
                         {text.accessDeniedDialog.text}
                     </DialogContentText>

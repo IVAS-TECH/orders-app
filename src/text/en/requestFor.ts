@@ -8,7 +8,8 @@ const requestFor: RequestFor = {
         signUp: 'Signing up',
         organizationMembers: 'Loading organization members list',
         makeOrder: 'Making order',
-        activeOrders: 'Loading active orders'
+        activeOrders: 'Loading active orders',
+        orderData: 'Fetching order data'
     }
 };
 

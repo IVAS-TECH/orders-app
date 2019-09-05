@@ -20,7 +20,7 @@ const ShowRequestFor: React.FC<ShowRequestForProps> = ({ show }) => (
                 <DialogTitle>
                     {text.requestFor.title}
                 </DialogTitle>
-                <DialogContent>
+                <DialogContent dividers>
                     <DialogContentText>
                         {show && text.requestFor.text[show]}
                     </DialogContentText>

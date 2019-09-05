@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import ClosableDialogTitle from './../../dialog/ClosableDialogTitle';
 import { connect } from 'react-redux';
 import { State, selectInvalidFormWarning } from './../../../store/reducer';
 import { closeInvalidFormWarning } from './../../../store/invalidFormWarning';
@@ -26,10 +26,10 @@ const WarningForInvalidForm: React.FC<WarningForInvalidFormProps> = ({
     onClose
 }) => (
     <Dialog open={open} onClose={onClose}>
-        <DialogTitle>
+        <ClosableDialogTitle onClose={onClose}>
             {title}
-        </DialogTitle>
-        <DialogContent>
+        </ClosableDialogTitle>
+        <DialogContent dividers>
             <DialogContentText>
                 {warning}
             </DialogContentText>

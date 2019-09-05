@@ -16,14 +16,16 @@ interface OrdersInProcess {
     paperClass: string,
     titleClass: string,
     noOrdersToShowClass: string,
-    orders: OrderInfo[]
+    orders: OrderInfo[],
+    fetchOrderData: (id: string) => void
 }
 
 const OrdersInProcess: React.FC<OrdersInProcess> = ({
     paperClass,
     titleClass,
     noOrdersToShowClass,
-    orders
+    orders,
+    fetchOrderData
 }) => (
     <Paper className={paperClass}>
         {<TextContext.Consumer>
@@ -43,7 +45,7 @@ const OrdersInProcess: React.FC<OrdersInProcess> = ({
                         <Table>
                             {tableHead(text)}
                             <TableBody>
-                                {orders.map(tableRow(text))}
+                                {orders.map(tableRow(text, fetchOrderData))}
                             </TableBody>
                         </Table>
                     }
@@ -67,10 +69,14 @@ function tableHead(text: Text): JSX.Element {
     );
 }
 
-function tableRow(text: Text): (orderInfo: OrderInfo) => JSX.Element {
+function tableRow(text: Text, fetchOrderData: (id: string) => void): (orderInfo: OrderInfo) => JSX.Element {
     return orderInfo => (
         <TableRow key={orderInfo.id}>
-            <TableCell>{orderInfo.id}</TableCell>
+            <TableCell>
+                <Button color='primary' onClick={() => fetchOrderData(orderInfo.id)}>
+                    {orderInfo.id}
+                </Button>
+            </TableCell>
             <TableCell>{orderInfo.orderedBy}</TableCell>
             <TableCell>{format(orderInfo.date, 'dd.MM.yyyy HH:mm')}</TableCell>
             <TableCell>

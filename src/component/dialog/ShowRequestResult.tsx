@@ -23,7 +23,7 @@ const ShowRequestResult: React.FC<ShowRequestResultProps> = ({ show, onOk }) => 
                 <DialogTitle>
                     {text.requestResult.title}
                 </DialogTitle>
-                <DialogContent>
+                <DialogContent dividers>
                     <DialogContentText>
                         {show && text.requestResult.text[show.result](show.data)}
                     </DialogContentText>
