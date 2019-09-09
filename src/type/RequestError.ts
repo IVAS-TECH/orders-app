@@ -1,22 +1,39 @@
-export interface InternalError {
-    reason: string
-};
+interface ErrorResult {
+    reason: string,
+    badResponse: true,
+    invalidData: string,
+    invalidKey: string,
+    invalidField: string,
+    failedTo: string,
+    organizationExists: string,
+    userWithThisEmailExists: string,
+    userWithThisUserNameExistsInTheOrganization: string,
+    invalidOrganizationToken: true,
+    orderNotFound: string,
+    permissionDenied: true
+}
 
-export interface BadResponse {
-    badResponse: true
-};
+type $Error<E extends keyof ErrorResult>
+= Pick<ErrorResult, E>
+& Partial<ErrorResult>;
+
+export type InternalError = $Error<'reason'>;
+
+export type BadResponse = $Error<'badResponse'>;
 
 export type ValidationError
-= { invalidData: string }
-| { invalidKey: string }
-| { invalidField: string };
+= $Error<'invalidData'>
+| $Error<'invalidKey'>
+| $Error<'invalidField'>;
 
 export type ResultError
-= { failedTo: string }
-| { organizationExists: string }
-| { userWithThisEmailExists: string }
-| { userWithThisUserNameExistsInTheOrganization: string }
-| { invalidOrganizationToken: true };
+= $Error<'failedTo'>
+| $Error<'organizationExists'>
+| $Error<'userWithThisEmailExists'>
+| $Error<'userWithThisUserNameExistsInTheOrganization'>
+| $Error<'invalidOrganizationToken'>
+| $Error<'orderNotFound'>
+| $Error<'permissionDenied'>;
 
 export type RequestError
 = InternalError
@@ -31,6 +48,7 @@ export type TextErrorMessage
 | 'failedToSignIn'
 | 'invalidOrganizationToken'
 | 'couldNotRememberSignIn'
+| 'permissionDenied'
 | 'networkError'
 | 'unknownError';
 
@@ -44,26 +62,29 @@ export type DataErrorMessage
 } | {
     error: 'userWithThisUserNameExistsInTheOrganization',
     data: string
+} | {
+    error: 'orderNotFound',
+    data: string
 };
 
 export type ErrorMessage = TextErrorMessage | DataErrorMessage;
 
 export function isInternalError(error: RequestError): error is InternalError {
-    return (typeof (error as any).reason) === 'string';
+    return (typeof error.reason) === 'string';
 };
 
 export function isBadResponse(error: RequestError): error is BadResponse {
-    return (error as any).badResponse;
+    return !!(error.badResponse);
 };
 
 export function isValidationError(error: RequestError): error is InternalError {
-    if((error as any).invalidData === 'notAnObject') {
+    if((typeof error.invalidData) === 'string') {
         return true;
     }
-    if((typeof (error as any).invalidKey) === 'string') {
+    if((typeof error.invalidKey) === 'string') {
         return true;
     }
-    if((typeof (error as any).invalidField) === 'string') {
+    if((typeof error.invalidField) === 'string') {
         return true;
     }
     return false;
@@ -91,20 +112,31 @@ export function requestErrorToErrorMessage(error: RequestError): ErrorMessage {
     if(isValidationError(error)) {
         return 'invalidData';
     }
-    if((error as { invalidOrganizationToken?: true }).invalidOrganizationToken) {
+    if(error.invalidOrganizationToken) {
         return 'invalidOrganizationToken';
     }
-    const resultError = error as Record<string, string | undefined>;
-    if(resultError.organizationExists) {
-        return { error: 'organizationExists', data: resultError.organizationExists };
+    if(error.permissionDenied) {
+        return 'permissionDenied';
     }
-    if(resultError.userWithThisEmailExists) {
-        return { error: 'userWithThisEmailExists', data: resultError.userWithThisEmailExists };
+    if(error.organizationExists) {
+        return { error: 'organizationExists', data: error.organizationExists };
     }
-    if(resultError.userWithThisUserNameExistsInTheOrganization) {
-        return { error: 'userWithThisUserNameExistsInTheOrganization', data: resultError.userWithThisUserNameExistsInTheOrganization };
+    if(error.userWithThisEmailExists) {
+        return {
+            error: 'userWithThisEmailExists',
+            data: error.userWithThisEmailExists
+        };
     }
-    if(resultError.failedTo === 'signIn') {
+    if(error.userWithThisUserNameExistsInTheOrganization) {
+        return {
+            error: 'userWithThisUserNameExistsInTheOrganization',
+            data: error.userWithThisUserNameExistsInTheOrganization
+        };
+    }
+    if(error.orderNotFound) {
+        return { error: 'orderNotFound', data: error.orderNotFound };
+    }
+    if(error.failedTo === 'signIn') {
         return 'failedToSignIn';
     }
     return 'unknownError';

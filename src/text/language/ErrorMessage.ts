@@ -6,7 +6,8 @@ interface ErrorMessage {
     data:{
         userWithThisEmailExists: (email: string) => string,
         organizationExists: (organization: string) => string,
-        userWithThisUserNameExistsInTheOrganization: (userName: string) => string
+        userWithThisUserNameExistsInTheOrganization: (userName: string) => string,
+        orderNotFound: (orderID: string) => string
     }
 }
 
