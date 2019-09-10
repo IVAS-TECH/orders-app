@@ -8,6 +8,7 @@ import signUpSaga from './signUp';
 import loadDataSaga from './loadData';
 import orderSaga from './order';
 import fetchOrderSaga from './fetchOrderData';
+import makeInitialOrderFilterQuerySaga from './makeInitialOrderFilterQuery';
 
 export default function* rootSaga() {
     yield call(boot);
@@ -19,4 +20,5 @@ export default function* rootSaga() {
     yield fork(loadDataSaga);
     yield fork(orderSaga);
     yield fork(fetchOrderSaga);
+    yield fork(makeInitialOrderFilterQuerySaga);
 };

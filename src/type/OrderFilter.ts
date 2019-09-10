@@ -22,3 +22,12 @@ export default interface Filter {
     fileExtention: KeyedFilter<FileExtention>,
     fileName: string
 };
+
+export interface QueryFilter {
+    startDate: string,
+    endDate: string,
+    status: OrderStatus[],
+    orderedBy: string[],
+    fileExtention: FileExtention[],
+    fileName: string
+};

@@ -95,7 +95,7 @@ export function isResultError(error: RequestError): error is RequestError {
 };
 
 export function isTextErrorMessage(errorMessage: ErrorMessage): errorMessage is TextErrorMessage {
-    return typeof errorMessage === 'string';
+    return (typeof errorMessage) === 'string';
 };
 
 export function isDataErrorMessage(errorMessage: ErrorMessage): errorMessage is DataErrorMessage {

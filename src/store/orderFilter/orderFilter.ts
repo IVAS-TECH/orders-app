@@ -2,8 +2,9 @@ import { selectFormatedDate } from './setOrderFilter/dateFilter';
 import { selectPickedFromStatus as _selectPickedFromStatus } from './setOrderFilter/status';
 import { selectPickedFromOrderedBy as _selectPickedFromOrderedBy } from './setOrderFilter/orderedBy';
 import { selectPickedFromFileExtention as _selectPickedFromFileExtention } from './setOrderFilter/fileExtention';
+import { selectPicked } from './setOrderFilter/keyedFilter';
 import orderFilterReducer, { selectOrderFilter } from './setOrderFilter/orderFilter';
-import OrderFilter from '../../type/OrderFilter';
+import OrderFilter, { QueryFilter } from '../../type/OrderFilter';
 import Action from '../../type/Action';
 import { ROUTE_ORDER_HISTORY } from '../location/route';
 
@@ -81,4 +82,22 @@ export function selectPickedFromFileExtention(state: CurrentOrderFilterState): R
 
 export function selectFileName(state: CurrentOrderFilterState): string {
     return state !== null ? state.fileName : '';
+};
+
+export function selectQueryFilter({
+    startDate,
+    endDate,
+    status,
+    orderedBy,
+    fileExtention,
+    fileName
+}: OrderFilter): QueryFilter {
+    return {
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        status: _selectPickedFromStatus(status),
+        orderedBy: selectPicked(orderedBy.idFilter),
+        fileExtention: _selectPickedFromFileExtention(fileExtention),
+        fileName
+    };
 };
