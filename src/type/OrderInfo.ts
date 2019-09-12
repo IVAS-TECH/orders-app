@@ -1,13 +1,11 @@
 import OrderStatus from './OrderStatus';
+import ServerFile from './ServerFile';
 
 interface OrderInfo {
     id: string,
     orderedBy: string,
     date: Date,
-    file: {
-        name: string,
-        id: string
-    },
+    file: ServerFile,
     status: OrderStatus
 }
 

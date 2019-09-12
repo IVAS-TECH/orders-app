@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux';
 import languageReducer from './language';
 import stencilForm  from './stencilForm';
 import invalidFormWarningReducer from './invalidFormWarning';
@@ -20,7 +21,7 @@ import showCouldNotLoadDataReducer from './showCouldNotLoadData';
 import activeOrdersReducer from './activeOrders';
 import viewOrderReducer from './viewOrder';
 import orderDataCacheReducer from './orderDataCache';
-import { combineReducers } from 'redux';
+import filteredOrdersReducer from './filteredOrders';
 
 const reducerMap = {
     language: languageReducer,
@@ -41,7 +42,8 @@ const reducerMap = {
     showCouldNotLoadData: showCouldNotLoadDataReducer,
     activeOrders: activeOrdersReducer,
     viewOrder: viewOrderReducer,
-    orderDataCache: orderDataCacheReducer
+    orderDataCache: orderDataCacheReducer,
+    filteredOrders: filteredOrdersReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -144,4 +146,8 @@ export function selectViewOrder(state: State): State['viewOrder'] {
 
 export function selectOrderDataCache(state: State): State['orderDataCache'] {
     return state.orderDataCache;
+};
+
+export function selectFilteredOrders(state: State): State['filteredOrders'] {
+    return state.filteredOrders;
 };

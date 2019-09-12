@@ -2,7 +2,7 @@ import { put } from 'redux-saga/effects';
 import Action from './../../type/Action';
 import { showCouldNotLoadData } from './../showCouldNotLoadData';
 import { loadActiveOrders } from './../activeOrders';
-import parseISO from 'date-fns/parseISO';
+import formServerOrderInfoToClient from './../../logic/formServerOrderInfoToClient';
 
 export default function* load(retryAction: Action, response: unknown) {
     if(typeof response !== 'object') {
@@ -18,6 +18,6 @@ export default function* load(retryAction: Action, response: unknown) {
         yield put(showCouldNotLoadData(retryAction));
         return;
     }
-    const activeOrdersWithDate = activeOrders.map(order => ({...order, date: parseISO(order.date) }))
+    const activeOrdersWithDate = activeOrders.map(formServerOrderInfoToClient);
     yield put(loadActiveOrders(activeOrdersWithDate));
 };

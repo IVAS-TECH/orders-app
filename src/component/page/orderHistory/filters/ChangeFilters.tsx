@@ -1,8 +1,6 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
 import ClosableDialogTitle from './../../../dialog/ClosableDialogTitle';
 import SetFilters from './setFilters/SetFilters';
 import { connect } from 'react-redux';
@@ -32,15 +30,6 @@ const ChangeFilters: React.FC<ChangeFiltersProps> = ({
                 <DialogContent dividers>
                     <SetFilters />
                 </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant='contained'
-                        color='default'
-                        size='large'
-                        onClick={onCancel}>
-                        {text.action.cancel}
-                    </Button>
-                </DialogActions>
             </Dialog>
         )}
     </TextContext.Consumer>

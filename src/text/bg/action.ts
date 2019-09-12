@@ -12,7 +12,9 @@ const action: Action = {
     signIn: 'Вход',
     signOut: 'Излез',
     signUp: 'Регистрация',
-    createOrganization: 'Създай организация'
+    createOrganization: 'Създай организация',
+    action: 'Действие',
+    orderAgain: 'Поръчай отново'
 };
 
 export default action;

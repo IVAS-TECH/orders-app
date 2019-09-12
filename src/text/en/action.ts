@@ -12,7 +12,9 @@ const action: Action = {
     signIn: 'Sign in',
     signOut: 'Sign out',
     signUp: 'Sign up',
-    createOrganization: 'Create organization'
+    createOrganization: 'Create organization',
+    action: 'Action',
+    orderAgain: 'Order again'
 };
 
 export default action;

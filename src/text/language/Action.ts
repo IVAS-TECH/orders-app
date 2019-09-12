@@ -10,7 +10,9 @@ interface Action {
     signIn: string,
     signOut: string,
     signUp: string,
-    createOrganization: string
+    createOrganization: string,
+    action: string,
+    orderAgain: string
 }
 
 export default Action;

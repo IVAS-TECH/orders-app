@@ -3,13 +3,15 @@ import { SET_CURRENT_ORDER_FILTER,  selectQueryFilter } from './../orderFilter/o
 import { State, selectUser, selectCurrentOrderFilter } from './../reducer';
 import { selectAuthToken } from './../user';
 import request from './../../logic/request';
+import { pageSize, loadFromInitialOrderFilterQuery } from '../filteredOrders';
 import { showRequestFor, hideRequestFor } from '../showRequestFor';
 import { showAccessDenied }  from '../showAccessDenied';
 import { showErrorMessage } from './../showErrorMessage';
 import { requestErrorToErrorMessage } from './../../type/RequestError';
-import { QueryFilter } from '../../type/OrderFilter';
+import { QueryFilter } from './../../type/OrderFilter';
+import formServerOrderInfoToClient from './../../logic/formServerOrderInfoToClient';
 
-const url = '/api/order/query/100';
+const url = `/api/order/query/${pageSize}`;
 
 function selectOrderQueryFilter(state: State): QueryFilter {
     const currentOrderFilter = selectCurrentOrderFilter(state)!;
@@ -19,8 +21,7 @@ function selectOrderQueryFilter(state: State): QueryFilter {
 function* handleSetCurrentOrderFilter() {
     const authToken = yield select((state: State) => selectAuthToken(selectUser(state)));
     const orderFilterQuery = yield select(selectOrderQueryFilter);
-    console.log(orderFilterQuery);
-    yield put(showRequestFor('orderData'));
+    yield put(showRequestFor('searchOrders'));
     try {
         const [ response ] = yield all([
             call(request, {
@@ -29,16 +30,15 @@ function* handleSetCurrentOrderFilter() {
                 data: orderFilterQuery,
                 token: authToken
             }),
-            delay(2 * 1000)
+            delay(3 * 1000)
         ]);
         const { count, orders, error } = response;
         yield put(hideRequestFor());
         if(orders) {
-            console.log({ count, orders });
+            yield put(loadFromInitialOrderFilterQuery(count, orders.map(formServerOrderInfoToClient)));
         } else {
             const errorToHandle = error ? error : { badResponse: true };
-            console.log(errorToHandle);
-            if(error.accessDenied) {
+            if(errorToHandle.accessDenied) {
                 yield put(showAccessDenied());
             } else {
                 yield put(showErrorMessage(requestErrorToErrorMessage(errorToHandle)));

@@ -80,7 +80,7 @@ const SetFilterStep: React.FC<SetFilterStepProps> = ({
     return (
         <TextContext.Consumer>
             {text => (
-                <React.Fragment>
+                <>
                     <Typography variant="h4" align="center">
                         {text.ordersSearchFilters}
                     </Typography>
@@ -110,10 +110,10 @@ const SetFilterStep: React.FC<SetFilterStepProps> = ({
                                                 className={classes.button}>
                                                     {isLastStep
                                                         ? (
-                                                            <React.Fragment>
+                                                            <>
                                                                 {text.action.applyFilters}
                                                                 <FilterListIconWithLeftMargin />
-                                                            </React.Fragment>
+                                                            </>
                                                         ) : text.action.next
                                                     }
                                             </Button>
@@ -123,7 +123,7 @@ const SetFilterStep: React.FC<SetFilterStepProps> = ({
                             </Step>
                         ))}
                     </Stepper>
-                </React.Fragment>
+                </>
             )}
         </TextContext.Consumer>
     );

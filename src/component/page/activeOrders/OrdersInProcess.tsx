@@ -12,7 +12,7 @@ import TextContext from './../../../text/TextContext';
 import Text from './../../../text/language/Text';
 import format from 'date-fns/format';
 
-interface OrdersInProcess {
+interface OrdersInProcessProps {
     paperClass: string,
     titleClass: string,
     noOrdersToShowClass: string,
@@ -20,7 +20,7 @@ interface OrdersInProcess {
     fetchOrderData: (id: string) => void
 }
 
-const OrdersInProcess: React.FC<OrdersInProcess> = ({
+const OrdersInProcess: React.FC<OrdersInProcessProps> = ({
     paperClass,
     titleClass,
     noOrdersToShowClass,
@@ -80,11 +80,8 @@ function tableRow(text: Text, fetchOrderData: (id: string) => void): (orderInfo:
             <TableCell>{orderInfo.orderedBy}</TableCell>
             <TableCell>{format(orderInfo.date, 'dd.MM.yyyy HH:mm')}</TableCell>
             <TableCell>
-                <Button
-                    href={`api/file/${orderInfo.file.id}/${orderInfo.file.name}`}
-                    download={orderInfo.file.name}
-                    color='primary'>
-                {orderInfo.file.name}        
+                <Button href={orderInfo.file.url} download={orderInfo.file.name} color='primary'>
+                    {orderInfo.file.name}        
                 </Button>
             </TableCell>
             <TableCell>{text.orderStatus[orderInfo.status]}</TableCell>

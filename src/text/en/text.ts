@@ -26,6 +26,7 @@ const en: Language = {
     orderFilter,
     orderFilterStepLabel,
     ordersSearchFilters: 'Ordres search filters',
+    selectedOrdersSearchFilters: 'Selected orders search filters',
     fileNamePatternPlaceholder: 'Use ? to match any single character and * to match zero or more characters',
     requestFor,
     requestResult,

@@ -6,7 +6,7 @@ import { State, selectActiveOrders, selectViewOrder } from './../../../store/red
 import { connect } from 'react-redux';
 import { fetchOrderData } from './../../../store/action';
 import { closeViewOrder} from './../../../store/viewOrder';
-import ViewOrder from './ViewOrder';
+import ViewOrder from '../common/ViewOrder';
 import { OrderData } from '../../../type/OrderData';
 
 interface ActiveOrdersProps {

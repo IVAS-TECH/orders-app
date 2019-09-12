@@ -25,6 +25,7 @@ interface Text {
     orderFilter: OrderFilter,
     orderFilterStepLabel: OrderFilterStepLabel,
     ordersSearchFilters: string,
+    selectedOrdersSearchFilters: string,
     fileNamePatternPlaceholder: string,
     requestFor: RequestFor,
     requestResult: RequestResult,

@@ -1,6 +1,7 @@
 interface ErrorResult {
     reason: string,
     badResponse: true,
+    invalidRequestParameter: string,
     invalidData: string,
     invalidKey: string,
     invalidField: string,
@@ -22,7 +23,8 @@ export type InternalError = $Error<'reason'>;
 export type BadResponse = $Error<'badResponse'>;
 
 export type ValidationError
-= $Error<'invalidData'>
+= $Error<'invalidRequestParameter'>
+| $Error<'invalidData'>
 | $Error<'invalidKey'>
 | $Error<'invalidField'>;
 
@@ -78,6 +80,9 @@ export function isBadResponse(error: RequestError): error is BadResponse {
 };
 
 export function isValidationError(error: RequestError): error is InternalError {
+    if((typeof error.invalidRequestParameter) === 'string') {
+        return true;
+    }
     if((typeof error.invalidData) === 'string') {
         return true;
     }

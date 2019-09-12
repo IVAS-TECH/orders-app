@@ -5,6 +5,7 @@ type RequestFor
 | 'organizationMembers'
 | 'makeOrder'
 | 'activeOrders'
-| 'orderData';
+| 'orderData'
+| 'searchOrders';
 
 export default RequestFor;

@@ -3,10 +3,10 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import ClosableDialogTitle from './../../dialog/ClosableDialogTitle';
-import { OrderData as OrderDataType } from './../../../type/OrderData';
-import OrderData from './../../orderData/OrderData';
-import TextContext from './../../../text/TextContext';
+import ClosableDialogTitle from '../../dialog/ClosableDialogTitle';
+import { OrderData as OrderDataType } from '../../../type/OrderData';
+import OrderData from '../../orderData/OrderData';
+import TextContext from '../../../text/TextContext';
 
 export interface ViewOrderProps {
     orderData: null | OrderDataType,

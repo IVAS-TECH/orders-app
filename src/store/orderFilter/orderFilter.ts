@@ -1,3 +1,5 @@
+import startOfDay from 'date-fns/startOfDay';
+import endOfDay from 'date-fns/endOfDay';
 import { selectFormatedDate } from './setOrderFilter/dateFilter';
 import { selectPickedFromStatus as _selectPickedFromStatus } from './setOrderFilter/status';
 import { selectPickedFromOrderedBy as _selectPickedFromOrderedBy } from './setOrderFilter/orderedBy';
@@ -93,8 +95,8 @@ export function selectQueryFilter({
     fileName
 }: OrderFilter): QueryFilter {
     return {
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
+        startDate: startOfDay(startDate).toISOString(),
+        endDate: endOfDay(endDate).toISOString(),
         status: _selectPickedFromStatus(status),
         orderedBy: selectPicked(orderedBy.idFilter),
         fileExtention: _selectPickedFromFileExtention(fileExtention),

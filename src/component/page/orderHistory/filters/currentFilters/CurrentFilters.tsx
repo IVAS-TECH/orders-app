@@ -1,5 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import MultiValueFilter from './MultiValueFilter';
 import SingleValueFilter from './SingleValueFilter';
 import Divider from '@material-ui/core/Divider';
@@ -37,44 +38,49 @@ const CurrentOrderFilters: React.FC<CurrentOrderFilterProps> = ({
 }) => (
     <TextContext.Consumer>
         {text => (
-            <Grid container direction='column' spacing={4}>
-                <Grid item>
-                    <SingleValueFilter
-                        filter={text.orderFilter.dateInterval}
-                        value={dateRange} />
+            <>
+                <Typography variant="h5" align="center" gutterBottom>
+                    {text.selectedOrdersSearchFilters}
+                </Typography>
+                <Grid container direction='column' spacing={4}>
+                    <Grid item>
+                        <SingleValueFilter
+                            filter={text.orderFilter.dateInterval}
+                            value={dateRange} />
+                    </Grid>
+                    <Divider />
+                    <Grid item>
+                        <MultiValueFilter
+                            filter={text.orderFilter.orderStatus}
+                            values={status.map(key => text.orderStatus[key])} />
+                    </Grid>
+                    <Divider />
+                    <Grid item>
+                        <MultiValueFilter
+                            filter={text.orderFilter.orderedBy}
+                            values={orderedBy} />
+                    </Grid>
+                    <Divider />
+                    <Grid item>
+                        <MultiValueFilter
+                            filter={text.orderFilter.fileExtention}
+                            values={fileExtention} />
+                    </Grid>
+                    <Divider />
+                    <Grid item>
+                        <SingleValueFilter
+                            filter={text.orderFilter.fileName}
+                            value={fileName} />
+                    </Grid>
+                    <Divider />
+                    <Grid container justify='flex-end' item>
+                        <Button variant='contained' color='primary' size='large' onClick={onRequestChangeFilters}>
+                            {text.action.changeFilters}
+                            <FilterListIconWithLeftMargin />
+                        </Button>
+                    </Grid>
                 </Grid>
-                <Divider />
-                <Grid item>
-                    <MultiValueFilter
-                        filter={text.orderFilter.orderStatus}
-                        values={status.map(key => text.orderStatus[key])} />
-                </Grid>
-                <Divider />
-                <Grid item>
-                    <MultiValueFilter
-                        filter={text.orderFilter.orderedBy}
-                        values={orderedBy} />
-                </Grid>
-                <Divider />
-                <Grid item>
-                    <MultiValueFilter
-                        filter={text.orderFilter.fileExtention}
-                        values={fileExtention} />
-                </Grid>
-                <Divider />
-                <Grid item>
-                    <SingleValueFilter
-                        filter={text.orderFilter.fileName}
-                        value={fileName} />
-                </Grid>
-                <Divider />
-                <Grid container justify='flex-end' item>
-                    <Button variant='contained' color='primary' size='large' onClick={onRequestChangeFilters}>
-                        {text.action.changeFilters}
-                        <FilterListIconWithLeftMargin />
-                    </Button>
-                </Grid>
-            </Grid>
+            </>
         )}
     </TextContext.Consumer>
 );

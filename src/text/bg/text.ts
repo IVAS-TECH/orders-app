@@ -26,6 +26,7 @@ const bg: Language = {
     orderFilter,
     orderFilterStepLabel,
     ordersSearchFilters: 'Филтри за търсене на поръчки',
+    selectedOrdersSearchFilters: 'Избрани филтри за търсене на поръчки',
     fileNamePatternPlaceholder: 'Използвайте ? за кой да е символ и * за нула или повече символи',
     requestFor,
     requestResult,
