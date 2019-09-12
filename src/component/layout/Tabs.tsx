@@ -58,7 +58,7 @@ const Tabs: React.FC<TabsProps> = ({
     dispatch,
     label
 }) => (
-    <React.Fragment>
+    <>
         <MuiAppBar position='static' >
             <MuiTabs
                 value={tabIndex[currentTab]}
@@ -75,7 +75,7 @@ const Tabs: React.FC<TabsProps> = ({
             </MuiTabs>
         </MuiAppBar>
         {page[currentTab].page}
-    </React.Fragment>
+    </>
 );
 
 type TabsWtihTextProps = Omit<TabsProps, 'label'> & { label: (text: Text) => TabMap<string> };

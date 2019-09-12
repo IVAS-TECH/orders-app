@@ -41,31 +41,31 @@ const OrderData: React.FC<OrderDataProps> = ({
         <DataItem
             description={text.stencilForm.panelTitle.fidushalMarks}
             value={text.bool(!!orderData.fidushalMarks)} />
-        {!!orderData.fidushalMarks && <React.Fragment>
+        {!!orderData.fidushalMarks && <>
             <DataItem
                 description={text.stencilForm.fidushalMarksKind}
                 value={text.stencilForm.optionsFor.fidushalMarksKind[orderData.fidushalMarks.kind]} />
             <DataItem
                 description={text.stencilForm.fidushalMarksSide}
                 value={text.stencilForm.optionsFor.fidushalMarksSide[orderData.fidushalMarks.side]} />
-        </React.Fragment>}
+        </>}
         <Divider />
         <DataItem
             description={text.stencilForm.panelTitle.modificationsRequirements}
             value={text.bool(!!orderData.modificationsRequirements)} />
         <Divider />
-        {!!orderData.modificationsRequirements && <React.Fragment>
+        {!!orderData.modificationsRequirements && <>
             <TextArea
                 label={text.stencilForm.modificationsRequirements}
                 disabled
                 value={orderData.modificationsRequirements}
                 expectedSymbolsPerRow={87} />
             <Divider />
-        </React.Fragment>}
+        </>}
         <DataItem
             description={text.stencilForm.panelTitle.text}
             value={text.bool(!!orderData.text)} />
-        {!!orderData.text && <React.Fragment>
+        {!!orderData.text && <>
             {orderData.text!.rackelSide && <DataItem
                 description={text.stencilForm.textFromRackelSide}
                 value={orderData.text.rackelSide} />
@@ -74,12 +74,12 @@ const OrderData: React.FC<OrderDataProps> = ({
                 description={text.stencilForm.textFromPCBSide}
                 value={orderData.text.pcbSide} />
             }
-        </React.Fragment>}
+        </>}
         <Divider />
         <DataItem
             description={text.stencilForm.panelTitle.multiply}
             value={text.bool(!!orderData.multiply)} />
-        {!!orderData.multiply && <React.Fragment>
+        {!!orderData.multiply && <>
             <DataItem
                 description={text.stencilForm.panelsCountAxis('X')}
                 value={orderData.multiply.x.panelsCount} />
@@ -92,7 +92,7 @@ const OrderData: React.FC<OrderDataProps> = ({
             <DataItem
                 description={text.stencilForm.stepAxis('Y')}
                 value={orderData.multiply.y.step.toString() + ' mm'} />
-        </React.Fragment>}
+        </>}
         <Divider />
         <DataItem
             description={text.stencilForm.position}

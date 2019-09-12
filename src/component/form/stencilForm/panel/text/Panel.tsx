@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Title from './Title';
 import Grid from "@material-ui/core/Grid";
 import IncludeTextFromRackelSideField from './field/IncludeTextFromRackelSideField';
@@ -7,7 +7,7 @@ import IncludeTextFromPCBSideField from './field/IncludeTextFromPCBSideField';
 import TextFromPCBSideField from './field/TextFromPCBSideField';
 
 const Panel: React.FC<{}> = () => (
-    <Fragment>
+    <>
         <Title />
         <Grid container spacing={2}>
             <Grid item xs={4}>
@@ -23,7 +23,7 @@ const Panel: React.FC<{}> = () => (
                 <TextFromPCBSideField />
             </Grid>
         </Grid>
-    </Fragment>
+    </>
 );
 
 export default Panel;

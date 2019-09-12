@@ -1,10 +1,8 @@
-import React, { ReactNode, Fragment } from 'react';
+import React, { ReactNode } from 'react';
 
 const ShowContent: React.FC<{
     show: boolean,
     children: ReactNode
-}> = ({ show, children }) => (<Fragment>
-    {show && children}
-</Fragment>);
+}> = ({ show, children }) => (<>{show && children}</>);
 
 export default ShowContent;

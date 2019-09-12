@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Title from './Title';
 import Grid from "@material-ui/core/Grid";
 import NanoCoatingField from './field/NanoCoatingField';
 import ElectrochemicalPolishingField from './field/ElectrochemicalPolishingField';;
 
 const Panel: React.FC<{}> = () => (
-    <Fragment>
+    <>
         <Title />
         <Grid container>
             <Grid item xs={6}>
@@ -15,7 +15,7 @@ const Panel: React.FC<{}> = () => (
                 <ElectrochemicalPolishingField />
             </Grid>
         </Grid>
-    </Fragment>
+    </>
 );
 
 export default Panel;

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { ControlProps } from './FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -23,7 +23,7 @@ const ImagePositionSelect: React.FC<ImagePositionSelectProps> = ({
     value,
     onValueChange
 }) => (
-    <Fragment>
+    <>
         <FormLabel disabled={disabled} required={required} error={!!error}>
                     {label}
         </FormLabel>
@@ -58,7 +58,7 @@ const ImagePositionSelect: React.FC<ImagePositionSelectProps> = ({
         {error && <FormHelperText disabled={disabled} required={required} error={!!error}>
             {error}
         </FormHelperText>}
-    </Fragment>
+    </>
 );
 
 export default ImagePositionSelect;

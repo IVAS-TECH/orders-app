@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Title from './Title';
 import Grid from "@material-ui/core/Grid";
 import FileField from './field/FileField';
@@ -7,7 +7,7 @@ import CountField from './field/CountField';
 import SheetThicknessField from './field/SheetThicknessField';
 
 const Panel: React.FC<{}> = () => (
-    <Fragment>
+    <>
         <Title />
         <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -23,7 +23,7 @@ const Panel: React.FC<{}> = () => (
                 <SheetThicknessField />
             </Grid>
         </Grid>
-    </Fragment>
+    </>
 );
 
 export default Panel;

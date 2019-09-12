@@ -41,7 +41,7 @@ const ActiveOrders: React.FC<ActiveOrdersProps> = ({
 }) => {
     const classes = useStyles();
     return (
-        <React.Fragment>
+        <>
              <OrdersInProcess
                 paperClass={classes.paper}
                 titleClass={classes.title}
@@ -49,7 +49,7 @@ const ActiveOrders: React.FC<ActiveOrdersProps> = ({
                 orders={ordersInProcess}
                 fetchOrderData={fetchOrderData} />
             <ViewOrder orderData={viewOrder} onClose={closeViewOrder} />
-        </React.Fragment>
+        </>
     );
 };
 

@@ -33,7 +33,7 @@ const AppBar: React.FC<AppBarProps> = ({ userName, logout }) => (
                     <Grid item>
                         <LanguageSelect />
                     </Grid>
-                    {userName !== ''  && <React.Fragment>
+                    {userName !== ''  && <>
                         <Grid item>
                             <Typography variant='h6'>
                                 {userName}
@@ -46,7 +46,7 @@ const AppBar: React.FC<AppBarProps> = ({ userName, logout }) => (
                                 </TextContext.Consumer>
                             </Button>
                         </Grid>
-                    </React.Fragment>}            
+                    </>}            
                 </Grid>
             </Grid>
         </Toolbar>

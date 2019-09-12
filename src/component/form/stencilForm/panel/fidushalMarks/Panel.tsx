@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Title from './Title';
 import Grid from "@material-ui/core/Grid";
 import FidushalMarksField from './field/FidushalMarksField';
@@ -7,7 +7,7 @@ import FidushalMarksKindField from './field/FidushalMarksKindField';
 import FidushalMarksSideField from './field/FidushalMarksSideField';
 
 const Panel: React.FC<{}> = () => (
-    <Fragment>
+    <>
         <Title />
         <FidushalMarksField />
         <ShowFidushalMarksOptions>
@@ -20,7 +20,7 @@ const Panel: React.FC<{}> = () => (
                 </Grid>
             </Grid>
         </ShowFidushalMarksOptions>
-    </Fragment>
+    </>
 );
 
 export default Panel;

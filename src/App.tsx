@@ -18,7 +18,7 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ isLoggedIn }) => (
-    <React.Fragment>
+    <>
         <CssBaseline />
         <AppBar />
         {isLoggedIn ?  <Tabs /> : <User />}
@@ -28,7 +28,7 @@ const App: React.FC<AppProps> = ({ isLoggedIn }) => (
         <ShowErrorMessage />
         <ShowAccessDenied />
         <ShowCouldNotLoadData />
-    </React.Fragment>
+    </>
 );
 
 const ConnectedApp = connect(

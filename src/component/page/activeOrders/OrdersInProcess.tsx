@@ -30,7 +30,7 @@ const OrdersInProcess: React.FC<OrdersInProcessProps> = ({
     <Paper className={paperClass}>
         {<TextContext.Consumer>
             {text => (
-                <React.Fragment>
+                <>
                     <Typography variant='h5' className={titleClass}>
                         {text.orderInfo.ordersInProcess}
                     </Typography>
@@ -49,7 +49,7 @@ const OrdersInProcess: React.FC<OrdersInProcessProps> = ({
                             </TableBody>
                         </Table>
                     }
-                </React.Fragment>
+                </>
             )}
         </TextContext.Consumer>}
     </Paper>

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Title from './Title';
 import Grid from "@material-ui/core/Grid";
 import MultiplyField from './field/MultiplyField';
@@ -7,7 +7,7 @@ import { PanelsCountXField, PanelsCountYField } from './field/PanelsCountAxisFie
 import { StepXField, StepYField } from './field/StepAxisField';
 
 const Panel: React.FC<{}> = () => (
-    <Fragment>
+    <>
         <Title />
         <MultiplyField />
         <ShowMultiplyOptions>
@@ -26,7 +26,7 @@ const Panel: React.FC<{}> = () => (
                 </Grid>
             </Grid>
         </ShowMultiplyOptions>
-    </Fragment>
+    </>
 );
 
 export default Panel;

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PanelDivider from '../layout/PanelDivider';
 import TemplatePanel from './panel/template/Panel';
 import FidushalMarksPanel from './panel/fidushalMarks/Panel';
@@ -19,7 +19,7 @@ const PreviewOrderButtonOuter = styled(DivWithClassName)({
 });
 
 const Form: React.FC = () => (
-    <Fragment>
+    <>
         <form noValidate>
             <TemplatePanel />
             <PanelDivider />
@@ -40,7 +40,7 @@ const Form: React.FC = () => (
             </PreviewOrderButtonOuter>
         </form>
         <PreviewOrder />
-    </Fragment>
+    </>
 );
 
 export default Form;
