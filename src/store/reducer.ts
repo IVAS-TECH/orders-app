@@ -19,6 +19,7 @@ import showAccessDeniedReducer from './showAccessDenied';
 import showCouldNotLoadDataReducer from './showCouldNotLoadData';
 import activeOrdersReducer from './activeOrders';
 import viewOrderReducer from './viewOrder';
+import orderDataCacheReducer from './orderDataCache';
 import { combineReducers } from 'redux';
 
 const reducerMap = {
@@ -39,7 +40,8 @@ const reducerMap = {
     showAccessDenied: showAccessDeniedReducer,
     showCouldNotLoadData: showCouldNotLoadDataReducer,
     activeOrders: activeOrdersReducer,
-    viewOrder: viewOrderReducer
+    viewOrder: viewOrderReducer,
+    orderDataCache: orderDataCacheReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -138,4 +140,8 @@ export function selectActiveOrders(state: State): State['activeOrders'] {
 
 export function selectViewOrder(state: State): State['viewOrder'] {
     return state.viewOrder;
+};
+
+export function selectOrderDataCache(state: State): State['orderDataCache'] {
+    return state.orderDataCache;
 };

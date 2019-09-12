@@ -1,3 +1,5 @@
+import ServerFile from './ServerFile';
+
 export type SheetThickness = 30 | 40 | 50 | 80 | 90 | 100 | 110 | 120 | 130 | 150 | 180 | 200 | 250 | 300;
 
 export type FidushalMarksKind = 'graved' | 'cut';
@@ -14,7 +16,7 @@ export interface MultiplyOnAxis {
 };
 
 export interface OrderData {
-    file: File | { url: string },
+    file: File | ServerFile,
     fileName: string,
     fileIsFromRackelSide: boolean,
     count: number,

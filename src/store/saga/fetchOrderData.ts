@@ -1,8 +1,10 @@
 import { takeEvery, call, put, all, delay, select } from 'redux-saga/effects';
+import ServerFile from './../../type/ServerFile';
 import { FETCH_ORDER_DATA, FetchOrderData } from './../action';
-import { State, selectUser } from './../reducer';
+import { State, selectOrderDataCache, selectUser } from './../reducer';
 import { selectAuthToken } from './../user';
 import { viewOrder } from './../viewOrder';
+import { cacheOrderData } from './../orderDataCache';
 import request from './../../logic/request';
 import { showRequestFor, hideRequestFor } from '../showRequestFor';
 import { showAccessDenied }  from '../showAccessDenied';
@@ -14,6 +16,11 @@ function url(id: string) {
 }
 
 function* handleFetchOrderData({ id }: FetchOrderData) {
+    const orderDataCache = yield select(selectOrderDataCache);
+    if(orderDataCache[id]) {
+        yield put(viewOrder(orderDataCache[id]));
+        return;
+    }
     const authToken = yield select((state: State) => selectAuthToken(selectUser(state)));
     yield put(showRequestFor('orderData'));
     try {
@@ -28,7 +35,8 @@ function* handleFetchOrderData({ id }: FetchOrderData) {
         const { order, error } = response;
         yield put(hideRequestFor());
         if(order) {
-            const orderData = { ...order, file: { url: `/api/file/${order.fileID}/${order.fileName}` } };
+            const orderData = { ...order, file: new ServerFile(order.fileName, order.fileID) };
+            yield put(cacheOrderData(id, orderData));
             yield put(viewOrder(orderData));
         } else {
             const errorToHandle = error ? error : { badResponse: true };

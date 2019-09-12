@@ -5,6 +5,7 @@ import { NumberFieldWithMinValue, numberFieldWithMinValue } from './form/formFie
 import { StringField, stringField } from './form/formField/formFieldWithoutValidation/StringField';
 import FormFieldWithValueValidation from './form/formField/formFieldWithValueValidation/FormFieldWithValueValidation';
 import * as OrderData from './../type/OrderData';
+import ServerFile from './../type/ServerFile';
 import { ROUTE_HOME, ROUTE_ORDER } from './location/route';
 import { createSelector } from 'reselect';
 
@@ -49,7 +50,7 @@ export type State = FormState<Fields>;
 export type FormValues = FormFieldsValues<Fields>;
 
 export type FormData = {
-    file: File | { url: string },
+    file: File | ServerFile,
     fileName: string,
     fileIsFromRackelSide: boolean,
     count: number,
