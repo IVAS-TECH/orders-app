@@ -79,7 +79,11 @@ export const stepMin = 0;
 
 export const CREATED_ORDER = 'ivas-tech/orders-app/stencilForm/CREATED_ORDER';
 
-export function createdOrder() {
+export interface CreatedOrder {
+    type: typeof CREATED_ORDER
+};
+
+export function createdOrder(): CreatedOrder {
     return { type: CREATED_ORDER };
 };
 

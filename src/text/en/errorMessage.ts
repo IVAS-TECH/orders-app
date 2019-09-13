@@ -10,6 +10,8 @@ const errorMessage: ErrorMessage = {
         invalidOrganizationToken: 'Organization token used to access sign up page is invalid. Ensure you are using the right sign up link. If the link is correct try again after some time. If this message shows again please contact us.',
         couldNotRememberSignIn: 'Could not remember singing in. You can continue to use the application but you will not be remembered. This is due to browser error.',
         permissionDenied: 'You do not have permissions to make such request. If you belive that you do have please contact us. There is probably some mistake.',
+        permissionDeniedForFile: 'Trying to make new order that uses file from older order. But you do not have permissions for that file. This is probably a mistake. If it is please contact us.',
+        couldNotFindFile: 'Trying to make new order that uses file from older order. But file can not be found. This is probably a mistake. If it is please contact us.',
         networkError: 'Network error occured. Please check your connection. Try again after some time if you are connected to the internet. If this message shows again please contact us.',
         unknownError: 'Unknown error occured. Try again after some time. If this message shows again please contact us.' 
     },

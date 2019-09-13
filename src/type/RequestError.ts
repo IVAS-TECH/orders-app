@@ -11,7 +11,9 @@ interface ErrorResult {
     userWithThisUserNameExistsInTheOrganization: string,
     invalidOrganizationToken: true,
     orderNotFound: string,
-    permissionDenied: true
+    permissionDenied: true,
+    permissionDeniedForFileWithId: string,
+    couldNotFindFileWithId: string
 }
 
 type $Error<E extends keyof ErrorResult>
@@ -35,7 +37,9 @@ export type ResultError
 | $Error<'userWithThisUserNameExistsInTheOrganization'>
 | $Error<'invalidOrganizationToken'>
 | $Error<'orderNotFound'>
-| $Error<'permissionDenied'>;
+| $Error<'permissionDenied'>
+| $Error<'permissionDeniedForFileWithId'>
+| $Error<'couldNotFindFileWithId'>;
 
 export type RequestError
 = InternalError
@@ -51,6 +55,8 @@ export type TextErrorMessage
 | 'invalidOrganizationToken'
 | 'couldNotRememberSignIn'
 | 'permissionDenied'
+| 'permissionDeniedForFile'
+| 'couldNotFindFile'
 | 'networkError'
 | 'unknownError';
 
@@ -122,6 +128,12 @@ export function requestErrorToErrorMessage(error: RequestError): ErrorMessage {
     }
     if(error.permissionDenied) {
         return 'permissionDenied';
+    }
+    if(error.permissionDeniedForFileWithId) {
+        return 'permissionDeniedForFile';
+    }
+    if(error.couldNotFindFileWithId) {
+        return 'couldNotFindFile';
     }
     if(error.organizationExists) {
         return { error: 'organizationExists', data: error.organizationExists };

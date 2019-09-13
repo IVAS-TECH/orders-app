@@ -1,6 +1,6 @@
 import { createReducer } from './utils';
 import { SET_FORM_STATE_VALUES, SetFormStateValues } from './form/reducer';
-import stencilForm, { Fields } from './stencilForm';
+import stencilForm, { Fields, CREATED_ORDER, CreatedOrder } from './stencilForm';
 
 export const CLOSE_ORDER_AGAIN = 'ivas-tech/orders-app/orderAgain/CLOSE_ORDER_AGAIN';
 
@@ -20,6 +20,10 @@ const reducer = createReducer(false, {
     [CLOSE_ORDER_AGAIN]: (
         _state: boolean,
         _action: CloseOrderAgain
+    ) => false,
+    [CREATED_ORDER]: (
+        _state: boolean,
+        _action: CreatedOrder
     ) => false
 });
 
