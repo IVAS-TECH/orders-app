@@ -11,6 +11,8 @@ export const MAKE_ORDER = 'ivas-tech/orders-app/action/MAKE_ORDER';
 
 export const FETCH_ORDER_DATA = 'ivas-tech/orders-app/action/FETCH_ORDER_DATA';
 
+export const ORDER_AGAIN = 'ivas-tech/orders-app/action/ORDER_AGAIN';
+
 export interface MakeOrder {
     type: typeof MAKE_ORDER,
     orderData: OrderData
@@ -18,6 +20,11 @@ export interface MakeOrder {
 
 export interface FetchOrderData {
     type: typeof FETCH_ORDER_DATA,
+    id: string
+};
+
+export interface OrderAgain {
+    type: typeof ORDER_AGAIN,
     id: string
 };
 
@@ -33,4 +40,8 @@ export function makeOrder(orderData: OrderData): MakeOrder {
 
 export function fetchOrderData(id: string): FetchOrderData {
     return { type: FETCH_ORDER_DATA, id };
+};
+
+export function orderAgain(id: string): OrderAgain {
+    return { type: ORDER_AGAIN, id };
 };

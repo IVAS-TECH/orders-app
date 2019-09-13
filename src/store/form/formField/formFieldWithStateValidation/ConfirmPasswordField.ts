@@ -16,7 +16,8 @@ export const confirmPasswordField = {
     validation: {
         required: requireStringValue,
         passwordsDontMatch: (value: string, { password }: FromState) => value === password.value
-    }
+    },
+    validationDependsOn: ['password' as 'password']
 };
 
 export default confirmPasswordField;

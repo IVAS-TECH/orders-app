@@ -19,7 +19,7 @@ const styles = (theme: Theme) => ({
 });
 
 export interface ClosableDialogTitleProps extends WithStyles<typeof styles> {
-    children: string,
+    children: string | React.ReactElement,
     onClose: () => void
 };
 

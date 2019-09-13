@@ -8,7 +8,6 @@ import { selectPicked } from './setOrderFilter/keyedFilter';
 import orderFilterReducer, { selectOrderFilter } from './setOrderFilter/orderFilter';
 import OrderFilter, { QueryFilter } from '../../type/OrderFilter';
 import Action from '../../type/Action';
-import { ROUTE_ORDER_HISTORY } from '../location/route';
 
 export type CurrentOrderFilterState = null | OrderFilter;
 
@@ -37,9 +36,6 @@ const initialState: State = {
 };
 
 export default function reducer(state: State = initialState, action: Action): State {
-    if(action.type === ROUTE_ORDER_HISTORY) {
-        return initialState;
-    }
     if(action.type === SET_CURRENT_ORDER_FILTER) {
         const { setOrderFilter } = state;
         return {

@@ -7,6 +7,7 @@ import SetFilters from './filters/setFilters/SetFilters';
 import ChangeFilters from './filters/ChangeFilters';
 import FilteredOrders from './FilteredOrders';
 import ViewOrder from '../common/ViewOrder';
+import OrderAgain from './OrderAgain';
 import { ordersPerPageOptions } from './../../../store/filteredOrders';
 import {
     State,
@@ -14,10 +15,12 @@ import {
     selectChangeOrderFilter,
     selectFilteredOrders,
     selectSetOrderFilter,
-    selectViewOrder
+    selectViewOrder,
+    selectOrderAgain
 } from './../../../store/reducer';
-import { fetchOrderData } from './../../../store/action';
+import { fetchOrderData, orderAgain } from './../../../store/action';
 import { closeViewOrder} from './../../../store/viewOrder';
+import { closeOrderAgain } from './../../../store/orderAgain';
 import OrderInfo from '../../../type/OrderInfo';
 import { OrderData } from '../../../type/OrderData';
 
@@ -26,12 +29,15 @@ interface OrderHistoryProps {
     changeOrderFilters: boolean,
     currentOrdersPage: OrderInfo[],
     fetchOrderData: (id: string) => void,
+    orderAgain: (id: string) => void,
     ordersCount: number,
     ordersPerPage: number,
     pageNumber: number,
     memberIdToNameMap: Record<string, string>,
     viewOrderData: null | OrderData,
     onViewOrderDataClose: () => void,
+    openOrderAgain: boolean,
+    closeOrderAgain: () => void
 }
 
 const filtersWidth = 1000;
@@ -73,12 +79,15 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({
     changeOrderFilters,
     currentOrdersPage,
     fetchOrderData,
+    orderAgain,
     ordersCount,
     ordersPerPage,
     pageNumber,
     memberIdToNameMap,
     viewOrderData,
-    onViewOrderDataClose
+    onViewOrderDataClose,
+    openOrderAgain,
+    closeOrderAgain
 }) => {
     const classes = useStyles();
     return (
@@ -94,6 +103,7 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({
                         orders={currentOrdersPage}
                         ordersPerPageOptions={ordersPerPageOptions}
                         fetchOrderData={fetchOrderData}
+                        orderAgain={orderAgain}
                         ordersCount={ordersCount}
                         ordersPerPage={ordersPerPage}
                         pageNumber={pageNumber}
@@ -103,6 +113,7 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({
             {isOderFilterSet && <>
                 <ChangeFilters changeFilters={changeOrderFilters} />
                 <ViewOrder orderData={viewOrderData} onClose={onViewOrderDataClose} />
+                <OrderAgain open={openOrderAgain} onClose={closeOrderAgain} />  
             </>}
         </>
     );
@@ -119,11 +130,14 @@ const OrderHistoryPage = connect(
             ordersPerPage,
             pageNumber,
             memberIdToNameMap: selectSetOrderFilter(state).orderedBy.name,
-            viewOrderData: selectViewOrder(state)
+            viewOrderData: selectViewOrder(state),
+            openOrderAgain: selectOrderAgain(state)
         };
     }, {
         fetchOrderData,
-        onViewOrderDataClose: closeViewOrder
+        orderAgain,
+        onViewOrderDataClose: closeViewOrder,
+        closeOrderAgain
     }
 )(OrderHistory)
 

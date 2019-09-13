@@ -134,6 +134,13 @@ export type FormFieldsValues<
     [Field in keyof Fields]?: Fields[Field]['value']
 };
 
+export const SET_FORM_STATE_VALUES = 'ivas-tech/orders-app/form/SET_FORM_STATE_VALUES';
+
+export interface SetFormStateValues<Fields extends Constraint<Fields>> extends TypesForm {
+    type: typeof SET_FORM_STATE_VALUES,
+    formFieldsValues: FormFieldsValues<Fields>
+};
+
 export interface Form<Fields extends Constraint<Fields>> {
     reducer: Reducer<FormState<Fields>, Action>,
     selectors: {
@@ -155,9 +162,11 @@ export interface Form<Fields extends Constraint<Fields>> {
         setValue: {
             [Field in keyof Fields]: FormFieldRedux<Fields, Field>['setValue']
         },
-        showErrors: () => ShowErrors
+        showErrors: () => ShowErrors,
+        setValues: (formFieldsValues: FormFieldsValues<Fields>) => SetFormStateValues<Fields>
     },
-    id: (field: keyof Fields) => string
+    id: (field: keyof Fields) => string,
+    shouldHandleAction: (action: TypesForm & Action) => boolean
 }
 
 type CondtionMap<
@@ -210,9 +219,15 @@ export default function createForm<Fields extends Constraint<Fields>>(
         },
         actions: {
             setValue,
-            showErrors: () => showErrors(formName)
+            showErrors: () => showErrors(formName),
+            setValues: formFieldsValues => ({
+                type: SET_FORM_STATE_VALUES,
+                formName,
+                formFieldsValues
+            })
         },
-        id: field => `field:${field}@form:${formName}`
+        id: field => `field:${field}@form:${formName}`,
+        shouldHandleAction: action => action.formName === formName
     } as Form<Fields>
 };
 
@@ -244,6 +259,10 @@ function createFormReducer<Fields extends Constraint<Fields>>(
     const conditionMap = createConditionMap(formConfig);
     const validationDependsOnMap = createValidationDependsOnMap(formConfig);
     const reducer = createReducer(initalState, {
+        [SET_FORM_STATE_VALUES]: (
+            state: FormState<Fields>,
+            action: SetFormStateValues<Fields>
+        ) => handleSetFormStateValues(formConfig, state, action),
         [SET_FORM_FIELD_VALUE]: (
             state: FormState<Fields>,
             action: SetFormFieldValue
@@ -319,6 +338,29 @@ function createValidationDependsOnMap<Fields extends Constraint<Fields>>(
     return validationDependsOnMap;
 }
 
+function handleSetFormStateValues<Fields extends Constraint<Fields>>(
+    formConfig: FormConfig<Fields>,
+    state: FormState<Fields>,
+    action: SetFormStateValues<Fields>
+): FormState<Fields> {
+    const {formName, formFieldsValues} = action;
+    if(formName !== formConfig.formName) {
+        return state;
+    }
+    let newState: Partial<FormState<Fields>> = {};
+    const keys = Object.keys(state) as Array<keyof Fields>;
+    for(const field of keys) {
+        const value = formFieldsValues[field];
+        const { initialValue } = formConfig.fields[field];
+        newState[field] = {
+            value: value !== undefined
+                ? value as FormFieldValue<Fields, typeof field>
+                : initialValue as (typeof initialValue) & Value
+        };
+    }
+    return newState as FormState<Fields>;
+}
+
 function handleSetFormFieldValue<Fields extends Constraint<Fields>>(
     formConfig: FormConfig<Fields>,
     conditionMap: CondtionMap<Fields>,
@@ -385,7 +427,7 @@ function validateDependingOnFields<
             const { condition } = formConfig.fields[dependentField];
             if(isActiveFormFieldBasedOnCondition(condition, newState)) {
                 const { value, error } = newState[dependentField];
-                const tempFieldObject = formFieldObject(
+                const tempFieldObject: FormState<Fields>[Field] = formFieldObject(
                     formConfig,
                     newState,
                     dependentField,

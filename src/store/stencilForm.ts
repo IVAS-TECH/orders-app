@@ -19,7 +19,7 @@ export type Position = OrderData.Position;
 
 export type ImagePosition = OrderData.ImagePosition;
 
-type RequiredFileField = FormFieldWithValueValidation<File, null , 'required'>;
+type RequiredFileField = FormFieldWithValueValidation<File | ServerFile, null , 'required'>;
 
 export interface Fields {
     file: RequiredFileField,

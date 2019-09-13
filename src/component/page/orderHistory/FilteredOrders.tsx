@@ -17,6 +17,7 @@ interface FilterdOrdersProps {
     noOrdersToShowClass: string,
     orders: OrderInfo[],
     fetchOrderData: (id: string) => void,
+    orderAgain: (id: string) => void,
     ordersPerPageOptions: number[],
     ordersCount: number,
     ordersPerPage: number,
@@ -29,6 +30,7 @@ const FilterdOrders: React.FC<FilterdOrdersProps> = ({
     noOrdersToShowClass,
     orders,
     fetchOrderData,
+    orderAgain,
     ordersPerPageOptions,
     ordersCount,
     ordersPerPage,
@@ -56,7 +58,9 @@ const FilterdOrders: React.FC<FilterdOrdersProps> = ({
                             <Table>
                                 {tableHead(text)}
                                 <TableBody>
-                                    {orders.map(tableRow(text, memberIdToNameMap, fetchOrderData))}
+                                    {orders.map(tableRow(
+                                        text, memberIdToNameMap, fetchOrderData, orderAgain
+                                    ))}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 49 * emptyRows }}>
                                             <TableCell colSpan={6} />
@@ -100,7 +104,8 @@ function tableHead(text: Text): JSX.Element {
 function tableRow(
     text: Text,
     memberIdToNameMap: Record<string, string>,
-    fetchOrderData: (id: string) => void
+    fetchOrderData: (id: string) => void,
+    orderAgain: (id: string) => void
 ): (orderInfo: OrderInfo) => JSX.Element {
     return orderInfo => (
         <TableRow key={orderInfo.id}>
@@ -118,7 +123,7 @@ function tableRow(
             </TableCell>
             <TableCell>{text.orderStatus[orderInfo.status]}</TableCell>
             <TableCell>
-                <Button color='secondary' variant='outlined'>
+                <Button color='secondary' variant='outlined' onClick={() => orderAgain(orderInfo.id)}>
                     {text.action.orderAgain}
                 </Button>
             </TableCell>
