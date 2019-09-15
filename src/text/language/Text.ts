@@ -32,7 +32,9 @@ interface Text {
     errorMessage: ErrorMessage,
     accessDeniedDialog: AccessDeniedDialog,
     couldNotLoadDataDialog: CouldNotLoadDataDialog,
-    orderInfo: OrderInfo
+    orderInfo: OrderInfo,
+    organizationMembers: string,
+    noDataToShow: string
 }
 
 export default Text;

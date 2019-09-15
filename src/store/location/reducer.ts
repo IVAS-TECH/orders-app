@@ -6,7 +6,8 @@ import {
     ROUTE_CREATE_ORGANIZATION,
     ROUTE_ACTIVE_ORDERS,
     ROUTE_ORDER,
-    ROUTE_ORDER_HISTORY
+    ROUTE_ORDER_HISTORY,
+    ROUTE_ORGANIZATION
 } from './route';
 
 const routeMap = {
@@ -16,7 +17,8 @@ const routeMap = {
     [ROUTE_CREATE_ORGANIZATION]: '/createOrganization',
     [ROUTE_ACTIVE_ORDERS]: '/active',
     [ROUTE_ORDER]: '/order',
-    [ROUTE_ORDER_HISTORY]: '/history'
+    [ROUTE_ORDER_HISTORY]: '/history',
+    [ROUTE_ORGANIZATION]: '/organization'
 };
 
 const { reducer, enhancer, middleware } = connectRoutes(routeMap);

@@ -33,7 +33,9 @@ const bg: Language = {
     errorMessage,
     accessDeniedDialog,
     couldNotLoadDataDialog,
-    orderInfo
+    orderInfo,
+    organizationMembers: 'Членове на организацията',
+    noDataToShow: 'Няма данни за показване'
 };
 
 export default bg;

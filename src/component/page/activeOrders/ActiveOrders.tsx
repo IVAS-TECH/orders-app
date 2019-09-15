@@ -5,7 +5,7 @@ import OrderInfo from './../../../type/OrderInfo';
 import { State, selectActiveOrders, selectViewOrder } from './../../../store/reducer';
 import { connect } from 'react-redux';
 import { fetchOrderData } from './../../../store/action';
-import { closeViewOrder} from './../../../store/viewOrder';
+import { closeViewOrder } from './../../../store/viewOrder';
 import ViewOrder from '../common/ViewOrder';
 import { OrderData } from '../../../type/OrderData';
 

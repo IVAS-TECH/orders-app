@@ -23,6 +23,7 @@ import viewOrderReducer from './viewOrder';
 import orderDataCacheReducer from './orderDataCache';
 import filteredOrdersReducer from './filteredOrders';
 import orderAgainReducer from './orderAgain';
+import organizationReducer from './organization';
 
 const reducerMap = {
     language: languageReducer,
@@ -45,7 +46,8 @@ const reducerMap = {
     viewOrder: viewOrderReducer,
     orderDataCache: orderDataCacheReducer,
     filteredOrders: filteredOrdersReducer,
-    orderAgain: orderAgainReducer
+    orderAgain: orderAgainReducer,
+    organization: organizationReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -156,4 +158,8 @@ export function selectFilteredOrders(state: State): State['filteredOrders'] {
 
 export function selectOrderAgain(state: State): State['orderAgain'] {
     return state.orderAgain;
-}
+};
+
+export function selectOrganization(state: State): State['organization'] {
+    return state.organization;
+};

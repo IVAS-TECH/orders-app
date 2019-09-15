@@ -33,7 +33,9 @@ const en: Language = {
     errorMessage,
     accessDeniedDialog,
     couldNotLoadDataDialog,
-    orderInfo
+    orderInfo,
+    organizationMembers: 'Organization members',
+    noDataToShow: 'There is no data to show'
 };
 
 export default en;

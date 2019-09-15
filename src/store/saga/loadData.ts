@@ -3,7 +3,8 @@ import Action from './../../type/Action';
 import {
     ROUTE_HOME,
     ROUTE_ACTIVE_ORDERS,
-    ROUTE_ORDER_HISTORY
+    ROUTE_ORDER_HISTORY,
+    ROUTE_ORGANIZATION
 } from './../location/route';
 import { selectLocation, selectUser } from './../reducer';
 import { selectAuthToken, selectIsLoggedIn } from './../user';
@@ -14,6 +15,7 @@ import { showCouldNotLoadData } from '../showCouldNotLoadData';
 import RequestFor from '../../type/RequestFor';
 import loadActiveOrders from './loadActiveOrders';
 import loadMembers from './loadMembers';
+import loadOrganization from './loadOrganization';
 
 interface LoadInfo {
     url: string,
@@ -36,6 +38,11 @@ const loadDataFor: Record<string, LoadInfo> = {
         url: '/api/organization/members',
         loadData: 'organizationMembers',
         continuation: loadMembers
+    },
+    [ROUTE_ORGANIZATION]: {
+        url: '/api/organization',
+        loadData: 'organizationMembers',
+        continuation: loadOrganization
     }
 };
 

@@ -8,6 +8,8 @@ import ActiveOrdersIcon from '@material-ui/icons/Sync';
 import ActiveOrders from './../page/activeOrders/ActiveOrders';
 import Order from './../page/Order';
 import OrderHistory from '../page/orderHistory/OrderHistory';
+import Organization from './../page/organization/Organization';
+import OrganizationIcon from '@material-ui/icons/Group';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { configure } from './../utils';
@@ -21,9 +23,11 @@ import {
     ROUTE_ACTIVE_ORDERS,
     ROUTE_ORDER,
     ROUTE_ORDER_HISTORY,
+    ROUTE_ORGANIZATION,
     navigateToActiveOrders,
     navigateToOrder,
-    navigateToOrderHistory
+    navigateToOrderHistory,
+    navigateToOrganization
 } from './../../store/location/route';
 
 interface TabsProps {
@@ -35,22 +39,25 @@ interface TabsProps {
 const tabIndex: TabMap<number> = {
     'active-orders': 0,
     'order': 1,
-    'order-history': 2
+    'order-history': 2,
+    'organization': 3
 };
 
-const tabs: ['active-orders', 'order', 'order-history']
-          = ['active-orders', 'order', 'order-history'];
+const tabs: ['active-orders', 'order', 'order-history', 'organization']
+          = ['active-orders', 'order', 'order-history', 'organization'];
 
 const page: TabMap<{ page: React.ReactNode, icon: React.ReactElement }> = {
     'active-orders': { page: <ActiveOrders />, icon: <ActiveOrdersIcon /> },
     'order': { page: <Order />, icon:  <OrderIcon /> },
-    'order-history': { page: <OrderHistory />, icon: <OrderHistoryIcon /> }
+    'order-history': { page: <OrderHistory />, icon: <OrderHistoryIcon /> },
+    'organization': { page: <Organization />, icon: <OrganizationIcon /> }
 };
 
 const action: TabMap<() => Action> = {
     'active-orders': navigateToActiveOrders,
     'order': navigateToOrder,
-    'order-history': navigateToOrderHistory
+    'order-history': navigateToOrderHistory,
+    'organization': navigateToOrganization
 };
 
 const Tabs: React.FC<TabsProps> = ({
@@ -95,7 +102,8 @@ const routeToTabMap: Record<string, Tab | undefined> = {
     [ROUTE_HOME]: 'active-orders',
     [ROUTE_ACTIVE_ORDERS]: 'active-orders',
     [ROUTE_ORDER]: 'order',
-    [ROUTE_ORDER_HISTORY]: 'order-history'
+    [ROUTE_ORDER_HISTORY]: 'order-history',
+    [ROUTE_ORGANIZATION]: 'organization'
 };
 
 function mapRouteToTab(route: string): Tab {
