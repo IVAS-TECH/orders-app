@@ -33,7 +33,7 @@ interface Text {
     accessDeniedDialog: AccessDeniedDialog,
     couldNotLoadDataDialog: CouldNotLoadDataDialog,
     orderInfo: OrderInfo,
-    organizationMembers: string,
+    organizationMembers: (organization: string) => string,
     noDataToShow: string
 }
 

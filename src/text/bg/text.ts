@@ -34,7 +34,7 @@ const bg: Language = {
     accessDeniedDialog,
     couldNotLoadDataDialog,
     orderInfo,
-    organizationMembers: 'Членове на организацията',
+    organizationMembers: name => `Членове в организацията: ${name}`,
     noDataToShow: 'Няма данни за показване'
 };
 

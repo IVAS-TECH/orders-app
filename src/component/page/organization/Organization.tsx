@@ -31,7 +31,7 @@ const Organization: React.FC<OrganizationProps> = ({ organization }) => {
         paperClass={classes.paper}
         titleClass={classes.title}
         textToShowWhenNoDataClass={classes.textToShowWhenNoData}
-        members={organization} />;
+        organization={organization} />;
 };
 
 const Page = connect(

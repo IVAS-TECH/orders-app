@@ -34,7 +34,7 @@ const en: Language = {
     accessDeniedDialog,
     couldNotLoadDataDialog,
     orderInfo,
-    organizationMembers: 'Organization members',
+    organizationMembers: name => `Members in organization: ${name}`,
     noDataToShow: 'There is no data to show'
 };
 

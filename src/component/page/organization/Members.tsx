@@ -13,23 +13,23 @@ interface MembersProps {
     paperClass: string,
     titleClass: string,
     textToShowWhenNoDataClass: string,
-    members: null | Organization
+    organization: null | Organization
 }
 
 const Memebers: React.FC<MembersProps> = ({
     paperClass,
     titleClass,
     textToShowWhenNoDataClass,
-    members
+    organization
 }) => (
     <Paper className={paperClass}>
         {<TextContext.Consumer>
             {text => (
                 <>
                     <Typography variant='h5' className={titleClass}>
-                        {text.organizationMembers}
+                        {text.organizationMembers(organization === null ? '' : organization.name)}
                     </Typography>
-                    {members === null ?
+                    {organization === null ?
                         <Typography
                             variant='h6'
                             align='center'
@@ -47,11 +47,11 @@ const Memebers: React.FC<MembersProps> = ({
                             </TableHead>
                             <TableBody>
                                 <TableRow selected>
-                                    <TableCell>{members.manager.name}</TableCell>
-                                    <TableCell>{members.manager.email}</TableCell>
-                                    <TableCell>{members.manager.phone}</TableCell>
+                                    <TableCell>{organization.manager.name}</TableCell>
+                                    <TableCell>{organization.manager.email}</TableCell>
+                                    <TableCell>{organization.manager.phone}</TableCell>
                                 </TableRow>
-                                {members.users.map(member => (
+                                {organization.users.map(member => (
                                     <TableRow key={member.name}>
                                         <TableCell>{member.name}</TableCell>
                                         <TableCell>{member.email}</TableCell>
