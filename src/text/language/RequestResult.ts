@@ -3,7 +3,8 @@ interface RequestResult {
     text: {
         createdOrganizationManager: (email: string) => string,
         registeredUser: (email: string) => string,
-        createdOrder: (id: string) => string
+        createdOrder: (id: string) => string,
+        inviteUser: (link: string) => string
     }
 }
 

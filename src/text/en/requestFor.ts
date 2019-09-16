@@ -10,7 +10,8 @@ const requestFor: RequestFor = {
         makeOrder: 'Making order',
         activeOrders: 'Loading active orders',
         orderData: 'Fetching order data',
-        searchOrders: 'Searching for orders matching set search filters'
+        searchOrders: 'Searching for orders matching set search filters',
+        inviteToOrganization: 'Inviting to organization'
     }
 };
 

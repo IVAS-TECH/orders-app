@@ -8,6 +8,9 @@ type RequestResult
 } | {
     result: 'createdOrder',
     data: string
+} | {
+    result: 'inviteUser',
+    data: string
 };
 
 export default RequestResult;

@@ -1,5 +1,5 @@
 import { createReducer } from './utils';
-import User from './../type/User';
+import User, { UserRole } from './../type/User';
 
 export const LOGIN = 'ivas-tech/orders-app/user/LOGIN';
 
@@ -41,6 +41,10 @@ export function selectAuthToken(state: State): string {
 
 export function selectUserName(state: State): string {
     return state === null ? '' : state.name;
+};
+
+export function selectUserRole(state: State): UserRole {
+    return state === null ? 'unknown' : state.role;
 };
 
 export function selectIsLoggedIn(state: State): boolean {

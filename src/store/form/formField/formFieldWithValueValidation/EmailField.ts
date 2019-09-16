@@ -8,7 +8,7 @@ export const emailField = {
     initialValue: '' as '',
     validation: {
         required: requireStringValue,
-        email: (value: string) => isEmail(value)
+        email: (value: string) => (value === '') || isEmail(value)
     }
 };
 

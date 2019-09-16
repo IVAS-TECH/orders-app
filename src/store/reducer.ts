@@ -24,6 +24,7 @@ import orderDataCacheReducer from './orderDataCache';
 import filteredOrdersReducer from './filteredOrders';
 import orderAgainReducer from './orderAgain';
 import organizationReducer from './organization';
+import inviteToOrganizationReducer from './inviteToOrganization/reducer';
 
 const reducerMap = {
     language: languageReducer,
@@ -47,7 +48,8 @@ const reducerMap = {
     orderDataCache: orderDataCacheReducer,
     filteredOrders: filteredOrdersReducer,
     orderAgain: orderAgainReducer,
-    organization: organizationReducer
+    organization: organizationReducer,
+    inviteToOrganization: inviteToOrganizationReducer
 };
 
 const reducer = combineReducers(reducerMap);
@@ -162,4 +164,16 @@ export function selectOrderAgain(state: State): State['orderAgain'] {
 
 export function selectOrganization(state: State): State['organization'] {
     return state.organization;
+};
+
+export function selectShowInviteToOrganization(state: State): State['inviteToOrganization']['showInviteToOrganization'] {
+    return state.inviteToOrganization.showInviteToOrganization;
+};
+
+export function selectInviteUserForm(state: State): State['inviteToOrganization']['inviteUserForm'] {
+    return state.inviteToOrganization.inviteUserForm;
+};
+
+export function selectShowInviteUserError(state: State): State['inviteToOrganization']['showError'] {
+    return state.inviteToOrganization.showError;
 };

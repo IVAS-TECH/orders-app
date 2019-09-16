@@ -13,6 +13,8 @@ export const FETCH_ORDER_DATA = 'ivas-tech/orders-app/action/FETCH_ORDER_DATA';
 
 export const ORDER_AGAIN = 'ivas-tech/orders-app/action/ORDER_AGAIN';
 
+export const INVITE_TO_ORGANIZATION = 'ivas-tech/orders-app/action/INVITE_TO_ORGANIZATION';
+
 export interface MakeOrder {
     type: typeof MAKE_ORDER,
     orderData: OrderData
@@ -45,3 +47,5 @@ export function fetchOrderData(id: string): FetchOrderData {
 export function orderAgain(id: string): OrderAgain {
     return { type: ORDER_AGAIN, id };
 };
+
+export const inviteToOrganization = createAction(INVITE_TO_ORGANIZATION);

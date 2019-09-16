@@ -13,7 +13,7 @@ export const userNameField = {
     initialValue: '' as '',
     validation: {
         required: requireStringValue,
-        minLength: (value: string) => value.length >= minLength,
+        minLength: (value: string) => (value === '') || (value.length >= minLength),
         maxLength: (value: string) => value.length <= maxLength,
     }
 };

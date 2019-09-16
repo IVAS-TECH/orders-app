@@ -14,7 +14,8 @@ const action: Action = {
     signUp: 'Регистрация',
     createOrganization: 'Създай организация',
     action: 'Действие',
-    orderAgain: 'Поръчай отново'
+    orderAgain: 'Поръчай отново',
+    inviteToOrganization: 'Покани в организацията'
 };
 
 export default action;

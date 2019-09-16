@@ -6,8 +6,11 @@ import registerForm from './../registerForm/form';
 export default function* boot() {
     const { type, payload } = yield select(selectLocation);
     if(type === ROUTE_SIGN_UP) {
-        if(payload.email) {
-            yield put(registerForm.actions.setValue.email(payload.email));
+        const { email, phone, userName } = registerForm.actions.setValue;
+        yield put(email(payload.email));
+        yield put(phone(payload.phone));
+        if(payload.name) {
+            yield put(userName(payload.name));
         }
     }
 };

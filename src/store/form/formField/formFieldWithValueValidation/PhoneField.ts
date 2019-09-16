@@ -13,7 +13,7 @@ export const phoneField = {
     validation: {
         required: requireStringValue,
         maxLength: (value: string) => value.length <= maxLength,
-        phone: (value: string) => isMobilePhone(value)
+        phone: (value: string) => (value === '') || isMobilePhone(value)
     }
 };
 

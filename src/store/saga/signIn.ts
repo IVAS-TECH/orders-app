@@ -36,10 +36,11 @@ function* handleSignIn() {
             }),
             delay(2 * 1000)
         ]);
-        const { token, userName, error } = response;
+        const { token, userName, userRole, error } = response;
         const user = {
             authToken: token,
-            name: userName
+            name: userName,
+            role: userRole
         };
         yield put(hideRequestFor());
         if(isUser(user)) {

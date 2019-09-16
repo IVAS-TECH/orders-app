@@ -13,7 +13,7 @@ import {
 const routeMap = {
     [ROUTE_HOME]: '/',
     [ROUTE_SIGN_IN]: '/signIn',
-    [ROUTE_SIGN_UP]: '/signUp/:organzation/:email?',
+    [ROUTE_SIGN_UP]: '/signUp/:organzation/:email/:phone/:name?',
     [ROUTE_CREATE_ORGANIZATION]: '/createOrganization',
     [ROUTE_ACTIVE_ORDERS]: '/active',
     [ROUTE_ORDER]: '/order',

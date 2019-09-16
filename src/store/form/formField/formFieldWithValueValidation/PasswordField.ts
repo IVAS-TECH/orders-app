@@ -25,12 +25,12 @@ export const passwordField = {
     initialValue: '' as '',
     validation: {
         required: requireStringValue,
-        minLength: (value: string) => value.length >= minLength,
+        minLength: (value: string) => (value === '') || (value.length >= minLength),
         maxLength: (value: string) => value.length <= maxLength,
-        symbols: (value: string) => symbols.test(value),
-        lowerCaseLetter: (value: string) => lowerCaseLetter.test(value),
-        upperCaseLetter: (value: string) => upperCaseLetter.test(value),
-        digit: (value: string) => digit.test(value)
+        symbols: (value: string) => (value === '') || symbols.test(value),
+        lowerCaseLetter: (value: string) => (value === '') || lowerCaseLetter.test(value),
+        upperCaseLetter: (value: string) => (value === '') || upperCaseLetter.test(value),
+        digit: (value: string) => (value === '') || digit.test(value)
     }
 };
 

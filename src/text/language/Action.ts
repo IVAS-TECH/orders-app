@@ -12,7 +12,8 @@ interface Action {
     signUp: string,
     createOrganization: string,
     action: string,
-    orderAgain: string
+    orderAgain: string,
+    inviteToOrganization: string
 }
 
 export default Action;

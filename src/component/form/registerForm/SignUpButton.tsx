@@ -6,14 +6,14 @@ import { State, selectRegisterForm } from './../../../store/reducer';
 import form from './../../../store/registerForm/form';
 import { signUp } from './../../../store/action';
 
-interface SignInButtonProps {
+interface SignUpButtonProps {
     className?: string,
     isFormValid: boolean,
     showFormErrors: () => void,
     signUp: () => void
 }
 
-const SignInButton: React.FC<SignInButtonProps> = ({
+const SignUpButton: React.FC<SignUpButtonProps> = ({
     className,
     isFormValid,
     showFormErrors,
@@ -39,6 +39,6 @@ const ConnectedButton = connect(
         signUp,
         showFormErrors: form.actions.showErrors
     }
-)(SignInButton);
+)(SignUpButton);
 
 export default ConnectedButton;

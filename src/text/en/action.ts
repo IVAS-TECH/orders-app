@@ -14,7 +14,8 @@ const action: Action = {
     signUp: 'Sign up',
     createOrganization: 'Create organization',
     action: 'Action',
-    orderAgain: 'Order again'
+    orderAgain: 'Order again',
+    inviteToOrganization: 'Invite to organization'
 };
 
 export default action;
