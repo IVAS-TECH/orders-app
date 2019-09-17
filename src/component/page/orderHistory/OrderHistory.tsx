@@ -8,7 +8,7 @@ import ChangeFilters from './filters/ChangeFilters';
 import FilteredOrders from './FilteredOrders';
 import ViewOrder from '../common/ViewOrder';
 import OrderAgain from './OrderAgain';
-import { ordersPerPageOptions } from './../../../store/filteredOrders';
+import { ordersPerPageOptions, changeOrdersPerPage } from './../../../store/filteredOrders';
 import {
     State,
     selectCurrentOrderFilter,
@@ -33,6 +33,7 @@ interface OrderHistoryProps {
     ordersCount: number,
     ordersPerPage: number,
     pageNumber: number,
+    changeOrdersPerPage: (ordersPerPage: number) => void,
     memberIdToNameMap: Record<string, string>,
     viewOrderData: null | OrderData,
     onViewOrderDataClose: () => void,
@@ -83,6 +84,7 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({
     ordersCount,
     ordersPerPage,
     pageNumber,
+    changeOrdersPerPage,
     memberIdToNameMap,
     viewOrderData,
     onViewOrderDataClose,
@@ -107,6 +109,7 @@ const OrderHistory: React.FC<OrderHistoryProps> = ({
                         ordersCount={ordersCount}
                         ordersPerPage={ordersPerPage}
                         pageNumber={pageNumber}
+                        changeOrdersPerPage={changeOrdersPerPage}
                         memberIdToNameMap={memberIdToNameMap} />
                 </Paper>}
             </main>
@@ -136,6 +139,7 @@ const OrderHistoryPage = connect(
     }, {
         fetchOrderData,
         orderAgain,
+        changeOrdersPerPage,
         onViewOrderDataClose: closeViewOrder,
         closeOrderAgain
     }

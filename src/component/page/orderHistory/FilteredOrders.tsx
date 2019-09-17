@@ -22,6 +22,7 @@ interface FilterdOrdersProps {
     ordersCount: number,
     ordersPerPage: number,
     pageNumber: number,
+    changeOrdersPerPage: (ordersPerPage: number) => void,
     memberIdToNameMap: Record<string, string>
 }
 
@@ -35,6 +36,7 @@ const FilterdOrders: React.FC<FilterdOrdersProps> = ({
     ordersCount,
     ordersPerPage,
     pageNumber,
+    changeOrdersPerPage,
     memberIdToNameMap
 }) => {
     const emptyRows = Math.max(0, ordersPerPage - orders.length);
@@ -77,7 +79,7 @@ const FilterdOrders: React.FC<FilterdOrdersProps> = ({
                                     labelRowsPerPage={`${text.orderInfo.ordersPerPage}: `}
                                     labelDisplayedRows={text.orderInfo.ordersInfo}
                                     onChangePage={() => { }}
-                                    onChangeRowsPerPage={() => { }} />
+                                    onChangeRowsPerPage={(event: React.ChangeEvent<HTMLInputElement>) => changeOrdersPerPage(Number(event.target.value))} />
                         </>
                     }
                 </>
